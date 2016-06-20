@@ -483,11 +483,14 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                                 <h4 class="modal-title">Profile Pic</h4>
                                             </div>
                                             <div class="modal-body">
+
+                                            <?php if ($is_update): ?>
                                                 <img src="<?php echo !empty($photo)
                                                     ? PROFILE_PIC . $photo :
                                                     DEFAULT_PROFILE_PIC . $gender .'.jpg' ; ?>"
                                                     class="img-rounded" alt="profile_pic"
                                                     width="200" height="200">
+                                            <?php endif ?>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default"

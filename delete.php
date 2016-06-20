@@ -16,7 +16,6 @@ if (isset($_GET['emp_id']) && preg_match('/^[0-9]*$/', $_GET['emp_id'])) {
 
     $result = mysqli_query($conn, $sql_query);
     $row = mysqli_fetch_assoc($result);
-
     $photo = PROFILE_PIC . $row['photo'];
 
     // Delete data from address table
