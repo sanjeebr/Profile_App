@@ -89,14 +89,13 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
     $communication = (isset($_POST['communication']) && ! empty($_POST['communication']) )
         ? implode(',', $_POST['communication']) : '';
 
-
     // To check error in first name.
     if (empty($_POST['first_name'])) {
         $first_name_err = 'First Name is required.';
         $error++;
      } else {
         // Check if name only contains letters and whitespace
-        if ( ! preg_match('/^[a-zA-Z ]*$/',$first_name)) {
+        if ( ! preg_match('/^[a-zA-Z ]*$/', $first_name)) {
             $first_name_err = 'Only letters and white space allowed.';
             $error++;
         }
@@ -128,7 +127,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
     } else {
         $date = explode('-', $date_of_birth);
 
-        if (count($date) !== 3 || ! checkdate($date[1], $date[2], $date[0])){
+        if ( 3 !== count($date) || ! checkdate($date[1], $date[2], $date[0])) {
             $dob_err = 'Date of Birth is invalid.';
         }
     }
@@ -148,7 +147,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
     }
 
     // To check error in mobile no.
-    if (empty($_POST['r_phone'])){
+    if (empty($_POST['r_phone'])) {
         $r_phone_err = 'This field is required.';
         $error++;
     } else if ( ! preg_match('/^[0-9]{10}$/', $r_phone)) {
@@ -214,7 +213,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
             $extensions = array('jpeg', 'jpg', 'png');
 
             // Check if extension is valid or not then check the size must not greater then 2MB.
-            if (in_array($file_ext,$extensions) === FALSE){
+            if ( FALSE === in_array($file_ext,$extensions)){
                 $photo_err = 'Please choose a JPEG or PNG file.';
                 $error++;
             } else if ($file_size > 2097152) {
@@ -291,7 +290,6 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                 header('Location: error.php');
             }
 
-
             $sql_query = "UPDATE `address`
                 SET `phone` = '$o_phone',`fax` = '$o_fax',
                 `street` = '$o_street',`pin_no` = '$o_pin',`city` = '$o_city',
@@ -302,7 +300,6 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
             if (FALSE === $result) {
                 header('Location: error.php');
             }
-
 
             $sql_query = "UPDATE `address`
                 SET `phone`= '$r_phone',`fax` = '$r_fax',
@@ -472,7 +469,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <a  data-toggle="modal" data-target="#profile_pic" >
                                     View Current Pic</a>
                                 <?php } ?></label>
-                                <input type="file" class="form-control" id="photo" name="photo">
+                                <input type="file" class="form-control" id="photo"
+                                    name="photo" accept="image/*">
                                 <br><span class="error"><?php echo $photo_err; ?></span>
 
                                 <!-- Modal for profile pic-->
@@ -485,11 +483,14 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                                 <h4 class="modal-title">Profile Pic</h4>
                                             </div>
                                             <div class="modal-body">
+
+                                            <?php if ($is_update): ?>
                                                 <img src="<?php echo !empty($photo)
                                                     ? PROFILE_PIC . $photo :
                                                     DEFAULT_PROFILE_PIC . $gender .'.jpg' ; ?>"
                                                     class="img-rounded" alt="profile_pic"
                                                     width="200" height="200">
+                                            <?php endif ?>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default"
@@ -548,7 +549,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error"><?php echo $r_fax_err ?></span>
                                 <input type="text" class="form-control" id="r_fax"
-                                    placeholder="Fax Number" name="r_fax"
+                                    placeholder="eg:00001234567" name="r_fax"
                                     <?php  echo "value='$r_fax'"; ?>>
                             </div>
                         </div>
@@ -589,7 +590,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error"><?php echo $o_fax_err ?></span>
                                 <input type="text" class="form-control" id="o_fax"
-                                    name="o_fax" placeholder="Fax Number"
+                                    name="o_fax" placeholder="eg:00001234567"
                                     <?php  echo "value='$o_fax'"; ?>>
                             </div>
                         </div>
@@ -691,7 +692,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
             </form>
             </div>
             <div class="row  text-center">
-                 <div class="page-footer">Copyright
+                <div class="page-footer">Copyright
                     <span class="glyphicon glyphicon-copyright-mark">2016 sanjeeb@mindfire</span>
                 </div>
            </div>
