@@ -692,7 +692,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
             </form>
             </div>
             <div class="row  text-center">
-                 <div class="page-footer">Copyright
+                <div class="page-footer">Copyright
                     <span class="glyphicon glyphicon-copyright-mark">2016 sanjeeb@mindfire</span>
                 </div>
            </div>
