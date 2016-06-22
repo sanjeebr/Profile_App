@@ -4,9 +4,12 @@
  * Display all employee data file.
  */
 
-require_once('config/database_config.php');
+require_once('classlib/db_class.php');
 require_once('display_error.php');
 require_once('config/constants.php');
+
+$db_obj = Database::get_instance();
+$conn = $db_obj->get_connection();
 
 // Sql query to display employee data.
 $sql_query = "SELECT employee.id AS emp_id, employee.first_name AS first_name,

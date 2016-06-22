@@ -4,8 +4,11 @@
  * Delete employee data file.
  */
 
-require_once('config/database_config.php');
+require_once('classlib/db_class.php');
 require_once('config/constants.php');
+
+$db_obj = Database::get_instance();
+$conn = $db_obj->get_connection();
 
 if (isset($_GET['emp_id']) && preg_match('/^[0-9]*$/', $_GET['emp_id'])) {
     $emp_id = $conn->real_escape_string($_GET['emp_id']);

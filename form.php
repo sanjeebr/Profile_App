@@ -1,10 +1,13 @@
 <?php
 
-require_once('config/database_config.php');
+require_once('classlib/db_class.php');
 require_once('config/initialization_config.php');
 require_once('helper/utility.php');
 require_once('display_error.php');
 require_once('config/constants.php');
+
+$db_obj = Database::get_instance();
+$conn = $db_obj->get_connection();
 
 extract($employee_data, EXTR_SKIP);
 extract($error_list, EXTR_SKIP);
@@ -470,7 +473,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     View Current Pic</a>
                                 <?php } ?></label>
                                 <input type="file" class="form-control" id="photo"
-                                    name="photo" accept="image/*">
+                                    name="photo" >
                                 <br><span class="error"><?php echo $photo_err; ?></span>
 
                                 <!-- Modal for profile pic-->
