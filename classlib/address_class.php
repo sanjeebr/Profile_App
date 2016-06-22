@@ -51,8 +51,6 @@ class Address {
 
     public function delete_address($db_obj,$emp_id) {
         $sql_query = "DELETE FROM address WHERE employee_id = $emp_id";
-
-
         $result = $db_obj->execute_sql_query($sql_query);
 
         if (FALSE === $result) {

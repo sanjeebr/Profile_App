@@ -6,6 +6,8 @@
 
 require_once('classlib/db_class.php');
 require_once('config/constants.php');
+require_once('classlib/employee_class.php');
+require_once('classlib/address_class.php');
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
@@ -31,7 +33,7 @@ if (isset($_GET['emp_id']) && preg_match('/^[0-9]*$/', $_GET['emp_id'])) {
 
     // Delete data from employee table.
     $sql = "DELETE FROM employee WHERE id = $emp_id";
-	$result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
 
     if (FALSE === $result) {
         header('Location: error.php');

@@ -355,6 +355,17 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                             <li class="active"><a href="">Registration</a></li>
                             <li ><a href="employee.php">Employee Details</a></li>
                         </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown"><a class="dropdown-toggle"
+                                data-toggle="dropdown" href="#">Account Settings
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Edit Account</a></li>
+                                    <li><a href="#">Delete Account</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>

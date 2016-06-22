@@ -73,7 +73,7 @@ class Database {
     }
 
     /**
-     * Retrun connection
+     * Retrun last id
      *
      *@access public
      *@param  void
@@ -83,7 +83,82 @@ class Database {
         return mysqli_insert_id($this->connection);
     }
 
+    /**
+     * Insert
+     *
+     *@access public
+     *@param  void
+     *@return mix
+     */
+    public function insert($table_name, $data) {
+        $sql_query = "INSERT INTO $table_name ";
+        $col_name = ' ( ';
+        $col_value = ' VALUES ( ';
+        foreach ($data as $key => $value) {
+            $col_name .= "$key, ";
+            $col_value .= "'$value', ";
+        }
+        $col_name = trim($col_name, ", ") . ' )';
+        $col_value = ' '.trim($col_value, ", ") .' )';
+        $sql_query .= $col_name . $col_value;
+
+        if(FALSE === $this->execute_sql_query($sql_query)) {
+            return FALSE;
+        }
+
+        return TRUE;
+
+    }
 
 
+    public function update($table_name, $data, $condition = '') {
+        $sql_query = "UPDATE $table_name ";
+        $set = ' SET ';
+        if (is_array ($data)) {
+            foreach ($data as $key => $value) {
+                $set .= "$key = '$value', ";
+            }
+            $set = trim($set, ", ");
+        } else {
+            $set .= " $data ";
+        }
+        $sql_query .= $set . ' ' . $condition;
+        if(FALSE === $this->execute_sql_query($sql_query)) {
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    public function select($table_name, $data, $condition = '') {
+        $sql_query = "SELECT ";
+        if (is_array ($data)) {
+            foreach ($data as $value) {
+                $sql_query .= " $value, ";
+            }
+        } else {
+            $sql_query .= " $data";
+        }
+
+        $sql_query .= ' FROM ' . $table_name . ' ' . $condition;
+        echo $sql_query;
+        $result = $this->execute_sql_query($sql_query);
+        if(FALSE === $result) {
+            return FALSE;
+        }
+
+        return mysqli_fetch_assoc($result);
+    }
+
+    public function delete($table_name, $condition = '') {
+        $sql_query = "DELETE FROM $table_name $condition";
+        echo $sql_query;
+        $result = $this->execute_sql_query($sql_query);
+        if(FALSE === $result) {
+            return FALSE;
+        }
+
+        return TRUE;
+    }
 }
 ?>

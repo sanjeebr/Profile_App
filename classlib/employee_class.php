@@ -78,7 +78,7 @@ class Employee {
     /**
      * Get an instance of the Database
      *
-     *@access public
+     * @access public
      *@param  void
      *@return Instance
      */
@@ -94,15 +94,15 @@ class Employee {
      *@param  void
      *@return Instance
      */
-    public function delete_emp($db_conn, $emp_id)
+    public function delete_emp($db_obj, $emp_id)
     {
-        $is_address_delete = $residence_address->delete_address($db_conn,$emp_id);
+        $is_address_delete = $residence_address->delete_address($db_obj, $emp_id);
         $sql = "DELETE FROM employee WHERE id = $emp_id";
-        $result = $db_conn->execute_sql_query($sql_query);
+        $result = $db_obj->execute_sql_query($sql_query);
 
         if (FALSE === $result || FALSE === $is_address_delete) {
-                return FALSE;
-            }
+            return FALSE;
+        }
 
         return TRUE;
     }
@@ -137,12 +137,12 @@ class Employee {
             $sql_query .= " HAVING emp_id = $emp_id ";
         }
 
-        // $result = $db_conn->execute_sql_query($sql_query);
+        $result = $db_conn->execute_sql_query($sql_query);
 
-        // if (FALSE === $result) {
-        //     return FALSE;
-        // }
-        // $row = mysqli_fetch_assoc($result);
-        return $sql_query;
+        if (FALSE === $result) {
+            return FALSE;
+        }
+        $row = mysqli_fetch_assoc($result);
+        return $row;
     }
 }

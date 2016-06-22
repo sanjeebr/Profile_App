@@ -13,10 +13,10 @@ require_once('config/database_config.php');
  * @return string
  */
 function sanitize_input($input) {
-  $input = trim($input);
-  $input = stripslashes($input);
-  $input = htmlspecialchars($input);
-  return $input;
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    return $input;
 }
 
 /**
@@ -27,18 +27,18 @@ function sanitize_input($input) {
  * @return string
  */
 function state_list($state, $db_result_obj) {
-  $state_list = '';
+    $state_list = '';
 
   while ($row = mysqli_fetch_assoc($db_result_obj)) {
-    $is_selected = '';
+        $is_selected = '';
 
-      if ($row['name'] === $state) {
-        $is_selected = 'selected';
-      }
+        if ($row['name'] === $state) {
+            $is_selected = 'selected';
+        }
 
-    $state_list .= "<option value='{$row['name']}' $is_selected>{$row['name']}"
-      . "</option>";
-	}
+        $state_list .= "<option value='{$row['name']}' $is_selected>{$row['name']}"
+            . "</option>";
+    }
 
 	return $state_list;
 }
