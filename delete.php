@@ -1,46 +1,38 @@
 <?php
+session_start();
 
-/**
- * Delete employee data file.
- */
+if (isset($_SESSION['emp_id']) && (isset($_SESSION['is_completed']) && 1 == $_SESSION['is_completed']))
+{
 
-require_once('classlib/db_class.php');
-require_once('config/constants.php');
-require_once('classlib/employee_class.php');
-require_once('classlib/address_class.php');
+    require_once('classlib/db_class.php');
+    require_once('config/constants.php');
+    require_once('classlib/employee_class.php');
+    require_once('classlib/address_class.php');
 
-$db_obj = Database::get_instance();
-$conn = $db_obj->get_connection();
-
-if (isset($_GET['emp_id']) && preg_match('/^[0-9]*$/', $_GET['emp_id'])) {
-    $emp_id = $conn->real_escape_string($_GET['emp_id']);
-
-    $sql_query = "SELECT employee.photo AS photo
-        FROM employee
-        WHERE employee.id = $emp_id";
-
-    $result = mysqli_query($conn, $sql_query);
+    $db_obj = Database::get_instance();
+    $conn = $db_obj->get_connection();
+    $table = 'employee';
+    $condition = 'WHERE id =' . $_SESSION['emp_id'];
+    $result = $db_obj->select($table, 'photo',$condition);
     $row = mysqli_fetch_assoc($result);
     $photo = PROFILE_PIC . $row['photo'];
 
-    // Delete data from address table
-    $sql = "DELETE FROM address WHERE employee_id = $emp_id";
-    $result = mysqli_query($conn, $sql);
-
-    if (FALSE === $result) {
-        header('Location: error.php');
-    }
-
-    // Delete data from employee table.
-    $sql = "DELETE FROM employee WHERE id = $emp_id";
-    $result = mysqli_query($conn, $sql);
-
-    if (FALSE === $result) {
+    if (FALSE === $db_obj->delete($table, $condition)) {
         header('Location: error.php');
     }
 
     // Delete profile pic
     unlink($photo);
-}
+    unset($_SESSION['emp_id']);
+    unset($_SESSION['is_completed']);
+    setcookie('emp_id', '', time() - 3600);
+    setcookie('is_completed', '', time() - 3600);
 
-header('Location: employee.php');
+    if (session_destroy())
+    {
+    header('Location: index.php');
+    }
+
+} else {
+header('Location: index.php');
+}

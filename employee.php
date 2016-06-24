@@ -61,7 +61,7 @@ $serial_no = 0;
                                 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="form.php">Edit Account</a></li>
-                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')" href="#">Delete Account</a></li>
+                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')" href="delete.php">Delete Account</a></li>
                                 </ul>
                             </li>
                             <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -85,8 +85,6 @@ $serial_no = 0;
                             <th><h4><strong>Residence Address</strong></h4></th>
                             <th><h4><strong>Office Address</strong></h4></th>
                             <th><h4><strong>Other Info</strong></h4></th>
-                            <th><h4><strong>Edit</strong></h4></th>
-                            <th><h4><strong>Delete</strong></h4></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,20 +165,6 @@ $serial_no = 0;
                                     . ( ! empty($row['communication'])
                                         ? $row['communication'] : ' N/A')
                                 ?>
-                            </td>
-                            <td>
-                                <a href="form.php?emp_id=<?php
-                                    echo $row['emp_id'] ?>">
-                                    <span class="glyphicon glyphicon-pencil"
-                                        aria-hidden="true"></span>
-                                </a>
-                            </td>
-                            <td>
-                                <a onclick="return confirm('Are you sure you want to delete this employee?')"
-                                    href="delete.php?emp_id=<?php echo $row['emp_id']; ?>">
-                                    <span class="glyphicon glyphicon-remove error"
-                                        aria-hidden="true"></span>
-                                </a>
                             </td>
                          </tr>
                     <?php   } ?>
