@@ -1,207 +1,159 @@
 <?php
+session_start();
+
+if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
+{
 
 require_once('classlib/db_class.php');
 require_once('config/initialization_config.php');
 require_once('helper/utility.php');
 require_once('display_error.php');
 require_once('config/constants.php');
+require_once('classlib/validation.php');
+require_once('classlib/Employee.php');
+require_once('classlib/address_class.php');
+
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
+$valid = new validation($db_obj);
+$employee = new Employee($db_obj);
 
 extract($employee_data, EXTR_SKIP);
 extract($error_list, EXTR_SKIP);
+$result = $employee->get_employee($_SESSION['emp_id']);
 
-$is_update = FALSE;
-
-if (isset($_GET['emp_id']) && preg_match('/^[0-9]*$/', $_GET['emp_id'])) {
-    $emp_id = isset($_GET['emp_id']) ? sanitize_input($_GET['emp_id']) : '';
-
-    $sql_query = "SELECT  employee.id AS emp_id,employee.first_name AS first_name,
-        employee.middle_name AS middle_name, employee.last_name AS last_name,
-        employee.date_of_birth AS date_of_birth, employee.prefix AS prefix,
-        employee.photo AS photo, employee.note AS note,employee.gender AS gender,
-        employee.marital_status AS marital,employee.communication AS communication,
-        employee.employment AS employment,employee.employer AS employer,
-        residence.street AS r_street,residence.city AS r_city,
-        residence.state AS r_state,residence.pin_no AS r_pin,residence.phone AS r_phone,
-        residence.fax AS r_fax,office.street AS o_street,office.city AS o_city,
-        office.state AS o_state,office.pin_no AS o_pin,office.phone AS o_phone,
-        office.fax AS o_fax
-        FROM employee
-        LEFT JOIN address AS residence ON employee.id = residence.employee_id AND
-        residence.type = 'residence'
-        LEFT JOIN address AS office ON employee.id = office.employee_id AND
-        office.type = 'office'
-        HAVING emp_id = $emp_id ";
-    $result = mysqli_query($conn,$sql_query);
-
-    while ($row = mysqli_fetch_assoc($result)) {
-        $prefix = $row['prefix'];
-        $first_name = $row['first_name'];
-        $middle_name = $row['middle_name'];
-        $last_name = $row['last_name'];
-        $gender = $row['gender'];
-        $date_of_birth = $row['date_of_birth'];
-        $marital = $row['marital'];
-        $r_street = $row['r_street'];
-        $r_city = $row['r_city'];
-        $r_state = $row['r_state'];
-        $r_pin = $row['r_pin'];
-        $r_phone = $row['r_phone'];
-        $r_fax = $row['r_fax'];
-        $o_street = $row['o_street'];
-        $o_city = $row['o_city'];
-        $o_state = $row['o_state'];
-        $o_pin = $row['o_pin'];
-        $o_phone = $row['o_phone'];
-        $o_fax = $row['o_fax'];
-        $employment = $row['employment'];
-        $employer = $row['employer'];
-        $note = $row['note'];
-        $communication = $row['communication'];
-        $photo = $row['photo'];
-        $is_update = TRUE;
-    }
+while ($row = mysqli_fetch_assoc($result)) {
+    $prefix = $row['prefix'];
+    $first_name = $row['first_name'];
+    $middle_name = $row['middle_name'];
+    $last_name = $row['last_name'];
+    $gender = $row['gender'];
+    $date_of_birth = $row['date_of_birth'];
+    $marital = $row['marital'];
+    $r_street = $row['r_street'];
+    $r_city = $row['r_city'];
+    $r_state = $row['r_state'];
+    $r_pin = $row['r_pin'];
+    $r_phone = $row['r_phone'];
+    $r_fax = $row['r_fax'];
+    $o_street = $row['o_street'];
+    $o_city = $row['o_city'];
+    $o_state = $row['o_state'];
+    $o_pin = $row['o_pin'];
+    $o_phone = $row['o_phone'];
+    $o_fax = $row['o_fax'];
+    $employment = $row['employment'];
+    $employer = $row['employer'];
+    $note = $row['note'];
+    $communication = $row['communication'];
+    $photo = $row['photo'];
 }
 
 if (isset($_POST['submit']) || isset($_POST['update'])) {
     $error = 0;
-    $prefix = isset($_POST['prefix']) ? sanitize_input($_POST['prefix']) : '';
-    $first_name = isset($_POST['first_name']) ? sanitize_input($_POST['first_name']) : '';
-    $middle_name = isset($_POST['middle_name']) ? sanitize_input($_POST['middle_name']) : '';
-    $last_name = isset($_POST['last_name']) ? sanitize_input($_POST['last_name']) : '';
-    $gender = isset($_POST['gender']) ? sanitize_input($_POST['gender']) : '';
-    $date_of_birth = isset($_POST['date_of_birth']) ? sanitize_input($_POST['date_of_birth']) : '';
-    $marital = isset($_POST['marital']) ? sanitize_input($_POST['marital']) : '';
-    $r_street = isset($_POST['r_street']) ? sanitize_input($_POST['r_street']) : '';
-    $r_city = isset($_POST['r_city']) ? sanitize_input($_POST['r_city']) : '';
-    $r_state = isset($_POST['r_state']) ? sanitize_input($_POST['r_state']) : '';
-    $r_pin = isset($_POST['r_pin']) ? sanitize_input($_POST['r_pin']) : '';
-    $r_phone = isset($_POST['r_phone']) ? sanitize_input($_POST['r_phone']) : '';
-    $r_fax = isset($_POST['r_fax']) ? sanitize_input($_POST['r_fax']) : '';
-    $o_street = isset($_POST['o_street']) ? sanitize_input($_POST['o_street']) : '';
-    $o_city = isset($_POST['o_city']) ? sanitize_input($_POST['o_city']) : '';
-    $o_state = isset($_POST['o_state']) ? sanitize_input($_POST['o_state']) : '';
-    $o_pin = isset($_POST['o_pin']) ? sanitize_input($_POST['o_pin']) : '';
-    $o_phone = isset($_POST['o_phone']) ? sanitize_input($_POST['o_phone']) : '';
-    $o_fax = isset($_POST['o_fax']) ? sanitize_input($_POST['o_fax']) : '';
-    $employment = isset($_POST['employment']) ? sanitize_input($_POST['employment']) : '';
-    $employer = isset($_POST['employer']) ? sanitize_input($_POST['employer']) : '';
-    $note = isset($_POST['note']) ? sanitize_input($_POST['note']) : '';
-    $communication = (isset($_POST['communication']) && ! empty($_POST['communication']) )
+
+
+    $_POST['communication'] = (isset($_POST['communication']) && ! empty($_POST['communication']) )
         ? implode(',', $_POST['communication']) : '';
 
+    foreach ($_POST as $value)
+    {
+        $value = $valid->sanitize_input($value);
+    }
+
+
     // To check error in first name.
-    if (empty($_POST['first_name'])) {
+    if ( ! $valid->is_empty($_POST['first_name'])) {
         $first_name_err = 'First Name is required.';
-        $error++;
      } else {
         // Check if name only contains letters and whitespace
-        if ( ! preg_match('/^[a-zA-Z ]*$/', $first_name)) {
+        if ( ! $valid->is_valid_name($_POST['first_name'])) {
             $first_name_err = 'Only letters and white space allowed.';
-            $error++;
         }
     }
 
     // To check error in middle name.
-    if ( ! preg_match('/^[a-zA-Z ]*$/', $middle_name)) {
+    if ( ! $valid->is_valid_name($_POST['middle_name'])) {
         $middle_name_err = 'Only letters and white space allowed.';
-        $error++;
     }
 
     // To check error in last name.
-    if (empty($_POST['last_name'])) {
+    if ( ! $valid->is_empty($_POST['last_name'])) {
         $last_name_err = 'Last Name is required.';
-        $error++;
      } else {
 
         // Check if name only contains letters and whitespace
-        if ( ! preg_match('/^[a-zA-Z ]*$/', $last_name)) {
+        if ( ! $valid->is_valid_name($_POST['last_name'])) {
           $last_name_err = 'Only letters and white space allowed.';
-          $error++;
         }
     }
 
     // To check error in date of birth.
-    if (empty($_POST['date_of_birth'])) {
+    if ( ! $valid->is_empty($_POST['date_of_birth'])) {
         $dob_err = 'Date of Birth is required.';
-        $error++;
-    } else {
-        $date = explode('-', $date_of_birth);
-
-        if ( 3 !== count($date) || ! checkdate($date[1], $date[2], $date[0])) {
+    } else if (! $valid->is_valid_date($_POST['date_of_birth']) ) {
             $dob_err = 'Date of Birth is invalid.';
-        }
     }
 
     // To check error in pin.
-    if (empty($_POST['r_pin'])) {
+    if ( ! $valid->is_empty($_POST['r_pin'])) {
        $r_pin_err = 'This field is required.';
-       $error++;
-    } else if ( ! preg_match('/^[0-9]{6}$/', $r_pin)) {
+    } else if ( ! $valid->is_valid_number($_POST['r_pin'],6)) {
         $r_pin_err = 'Invalid Pin Code.';
-        $error++;
     }
 
-    if ( ! preg_match('/^[0-9]{6}$/', $o_pin) && ! empty($o_pin)) {
+    if ( ! preg_match('/^[0-9]{6}$/', $_POST['o_pin']) && ! empty($_POST['o_pin'])){
         $o_pin_err = 'Invalid Pin Code.';
         $error++;
     }
 
     // To check error in mobile no.
-    if (empty($_POST['r_phone'])) {
+    if (! $valid->is_empty($_POST['r_phone'])) {
         $r_phone_err = 'This field is required.';
-        $error++;
-    } else if ( ! preg_match('/^[0-9]{10}$/', $r_phone)) {
+    } else if ( ! $valid->is_valid_number($_POST['r_phone'], 10)) {
         $r_phone_err = 'Invalid Phone Number.';
-        $error++;
    }
 
-    if ( ! preg_match('/^[0-9]{10}$/', $o_phone) && ! empty($o_phone)) {
+    if ( ! preg_match('/^[0-9]{10}$/', $_POST['o_phone']) && ! empty($_POST['o_phone'])) {
         $o_phone_err = 'Invalid Phone Number.';
         $error++;
     }
 
     // To check error in fax number.
-    if ( ! preg_match('/^[0-9]{11}$/', $r_fax) && ! empty($r_fax)) {
+    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax'])) {
         $r_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
-    if ( ! preg_match('/^[0-9]{11}$/', $o_fax) && ! empty($o_fax)) {
+    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax'])) {
         $o_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
     // To check error in gender.
-    if (empty($_POST['gender'])) {
+    if (! $valid->is_empty($_POST['gender'])) {
         $gender_err = 'This field is required.';
-        $error++;
     }
 
     // To check error in marital status.
-    if (empty($_POST['marital'])) {
+    if (! $valid->is_empty($_POST['marital'])) {
         $marital_err = 'This field is required.';
-        $error++;
     }
 
     // To check residence street is empty or not.
-    if (empty($_POST['r_street'])) {
+    if (! $valid->is_empty($_POST['r_street'])) {
         $r_street_err = 'This field is required.';
-        $error++;
     }
 
     // To check residence city is empty or not.
-    if (empty($_POST['r_city'])) {
+    if (! $valid->is_empty($_POST['r_city'])) {
         $r_city_err = 'This field is required.';
-        $error++;
     }
 
     // To check residence state is empty or not.
-    if (empty($_POST['r_state'])) {
+    if (! $valid->is_empty($_POST['r_state'])) {
         $r_state_err = 'This field is required.';
-        $error++;
     }
 
     if (isset($_FILES['photo'])) {
@@ -212,9 +164,9 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
 
         // Check if image is selected or not.
         if (0 !== $file_size) {
-            $file_ext = strtolower(end(explode('.', $_FILES['photo']['name'])));
+            $ext = explode('.', $_FILES['photo']['name']);
+            $file_ext = strtolower(end($ext));
             $extensions = array('jpeg', 'jpg', 'png');
-
             // Check if extension is valid or not then check the size must not greater then 2MB.
             if ( FALSE === in_array($file_ext,$extensions)){
                 $photo_err = 'Please choose a JPEG or PNG file.';
@@ -222,102 +174,32 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
             } else if ($file_size > 2097152) {
                 $photo_err = 'File size must be excately 2 MB';
                 $error++;
-            } else if (0 === $error) {
-
-                if (isset($_GET['emp_id'])) {
+            } else if (0 === $error &&  (FALSE === $valid->is_error())) {
                     unlink(PROFILE_PIC . $photo);
-                    $photo = 'Emp_' . $_GET['emp_id'] . '.' . $file_ext;
+                    $photo = 'Emp_' . $_SESSION['emp_id'] . '.' . $file_ext;
                     move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
-                }
+
             }
         }
     }
-
    // If there is any error or not.
-   if (0 === $error) {
-        // For Creating  New Employee Data
+   if ((0 === $error) &&  (FALSE === $valid->is_error())) {
+
+
+        $times='';
         if (isset($_POST['submit'])) {
-            $sql_query = "INSERT INTO employee
-                (first_name, middle_name, last_name, date_of_birth, prefix,
-                note, gender, marital_status, communication, employment, employer)
-                VALUES ('$first_name', '$middle_name', '$last_name', '$date_of_birth',
-                '$prefix', '$note', '$gender', '$marital', '$communication',
-                '$employment', '$employer')";
-            $result = mysqli_query($conn, $sql_query);
-            $employee_id = mysqli_insert_id($conn);
-
-            if (0 !== $file_size) {
-                $photo = 'Emp_' . $employee_id . '.' . $file_ext;
-                move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
-
-                $sql_query = "UPDATE `employee`
-                    SET `photo` = '$photo'
-                    WHERE id = $employee_id";
-                $result = mysqli_query($conn, $sql_query);
-
-                if (FALSE === $result) {
-                    header('Location: error.php');
-                }
-            }
-
-            if (FALSE === $result) {
-                header('Location: error.php');
-            }
-
-            $sql_query = "INSERT INTO `address`
-                (`employee_id`, `type`, `phone`, `fax`, `street`, `pin_no`, `city`, `state`)
-                VALUES ($employee_id, 'residence', '$r_phone', '$r_fax', '$r_street', '$r_pin',
-                '$r_city', '$r_state'),
-                ($employee_id, 'office', '$o_phone', '$o_fax', '$o_street', '$o_pin', '$o_city'
-                , '$o_state')";
-
-            $result = mysqli_query($conn, $sql_query);
-
-            if (FALSE === $result) {
-                header('Location: error.php');
-            }
-
-            header('Location: employee.php');
-        } else if (isset($_POST['update']) && isset($_GET['emp_id'])) {
-            $sql_query = "UPDATE `employee`
-                SET `first_name` = '$first_name', `middle_name` = '$middle_name',
-                `last_name` = '$last_name', `date_of_birth` = '$date_of_birth',
-                `prefix` = '$prefix', `photo` = '$photo', `note` = '$note',
-                `gender` = '$gender', `marital_status` = '$marital',
-                `communication` = '$communication', `employment` = '$employment',
-                `employer` = '$employer'
-                WHERE id = $emp_id";
-            $result = mysqli_query($conn, $sql_query);
-
-            if (FALSE === $result) {
-                header('Location: error.php');
-            }
-
-            $sql_query = "UPDATE `address`
-                SET `phone` = '$o_phone',`fax` = '$o_fax',
-                `street` = '$o_street',`pin_no` = '$o_pin',`city` = '$o_city',
-                `state` = '$o_state'
-                WHERE employee_id = $emp_id AND type = 'office'";
-            $result = mysqli_query($conn, $sql_query);
-
-            if (FALSE === $result) {
-                header('Location: error.php');
-            }
-
-            $sql_query = "UPDATE `address`
-                SET `phone`= '$r_phone',`fax` = '$r_fax',
-                `street`= '$r_street',`pin_no` = '$r_pin',`city` = '$r_city',
-                `state` = '$r_state'
-                WHERE employee_id = $emp_id AND type = 'residence'";
-            $result = mysqli_query($conn, $sql_query);
-
-            if (FALSE === $result) {
-                header('Location: error.php');
-            }
-
-            header('Location: employee.php');
+            $times='first';
         }
-
+        if($employee->update_employee($_SESSION['emp_id'], $_POST,$times) &&
+            $db_obj->update('employee', "photo = '$photo'", 'where id = ' . $_SESSION['emp_id']))
+        {
+            $_SESSION['is_completed'] = 1;
+            header('Location: home.php');
+        }
+        else
+        {
+            header('Location: error.php');
+        }
     }
 }
 ?>
@@ -327,7 +209,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,
             user-scalable=no">
-        <?php if ($is_update): ?>
+        <?php if (1 == $_SESSION['is_completed']): ?>
         <title>Update</title>
         <?php else: ?>
         <title>Registration</title>
@@ -339,38 +221,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
     </head>
     <body>
         <div class="container-fluid" id="container_body">
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target="#myNavbar">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Sanjeeb</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="myNavbar">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="">Registration</a></li>
-                            <li ><a href="employee.php">Employee Details</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown"><a class="dropdown-toggle"
-                                data-toggle="dropdown" href="#">Account Settings
-                                <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Edit Account</a></li>
-                                    <li><a href="#">Delete Account</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
             <div class="container">
-            <?php if ($is_update): ?>
+            <?php if (1 == $_SESSION['is_completed']): ?>
                 <h1>Update Form</h1>
             <?php else: ?>
                 <h1>Registration Form</h1>
@@ -479,7 +331,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
-                                <label for="photo">Upload Photo:<?php if ($is_update) { ?>
+                                <label for="photo">Upload Photo:<?php if (1 == $_SESSION['is_completed']) { ?>
                                     <a  data-toggle="modal" data-target="#profile_pic" >
                                     View Current Pic</a>
                                 <?php } ?></label>
@@ -498,7 +350,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                             </div>
                                             <div class="modal-body">
 
-                                            <?php if ($is_update): ?>
+                                            <?php if (1 == $_SESSION['is_completed']): ?>
                                                 <img src="<?php echo !empty($photo)
                                                     ? PROFILE_PIC . $photo :
                                                     DEFAULT_PROFILE_PIC . $gender .'.jpg' ; ?>"
@@ -693,8 +545,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                     </div>
                 </div>
                 <div class="row form-group text-center">
-                    <?php if($is_update): ?>
-                    <a class="btn btn-danger btn-lg" href="output.php" >Cancel</a>
+                    <?php if(1 == $_SESSION['is_completed']): ?>
+                    <a class="btn btn-danger btn-lg" href="home.php" >Cancel</a>
                     &nbsp;&nbsp;&nbsp;
                     <button type="submit" class="btn btn-warning btn-lg" name="update">Update</button>
                     <?php else: ?>
@@ -705,11 +557,10 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                 </div>
             </form>
             </div>
-            <div class="row  text-center">
-                <div class="page-footer">Copyright
-                    <span class="glyphicon glyphicon-copyright-mark">2016 sanjeeb@mindfire</span>
-                </div>
-           </div>
         </div>
     </body>
 </html>
+<?php } else {
+header('Location: index.php');
+}
+?>

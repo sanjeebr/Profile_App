@@ -22,7 +22,6 @@ class Employee {
         'communication' => '',
         'photo' => ''
     );
-
     private $residence_address = NULL;
     private $office_address = NULL;
 

@@ -141,13 +141,12 @@ class Database {
         }
 
         $sql_query .= ' FROM ' . $table_name . ' ' . $condition;
-        echo $sql_query;
         $result = $this->execute_sql_query($sql_query);
         if(FALSE === $result) {
             return FALSE;
         }
 
-        return mysqli_fetch_assoc($result);
+        return $result;
     }
 
     public function delete($table_name, $condition = '') {
@@ -157,7 +156,6 @@ class Database {
         if(FALSE === $result) {
             return FALSE;
         }
-
         return TRUE;
     }
 }

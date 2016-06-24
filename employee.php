@@ -1,4 +1,9 @@
 <?php
+session_start();
+
+if (isset($_SESSION['emp_id']) && (isset($_SESSION['is_completed']) && 1 == $_SESSION['is_completed']))
+{
+
 
 /**
  * Display all employee data file.
@@ -7,30 +12,15 @@
 require_once('classlib/db_class.php');
 require_once('display_error.php');
 require_once('config/constants.php');
+require_once('classlib/Employee.php');
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
+$signup = new Employee($db_obj);
 
-// Sql query to display employee data.
-$sql_query = "SELECT employee.id AS emp_id, employee.first_name AS first_name,
-    employee.middle_name AS middle_name, employee.last_name AS last_name,
-    employee.date_of_birth AS date_of_birth, employee.prefix AS prefix,
-    employee.photo AS photo, employee.note AS note, employee.gender AS gender,
-    employee.marital_status AS marital, employee.communication AS communication,
-    employee.employment AS employment, employee.employer AS employer,
-    residence.street AS r_street, residence.city AS r_city, residence.state AS r_state,
-    residence.pin_no AS r_pin, residence.phone AS r_phone, residence.fax AS r_fax,
-    office.street AS o_street, office.city AS o_city, office.state AS o_state,
-    office.pin_no AS o_pin, office.phone AS o_phone, office.fax AS o_fax
-    FROM employee
-    LEFT JOIN address AS residence
-    ON employee.id=residence.employee_id AND residence.type = 'residence'
-    LEFT JOIN address AS office
-    ON employee.id=office.employee_id AND office.type = 'office'";
 
-$result = mysqli_query($conn, $sql_query);
-$num_rows = mysqli_num_rows($result);
 
+$result = $signup->get_employee();
 // Serial no for employee table.
 $serial_no = 0;
 ?>
@@ -62,8 +52,19 @@ $serial_no = 0;
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
-                            <li><a href="form.php">Registration</a></li>
-                            <li class="active"><a href="#">Employee Details</a></li>
+                            <li ><a href="home.php">Home</a></li>
+                            <li ><a href="employee.php" class="active">Employee Details</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown"><a class="dropdown-toggle"
+                                data-toggle="dropdown" href="#">Account Settings
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="form.php">Edit Account</a></li>
+                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')" href="#">Delete Account</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,7 +72,7 @@ $serial_no = 0;
             <?php
 
             // To check if employee table is empty or not.
-            if ($num_rows > 0):
+            if (0 !== $result):
             ?>
             <div  class="table-responsive">
             <h2>Employee Details</h2>
@@ -91,7 +92,7 @@ $serial_no = 0;
                     <tbody>
                     <?php
 
-                        while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
                     ?>
                         <tr>
                             <td>
@@ -196,3 +197,7 @@ $serial_no = 0;
         </div>
     </body>
 </html>
+<?php } else {
+header('Location: index.php');
+}
+?>

@@ -1,0 +1,9 @@
+#container_body {
+    background-image: url("../img/background.jpg");
+    background-color: #ffffcc;
+    word-wrap: break-word;
+}
+
+.error {
+    color: #ff0000;
+}
