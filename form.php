@@ -126,7 +126,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
         $error++;
     }
 
-    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax'])) {
+    if ( ! preg_match('/^[0-9]{11}$/', $_POST['o_fax']) && ! empty($_POST['o_fax'])) {
         $o_fax_err = 'Invalid Fax Number.';
         $error++;
     }

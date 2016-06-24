@@ -91,9 +91,9 @@ if (isset($_SESSION['emp_id']) && (isset($_SESSION['is_completed']) && 1 == $_SE
              <div class="container">
             <div id="head" class="row row-eq-height">
                 <div id="head_img" class="col-md-4">
-                    <img src="<?php $pic = ! empty($photo) ?
+                    <img alt="PHOTO" class="img-thumbnail" width="200" height="100" src="<?php $pic = ! empty($photo) ?
                         PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
-                        echo $pic; ?>" alt="PHOTO" class="img-thumbnail">
+                        echo $pic; ?>" >
                 </div>
                 <div id="head_text" class="col-md-8">
                     <p id="head_name" class="head_1">

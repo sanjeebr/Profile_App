@@ -130,7 +130,7 @@ if (isset($_POST['signup']))
                                                 id="pwd" name="password" placeholder="Password">
                                         </div>
                                         <div class="alert-danger">
-                                            <?php echo $email_err;?>
+                                            <?php echo $pwd_err;?>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -142,7 +142,7 @@ if (isset($_POST['signup']))
                                                 id="cpwd" name="cpassword" placeholder="Confirm Password">
                                         </div>
                                         <div class="alert-danger">
-                                            <?php echo $email_err;?>
+                                            <?php echo $cpwd_err;?>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-lg btn-success btn-block" name="signup">
