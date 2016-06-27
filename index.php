@@ -9,13 +9,14 @@ if (isset($_COOKIE['emp_id']) && isset($_COOKIE['is_completed']))
 
 if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
 {
-    if ( 0 == $_SESSION['is_completed'])
+    switch ($_SESSION['is_completed'])
     {
-        header('Location: form.php');
-    }
-    else if ( 1 == $_SESSION['is_completed'])
-    {
-        header('Location: home.php');
+        case '0':
+            header('Location: form.php');
+            break;
+        case '1':
+            header('Location: home.php');
+            break;
     }
 }
 
@@ -55,8 +56,8 @@ if (isset($_POST['login']))
 
         if ('checkbox' === $_POST['checkbox'])
         {
-            setcookie('emp_id', $value['id'], time() + (86400 * 14), "/");
-            setcookie('is_completed', $value['is_completed'], time() + (86400 * 14), "/");
+            setcookie('emp_id', $value['id'], time() + (86400 * 14), '/');
+            setcookie('is_completed', $value['is_completed'], time() + (86400 * 14), '/');
         }
 
         if (0 == $value['is_completed'])

@@ -8,35 +8,40 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border: 0.5em solid #1ac6ff;
 }
+
 #head_name {
     color:#00394d;
-    
     font-family: "Times New Roman";
     font-size: 3.0em;
 }
+
 .head{
-  color:#00394d;
+    color:#00394d;
     font-family: "Times New Roman";
     font-size: 1.5em;
 }
+
 .left_head{
-  color:#0099cc;
+    color:#0099cc;
     text-decoration: underline;
     font-family: "Times New Roman";
     font-size: 1.75em;
 }
+
 .right_head{
-  color:#0099cc;
+    color:#0099cc;
     text-decoration: underline;
     font-family: "Times New Roman";
     font-size: 2em;
 }
+
 .right_char{
-  font-family: "Times New Roman";
+    font-family: "Times New Roman";
     font-size: 1.375em;
 }
+
 .left_char{
-  font-family: "Times New Roman";
+    font-family: "Times New Roman";
     font-size: 1.125em;
 }
 

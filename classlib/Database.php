@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database class - create single instance
  *
@@ -7,6 +8,7 @@
  * @category
  * @author Sanjeeb Rao
  */
+
 class Database {
     private $host = 'localhost';
     private $username = 'root';
@@ -18,9 +20,9 @@ class Database {
     private static $instance = NULL;
 
     /**
-     * Create connection.
+     * Creating connection.
      *
-     * @access private
+     * @access private constructor of Database
      * @param  void
      */
     private function __construct()
@@ -35,7 +37,12 @@ class Database {
         }
     }
 
-
+    /**
+     * Creating connection.
+     *
+     * @access private
+     * @param  void
+     */
     private function __clone()
     {
     }
@@ -49,19 +56,21 @@ class Database {
      */
     public static function get_instance()
     {
+
         if(self::$instance === NULL)
         {
 
             // If no instance then make one
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
      * Retrun connection.
      *
-     * @access public get_connection
+     * @access public  get_connection
      * @param  void
      * @return Instance
      */
@@ -100,7 +109,7 @@ class Database {
      *
      * @access public insert
      * @param  string table_name
-     * @param  array data
+     * @param  array  data
      * @return bollean
      */
     public function insert($table_name, $data)
@@ -132,7 +141,7 @@ class Database {
      *
      * @access public update
      * @param  string table_name
-     * @param  mix data
+     * @param  mix    data
      * @param  string condition
      * @return mix
      */
@@ -169,7 +178,7 @@ class Database {
      *
      * @access public select
      * @param  string table_name
-     * @param  mix data
+     * @param  mix    data
      * @param  string condition
      * @return mix
      */
@@ -183,6 +192,7 @@ class Database {
             {
                 $sql_query .= " $value, ";
             }
+
         }
         else
         {

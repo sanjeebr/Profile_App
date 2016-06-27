@@ -87,8 +87,7 @@ while ($row = mysqli_fetch_assoc($result))
             <div class="container">
                 <div id="head" class="row row-eq-height">
                     <div id="head_img" class="col-md-4">
-                        <img alt="PHOTO" class="img-rounded" width="200"
-                            height="100" src="<?php $pic = ! empty($photo) ?
+                        <img alt="PHOTO" class="img-rounded" src="<?php $pic = ! empty($photo) ?
                             PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
                             echo $pic; ?>" >
                     </div>

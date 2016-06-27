@@ -99,6 +99,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         {
             $first_name_err = 'Only letters and white space allowed.';
         }
+
     }
 
     // To check error in middle name.
@@ -118,8 +119,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         // Check if name only contains letters and whitespace
         if ( ! $valid->is_valid_name($_POST['last_name']))
         {
-          $last_name_err = 'Only letters and white space allowed.';
+            $last_name_err = 'Only letters and white space allowed.';
         }
+
     }
 
     // To check error in date of birth.
@@ -129,7 +131,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if (! $valid->is_valid_date($_POST['date_of_birth']) )
     {
-         $dob_err = 'Date of Birth is invalid.';
+        $dob_err = 'Date of Birth is invalid.';
     }
 
     // To check error in pin.
@@ -237,9 +239,10 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                 unlink(PROFILE_PIC . $photo);
                 $photo = 'Emp_' . $_SESSION['emp_id'] . '.' . $file_ext;
                 move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
-
             }
+
         }
+
     }
 
    // If there is any error or not.
@@ -262,6 +265,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         {
             header('Location: error.php');
         }
+
     }
 }
 ?>
@@ -278,8 +282,6 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         <?php endif ?>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/form.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="container-fluid" id="container_body">
@@ -631,4 +633,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
             </div>
         </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/validation.js?version=1.0"></script>
 </html>

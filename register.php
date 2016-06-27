@@ -44,6 +44,7 @@ if (isset($_POST['signup']))
     {
         $email_err = 'Email already present';
     }
+
     if ( ! $valid->is_empty($password))
     {
         $pwd_err = 'Password cannot be left blank';
@@ -67,6 +68,7 @@ if (isset($_POST['signup']))
         $password = hash('sha256', $password);
         $signup = new Employee($db_obj);
         $emp_id = $signup->create_account($email, $password);
+
         if(FALSE === $emp_id)
         {
             header('Location: error.php');

@@ -1,23 +1,38 @@
 <?php
 /**
- * Validation
- *@package Database
- *@subpackage
- *@category
- *@author Sanjeeb Rao
+ * Validation Class
+ *
+ * @package
+ * @subpackage
+ * @category
+ * @author Sanjeeb Rao
  */
 
 class Validation {
     private $error = FALSE;
     private $db_obj = NULL;
 
-
+    /**
+     * Initialization of Database object.
+     *
+     * @access public Constructor of Validation
+     * @param  object db_object
+     */
     public function __construct($db_object)
     {
         $this->db_obj = $db_object;
 
     }
 
+
+    /**
+     * To check user is valid or not.
+     *
+     * @access public  is_valid_employee
+     * @param  string email
+     * @param  string password
+     * @return mix
+     */
     public function is_valid_employee($email, $password = '')
     {
         $condition = "WHERE email = '$email' ";
@@ -45,10 +60,12 @@ class Validation {
         return $id;
     }
 
+
     /**
-     * Sanitize data
+     * To sanitize value.
      *
-     * @param  string $input
+     * @access public  sanitize_input
+     * @param  string input
      * @return string
      */
     function sanitize_input($input)
@@ -56,11 +73,28 @@ class Validation {
         return htmlspecialchars( stripslashes( trim($input)));
     }
 
+
+    /**
+     * To check is present or not.
+     *
+     * @access public  is_error
+     * @param  void
+     * @return bollean
+     */
     public function is_error()
     {
         return $this->error;
     }
 
+
+    /**
+     * To check first string is equal to second.
+     *
+     * @access public  is_equal
+     * @param  string  first
+     * @param  string  second
+     * @return bollean
+     */
     public function is_equal($first, $second)
     {
 
@@ -73,6 +107,14 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To check valid email.
+     *
+     * @access public  is_valid_email
+     * @param  string  email
+     * @return bollean
+     */
     public function is_valid_email($email)
     {
 
@@ -85,6 +127,14 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To check valid password.
+     *
+     * @access public  is_valid_pass
+     * @param  string  password
+     * @return bollean
+     */
     public function is_valid_pass($password)
     {
 
@@ -97,6 +147,15 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To check valid number or not.
+     *
+     * @access public  is_valid_number
+     * @param  string  number
+     * @param  integer lenght
+     * @return bollean
+     */
     public function is_valid_number($number, $length = 10)
     {
 
@@ -109,6 +168,14 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To check valid name or not.
+     *
+     * @access public  is_valid_name
+     * @param  string  name
+     * @return bollean
+     */
     public function is_valid_name($name)
     {
 
@@ -121,6 +188,14 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To Check valid date or not.
+     *
+     * @access public  is_valid_date
+     * @param  string  date
+     * @return bollean
+     */
     public function is_valid_date($date)
     {
         $date_arr = explode('-', $date);
@@ -134,6 +209,14 @@ class Validation {
         return TRUE;
     }
 
+
+    /**
+     * To check data is empty or not.
+     *
+     * @access public  is_empty
+     * @param  string  data
+     * @return bollean
+     */
     public function is_empty($data)
     {
 

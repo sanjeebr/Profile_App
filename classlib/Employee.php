@@ -2,10 +2,10 @@
 /**
  * Employee Class
  *.
- *@package Database
- *@subpackage
- *@category
- *@author Sanjeeb Rao
+ * @package
+ * @subpackage
+ * @category
+ * @author Sanjeeb Rao
  */
 class Employee {
 
@@ -35,11 +35,10 @@ class Employee {
     private $db_obj = NULL;
 
     /**
-     * Initi
+     * Initialization of Database object.
      *
-     *@access public
-     *@param  void
-     *@return mix
+     * @access public constructor of Employee
+     * @param  object db_object
      */
     public function __construct($db_object)
     {
@@ -48,11 +47,12 @@ class Employee {
     }
 
     /**
-     * Insert data into database
+     * Create account of user.
      *
-     *@access public
-     *@param  void
-     *@return mix
+     * @access public create_account
+     * @param  string email
+     * @param  string password
+     * @return mix
      */
     public function create_account($email, $password)
     {
@@ -67,13 +67,13 @@ class Employee {
     }
 
     /**
-     * Insert data into database
+     * Get employee data from database.
      *
-     *@access public
-     *@param  void
-     *@return mix
+     * @access public  get_employee
+     * @param  integer employee_id
+     * @return mix
      */
-    public function get_employee($emp = 'ALL')
+    public function get_employee($employee_id = 0)
     {
         $value = 'employee.is_completed AS is_completed, employee.id AS emp_id,
             employee.first_name AS first_name, employee.middle_name AS middle_name,
@@ -87,13 +87,13 @@ class Employee {
             office.state AS o_state,office.pin AS o_pin,office.phone AS o_phone,
             office.fax AS o_fax';
         $condition = "LEFT JOIN address AS residence ON employee.id = residence.employee_id AND
-                residence.type = 'residence'
-                LEFT JOIN address AS office ON employee.id = office.employee_id AND
-                office.type = 'office'";
+            residence.type = 'residence'
+            LEFT JOIN address AS office ON employee.id = office.employee_id AND
+            office.type = 'office'";
 
-        if ('ALL' !== $emp)
+        if ( 0 !== $employee_id)
         {
-            $condition .= " HAVING emp_id = '$emp'";
+            $condition .= " HAVING emp_id = '$employee_id'";
         }
         else
         {
@@ -118,11 +118,13 @@ class Employee {
     }
 
     /**
-     * Insert data into database
+     * Update employee data.
      *
-     *@access public
-     *@param  void
-     *@return mix
+     * @access public  update_employee
+     * @param  integer emp_id
+     * @param  array   employee_data
+     * @param  string  time
+     * @return mix
      */
     public function update_employee($emp_id, $employee_data, $time='')
     {
