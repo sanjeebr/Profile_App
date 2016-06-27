@@ -1,15 +1,6 @@
 <?php
-session_start();
-
-if (isset($_SESSION['emp_id']) && (isset($_SESSION['is_completed']) && 1 == $_SESSION['is_completed']))
-{
-
-
-/**
- * Display all employee data file.
- */
-
-require_once('classlib/db_class.php');
+require_once('session_header.php');
+require_once('classlib/Database.php');
 require_once('display_error.php');
 require_once('config/constants.php');
 require_once('classlib/Employee.php');
@@ -17,10 +8,8 @@ require_once('classlib/Employee.php');
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
 $signup = new Employee($db_obj);
-
-
-
 $result = $signup->get_employee();
+
 // Serial no for employee table.
 $serial_no = 0;
 ?>
@@ -53,7 +42,8 @@ $serial_no = 0;
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
                             <li ><a href="home.php">Home</a></li>
-                            <li ><a href="employee.php" class="active">Employee Details</a></li>
+                            <li class="active"><a href="employee.php" class="active">
+                                Employee Details</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown"><a class="dropdown-toggle"
@@ -61,10 +51,12 @@ $serial_no = 0;
                                 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="form.php">Edit Account</a></li>
-                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')" href="delete.php">Delete Account</a></li>
+                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')"
+                                        href="delete.php">Delete Account</a></li>
                                 </ul>
                             </li>
-                            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out">
+                                </span> Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -90,7 +82,8 @@ $serial_no = 0;
                     <tbody>
                     <?php
 
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result))
+                    {
                     ?>
                         <tr>
                             <td>
@@ -181,7 +174,3 @@ $serial_no = 0;
         </div>
     </body>
 </html>
-<?php } else {
-header('Location: index.php');
-}
-?>

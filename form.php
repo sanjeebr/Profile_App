@@ -1,29 +1,30 @@
 <?php
 session_start();
 
-if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
+if ( ! isset($_SESSION['emp_id']) && ! isset($_SESSION['is_completed']))
 {
-
-require_once('classlib/db_class.php');
+    header('Location: index.php');
+}
+require_once('classlib/Database.php');
 require_once('config/initialization_config.php');
-require_once('helper/utility.php');
 require_once('display_error.php');
 require_once('config/constants.php');
-require_once('classlib/validation.php');
+require_once('classlib/Validation.php');
 require_once('classlib/Employee.php');
-require_once('classlib/address_class.php');
-
+require_once('classlib/Address.php');
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
 $valid = new validation($db_obj);
 $employee = new Employee($db_obj);
+$address = new Address($db_obj);
 
 extract($employee_data, EXTR_SKIP);
 extract($error_list, EXTR_SKIP);
 $result = $employee->get_employee($_SESSION['emp_id']);
 
-while ($row = mysqli_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result))
+{
     $prefix = $row['prefix'];
     $first_name = $row['first_name'];
     $middle_name = $row['middle_name'];
@@ -50,9 +51,9 @@ while ($row = mysqli_fetch_assoc($result)) {
     $photo = $row['photo'];
 }
 
-if (isset($_POST['submit']) || isset($_POST['update'])) {
+if (isset($_POST['submit']) || isset($_POST['update']))
+{
     $error = 0;
-
 
     $_POST['communication'] = (isset($_POST['communication']) && ! empty($_POST['communication']) )
         ? implode(',', $_POST['communication']) : '';
@@ -62,134 +63,195 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
         $value = $valid->sanitize_input($value);
     }
 
+    $prefix = $_POST['prefix'];
+    $first_name = $_POST['first_name'];
+    $middle_name = $_POST['middle_name'];
+    $last_name = $_POST['last_name'];
+    $gender = $_POST['gender'];
+    $date_of_birth = $_POST['date_of_birth'];
+    $marital = $_POST['marital'];
+    $r_street = $_POST['r_street'];
+    $r_city = $_POST['r_city'];
+    $r_state = $_POST['r_state'];
+    $r_pin = $_POST['r_pin'];
+    $r_phone = $_POST['r_phone'];
+    $r_fax = $_POST['r_fax'];
+    $o_street = $_POST['o_street'];
+    $o_city = $_POST['o_city'];
+    $o_state = $_POST['o_state'];
+    $o_pin = $_POST['o_pin'];
+    $o_phone = $_POST['o_phone'];
+    $o_fax = $_POST['o_fax'];
+    $employment = $_POST['employment'];
+    $employer = $_POST['employer'];
+    $note = $_POST['note'];
+    $communication = $_POST['communication'];
 
     // To check error in first name.
-    if ( ! $valid->is_empty($_POST['first_name'])) {
+    if ( ! $valid->is_empty($_POST['first_name']))
+    {
         $first_name_err = 'First Name is required.';
-     } else {
+    }
+    else
+    {
         // Check if name only contains letters and whitespace
-        if ( ! $valid->is_valid_name($_POST['first_name'])) {
+        if ( ! $valid->is_valid_name($_POST['first_name']))
+        {
             $first_name_err = 'Only letters and white space allowed.';
         }
     }
 
     // To check error in middle name.
-    if ( ! $valid->is_valid_name($_POST['middle_name'])) {
+    if ( ! $valid->is_valid_name($_POST['middle_name']))
+    {
         $middle_name_err = 'Only letters and white space allowed.';
     }
 
     // To check error in last name.
-    if ( ! $valid->is_empty($_POST['last_name'])) {
+    if ( ! $valid->is_empty($_POST['last_name']))
+    {
         $last_name_err = 'Last Name is required.';
-     } else {
+    }
+    else
+    {
 
         // Check if name only contains letters and whitespace
-        if ( ! $valid->is_valid_name($_POST['last_name'])) {
+        if ( ! $valid->is_valid_name($_POST['last_name']))
+        {
           $last_name_err = 'Only letters and white space allowed.';
         }
     }
 
     // To check error in date of birth.
-    if ( ! $valid->is_empty($_POST['date_of_birth'])) {
+    if ( ! $valid->is_empty($_POST['date_of_birth']))
+    {
         $dob_err = 'Date of Birth is required.';
-    } else if (! $valid->is_valid_date($_POST['date_of_birth']) ) {
-            $dob_err = 'Date of Birth is invalid.';
+    }
+    else if (! $valid->is_valid_date($_POST['date_of_birth']) )
+    {
+         $dob_err = 'Date of Birth is invalid.';
     }
 
     // To check error in pin.
-    if ( ! $valid->is_empty($_POST['r_pin'])) {
+    if ( ! $valid->is_empty($_POST['r_pin']))
+    {
        $r_pin_err = 'This field is required.';
-    } else if ( ! $valid->is_valid_number($_POST['r_pin'],6)) {
+    }
+    else if ( ! $valid->is_valid_number($_POST['r_pin'],6))
+    {
         $r_pin_err = 'Invalid Pin Code.';
     }
 
-    if ( ! preg_match('/^[0-9]{6}$/', $_POST['o_pin']) && ! empty($_POST['o_pin'])){
+    if ( ! preg_match('/^[0-9]{6}$/', $_POST['o_pin']) && ! empty($_POST['o_pin']))
+    {
         $o_pin_err = 'Invalid Pin Code.';
         $error++;
     }
 
     // To check error in mobile no.
-    if (! $valid->is_empty($_POST['r_phone'])) {
+    if (! $valid->is_empty($_POST['r_phone']))
+    {
         $r_phone_err = 'This field is required.';
-    } else if ( ! $valid->is_valid_number($_POST['r_phone'], 10)) {
+    }
+    else if ( ! $valid->is_valid_number($_POST['r_phone'], 10))
+    {
         $r_phone_err = 'Invalid Phone Number.';
-   }
+    }
 
-    if ( ! preg_match('/^[0-9]{10}$/', $_POST['o_phone']) && ! empty($_POST['o_phone'])) {
+    if ( ! preg_match('/^[0-9]{10}$/', $_POST['o_phone']) && ! empty($_POST['o_phone']))
+    {
         $o_phone_err = 'Invalid Phone Number.';
         $error++;
     }
 
     // To check error in fax number.
-    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax'])) {
+    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax']))
+    {
         $r_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
-    if ( ! preg_match('/^[0-9]{11}$/', $_POST['o_fax']) && ! empty($_POST['o_fax'])) {
+    if ( ! preg_match('/^[0-9]{11}$/', $_POST['o_fax']) && ! empty($_POST['o_fax']))
+    {
         $o_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
     // To check error in gender.
-    if (! $valid->is_empty($_POST['gender'])) {
+    if (! $valid->is_empty($_POST['gender']))
+    {
         $gender_err = 'This field is required.';
     }
 
     // To check error in marital status.
-    if (! $valid->is_empty($_POST['marital'])) {
+    if (! $valid->is_empty($_POST['marital']))
+    {
         $marital_err = 'This field is required.';
     }
 
     // To check residence street is empty or not.
-    if (! $valid->is_empty($_POST['r_street'])) {
+    if (! $valid->is_empty($_POST['r_street']))
+    {
         $r_street_err = 'This field is required.';
     }
 
     // To check residence city is empty or not.
-    if (! $valid->is_empty($_POST['r_city'])) {
+    if (! $valid->is_empty($_POST['r_city']))
+    {
         $r_city_err = 'This field is required.';
     }
 
     // To check residence state is empty or not.
-    if (! $valid->is_empty($_POST['r_state'])) {
+    if (! $valid->is_empty($_POST['r_state']))
+    {
         $r_state_err = 'This field is required.';
     }
 
-    if (isset($_FILES['photo'])) {
+    if (isset($_FILES['photo']))
+    {
         $file_name = $_FILES['photo']['name'];
         $file_size = $_FILES['photo']['size'];
         $file_tmp = $_FILES['photo']['tmp_name'];
         $file_type = $_FILES['photo']['type'];
 
         // Check if image is selected or not.
-        if (0 !== $file_size) {
+        if (0 !== $file_size)
+        {
             $ext = explode('.', $_FILES['photo']['name']);
             $file_ext = strtolower(end($ext));
             $extensions = array('jpeg', 'jpg', 'png');
+
             // Check if extension is valid or not then check the size must not greater then 2MB.
-            if ( FALSE === in_array($file_ext,$extensions)){
+            if ( FALSE === in_array($file_ext,$extensions))
+            {
                 $photo_err = 'Please choose a JPEG or PNG file.';
                 $error++;
-            } else if ($file_size > 2097152) {
+            }
+            else if ($file_size > 2097152)
+            {
                 $photo_err = 'File size must be excately 2 MB';
                 $error++;
-            } else if (0 === $error &&  (FALSE === $valid->is_error())) {
-                    unlink(PROFILE_PIC . $photo);
-                    $photo = 'Emp_' . $_SESSION['emp_id'] . '.' . $file_ext;
-                    move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
+            }
+            else if (0 === $error &&  (FALSE === $valid->is_error()))
+            {
+                unlink(PROFILE_PIC . $photo);
+                $photo = 'Emp_' . $_SESSION['emp_id'] . '.' . $file_ext;
+                move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
 
             }
         }
     }
+
    // If there is any error or not.
-   if ((0 === $error) &&  (FALSE === $valid->is_error())) {
+   if ((0 === $error) &&  (FALSE === $valid->is_error()))
+   {
+        $times = '';
 
-
-        $times='';
-        if (isset($_POST['submit'])) {
-            $times='first';
+        if (isset($_POST['submit']))
+        {
+            $times = 'first';
         }
+
         if($employee->update_employee($_SESSION['emp_id'], $_POST,$times) &&
             $db_obj->update('employee', "photo = '$photo'", 'where id = ' . $_SESSION['emp_id']))
         {
@@ -239,10 +301,14 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                 </label>
                                 <select name="prefix" id="prefix" class="form-control">
                                     <option value="Mr">Mr</option>
-                                    <option value="Ms" <?php if ('Ms' === $prefix) {
-                                        echo "selected"; } ?>>Ms</option>
-                                    <option value="Mrs" <?php if ('Mrs' === $prefix) {
-                                        echo "selected"; } ?>>Mrs</option>
+                                    <option value="Ms" <?php if ('Ms' === $prefix)
+                                        {
+                                        echo "selected";
+                                        } ?>>Ms</option>
+                                    <option value="Mrs" <?php if ('Mrs' === $prefix)
+                                        {
+                                        echo "selected";
+                                        } ?>>Mrs</option>
                                 </select>
                             </div>
                         </div>
@@ -291,7 +357,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                    <label class="radio-inline">
                                         <input type="radio" id="female" name="gender"
                                             value="Female"
-                                            <?php if ('Female' === $gender) {
+                                            <?php if ('Female' === $gender)
+                                            {
                                                 echo 'checked';
                                             } ?>>Female
                                    </label>
@@ -322,7 +389,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" id="married" name="marital"
-                                            value="Married" <?php if ('Married' === $marital) {
+                                            value="Married" <?php if ('Married' === $marital)
+                                            {
                                                 echo 'checked';
                                             } ?>>Married
                                     </label>
@@ -331,10 +399,12 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
-                                <label for="photo">Upload Photo:<?php if (1 == $_SESSION['is_completed']) { ?>
+                                <label for="photo">Upload Photo:
+                                    <?php if (1 == $_SESSION['is_completed'])
+                                    { ?>
                                     <a  data-toggle="modal" data-target="#profile_pic" >
                                     View Current Pic</a>
-                                <?php } ?></label>
+                                    <?php } ?></label>
                                 <input type="file" class="form-control" id="photo"
                                     name="photo" >
                                 <br><span class="error"><?php echo $photo_err; ?></span>
@@ -394,9 +464,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <option value="">Select State</option>
                                     <?php
                                         // Fetch state list.
-                                        $all_state_list_query = "SELECT name FROM `states`";
-                                        $state_list = mysqli_query($conn, $all_state_list_query);
-                                        echo state_list($r_state, $state_list);
+                                        echo $address->state_list($r_state);
                                     ?>
                                 </select>
                                 <label for="r_pin"><span class="error">*</span>Pin no:</label>
@@ -436,8 +504,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <option value="">Select State</option>
                                     <?php
                                         // Fetch state list.
-                                        $state_list = mysqli_query($conn, $all_state_list_query);
-                                        echo state_list($o_state, $state_list);
+                                        echo $address->state_list($o_state);
                                     ?>
                                 </select>
                                 <label for="o_pin">Pin no:</label>
@@ -486,8 +553,7 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                             <div class="form-group">
                                 <label for="extra">Extra Note:</label>
                                 <textarea class="form-control" id="extra" name="note"
-                                    placeholder="Extra Note..">
-                                    <?php  echo "$note"; ?></textarea>
+                                    placeholder="Extra Note.."><?php  echo "$note"; ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -502,7 +568,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <label>
                                         <input type="checkbox" name="communication[]"
                                             value="Mail"
-                                            <?php if (strpos($communication, 'Mail') !== FALSE) {
+                                            <?php if (strpos($communication, 'Mail') !== FALSE)
+                                            {
                                                 echo 'checked';
                                             } ?>>Mail
                                     </label>
@@ -513,7 +580,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <label>
                                         <input type="checkbox" name="communication[]"
                                             value="Message"
-                                            <?php if (strpos($communication, 'Message') !== FALSE) {
+                                            <?php if (strpos($communication, 'Message') !== FALSE)
+                                            {
                                                 echo 'checked';
                                             } ?>>Message
                                     </label>
@@ -524,7 +592,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <label>
                                         <input type="checkbox" name="communication[]"
                                             value="Phone Call"
-                                            <?php if (strpos($communication, 'Phone Call') !== FALSE) {
+                                            <?php if (strpos($communication, 'Phone Call') !== FALSE)
+                                            {
                                                 echo 'checked';
                                             } ?>>Phone Call
                                     </label>
@@ -535,7 +604,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                                     <label>
                                         <input type="checkbox" name="communication[]"
                                             value="Any"
-                                            <?php if (strpos($communication, 'Any') !== FALSE) {
+                                            <?php if (strpos($communication, 'Any') !== FALSE)
+                                            {
                                                 echo "checked";
                                             } ?>>Any
                                     </label>
@@ -550,6 +620,8 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
                     &nbsp;&nbsp;&nbsp;
                     <button type="submit" class="btn btn-warning btn-lg" name="update">Update</button>
                     <?php else: ?>
+                    <a class="btn btn-info btn-lg" href="logout.php" >Cancel</a>
+                    &nbsp;&nbsp;&nbsp;
                     <button class="btn btn-danger btn-lg" type="reset" >Reset</button>
                     &nbsp;&nbsp;&nbsp;
                     <button type="submit" class="btn btn-warning btn-lg" name="submit">Submit</button>
@@ -560,7 +632,3 @@ if (isset($_POST['submit']) || isset($_POST['update'])) {
         </div>
     </body>
 </html>
-<?php } else {
-header('Location: index.php');
-}
-?>

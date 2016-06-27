@@ -19,8 +19,8 @@ $cpwd_err = '';
 $emp_id = TRUE;
 $email = '';
 
-require_once('classlib/db_class.php');
-require_once('classlib/validation.php');
+require_once('classlib/Database.php');
+require_once('classlib/Validation.php');
 require_once('classlib/Employee.php');
 
 $db_obj = Database::get_instance();
@@ -59,14 +59,14 @@ if (isset($_POST['signup']))
     }
     else if ( ! $valid->is_equal($password, $cpassword))
     {
-        $cpwd_err = 'Password field does naot match Confirm Password field';
+        $cpwd_err = 'Password field does not match Confirm Password field';
     }
 
     if ( ! $valid->is_error())
     {
         $password = hash('sha256', $password);
         $signup = new Employee($db_obj);
-        $emp_id = $signup->create_account($email,$password);
+        $emp_id = $signup->create_account($email, $password);
         if(FALSE === $emp_id)
         {
             header('Location: error.php');

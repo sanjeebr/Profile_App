@@ -23,8 +23,8 @@ $err = '';
 $emp_id = TRUE;
 $email = '';
 
-require_once('classlib/db_class.php');
-require_once('classlib/validation.php');
+require_once('classlib/Database.php');
+require_once('classlib/Validation.php');
 require_once('classlib/Employee.php');
 
 $db_obj = Database::get_instance();
@@ -52,19 +52,22 @@ if (isset($_POST['login']))
         $value = $valid->is_valid_employee($email, hash('sha256', $password));
         $_SESSION['emp_id'] = $value['id'];
         $_SESSION['is_completed'] = $value['is_completed'];
+
         if ('checkbox' === $_POST['checkbox'])
         {
             setcookie('emp_id', $value['id'], time() + (86400 * 14), "/");
             setcookie('is_completed', $value['is_completed'], time() + (86400 * 14), "/");
         }
-        if (0 == $value['is_completed']) {
+
+        if (0 == $value['is_completed'])
+        {
              header('Location: form.php');
         }
+
         header('Location: home.php');
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -116,7 +119,7 @@ if (isset($_POST['login']))
                                             value="checkbox"> Remember me</label>
                                     </div>
                                     <div class="alert-danger">
-                                         <?php echo $err;?>
+                                        <?php echo $err;?>
                                     </div>
                                     <button type="submit" class="btn btn-lg btn-success btn-block" name="login">
                                         Login</button>

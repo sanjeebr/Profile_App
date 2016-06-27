@@ -12,7 +12,8 @@ require_once('config/database_config.php');
  * @param  string $input
  * @return string
  */
-function sanitize_input($input) {
+function sanitize_input($input)
+{
     $input = trim($input);
     $input = stripslashes($input);
     $input = htmlspecialchars($input);
@@ -26,13 +27,16 @@ function sanitize_input($input) {
  * @param  object $db_result_obj
  * @return string
  */
-function state_list($state, $db_result_obj) {
+function state_list($state, $db_result_obj)
+{
     $state_list = '';
 
-  while ($row = mysqli_fetch_assoc($db_result_obj)) {
+  while ($row = mysqli_fetch_assoc($db_result_obj))
+    {
         $is_selected = '';
 
-        if ($row['name'] === $state) {
+        if ($row['name'] === $state)
+        {
             $is_selected = 'selected';
         }
 
