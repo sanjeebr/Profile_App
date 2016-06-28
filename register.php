@@ -40,7 +40,7 @@ if (isset($_POST['signup']))
     {
         $email_err = 'Invalid Email';
     }
-    else if ( 0 !== $valid->is_valid_employee($email))
+    else if (0 !== $valid->is_valid_employee($email))
     {
         $email_err = 'Email already present';
     }
@@ -54,7 +54,7 @@ if (isset($_POST['signup']))
         $pwd_err = 'Password length must be between 8-16';
     }
 
-    if (! $valid->is_empty($cpassword))
+    if ( ! $valid->is_empty($cpassword))
     {
         $cpwd_err = 'Password cannot be left blank';
     }
@@ -91,8 +91,6 @@ if (isset($_POST['signup']))
         <title>Register</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/index.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body class="container_body">
         <div class="container-fluid">
@@ -108,18 +106,18 @@ if (isset($_POST['signup']))
                                 <a class="btn btn-lg btn-primary active">Register</a>
                             </div>
                             <div>
-                                <form role="form" id="signup" method="post" action="">
+                                <form role="form" id="signup" method="post" action="" onsubmit="return(register_validate());">
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-user"
                                                     aria-hidden="true"></span>
                                             </span>
-                                            <input type="email" class="form-control"
+                                            <input type="email" class="form-control empty"
                                                 id="email" name="email" placeholder="Email"
                                                     value="<?php echo $email;?>">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger empty-msg error">
                                             <?php echo $email_err;?>
                                         </div>
                                     </div>
@@ -128,10 +126,10 @@ if (isset($_POST['signup']))
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control"
+                                            <input type="password" class="form-control password empty"
                                                 id="pwd" name="password" placeholder="Password">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger pwd-err empty-msg error">
                                             <?php echo $pwd_err;?>
                                         </div>
                                     </div>
@@ -140,10 +138,10 @@ if (isset($_POST['signup']))
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control"
+                                            <input type="password" class="form-control password empty"
                                                 id="cpwd" name="cpassword" placeholder="Confirm Password">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger pwd-err empty-msg error">
                                             <?php echo $cpwd_err;?>
                                         </div>
                                     </div>
@@ -157,4 +155,7 @@ if (isset($_POST['signup']))
             </div>
         </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/validation.js?version=1.0"></script>
 </html>
