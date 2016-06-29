@@ -10,10 +10,21 @@
  */
 
 class Database {
-    private $host = 'localhost';
-    private $username = 'root';
-    private $password = 'mindfire';
-    private $database = 'registration';
+    private $db = array(
+        'master' => array(
+            'host' => 'localhost',
+            'username' => 'root',
+            'password' => 'mindfire',
+            'db_name' => 'registration'
+        ),
+        'slave' => array(
+            'host' => 'localhost',
+            'username' => 'root',
+            'password' => 'mindfire',
+            'db_name' => 'registration'
+        )
+    );
+
     private $connection = NULL;
 
     // The single instance
@@ -27,8 +38,8 @@ class Database {
      */
     private function __construct()
     {
-        $this->connection = new mysqli($this->host, $this->username,
-            $this->password, $this->database);
+        $this->connection = new mysqli($this->db['master']['host'], $this->db['master']['username'],
+            $this->db['master']['password'], $this->db['master']['db_name']);
 
         // Error handling
         if(mysqli_connect_error())

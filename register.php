@@ -91,8 +91,6 @@ if (isset($_POST['signup']))
         <title>Register</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/index.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body class="container_body">
         <div class="container-fluid">
@@ -119,7 +117,7 @@ if (isset($_POST['signup']))
                                                 id="email" name="email" placeholder="Email"
                                                     value="<?php echo $email;?>">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger " id="email_err">
                                             <?php echo $email_err;?>
                                         </div>
                                     </div>
@@ -131,7 +129,7 @@ if (isset($_POST['signup']))
                                             <input type="password" class="form-control"
                                                 id="pwd" name="password" placeholder="Password">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger pwd_err">
                                             <?php echo $pwd_err;?>
                                         </div>
                                     </div>
@@ -143,7 +141,7 @@ if (isset($_POST['signup']))
                                             <input type="password" class="form-control"
                                                 id="cpwd" name="cpassword" placeholder="Confirm Password">
                                         </div>
-                                        <div class="alert-danger">
+                                        <div class="alert-danger cpwd_err">
                                             <?php echo $cpwd_err;?>
                                         </div>
                                     </div>
@@ -156,5 +154,10 @@ if (isset($_POST['signup']))
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+            crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/validation.js?version=1.0"></script>
     </body>
 </html>

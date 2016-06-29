@@ -325,21 +325,21 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="fname">
                                     <span class="error">*</span>First Name:
                                 </label>
-                                <input type="text" class="form-control" id="fname"
+                                <input type="text" class="form-control empty only-char" id="fname"
                                     name="first_name" placeholder="First Name"
                                     <?php  echo "value='$first_name'"; ?>>
                                 <br>
-                                <span class="error"><?php echo $first_name_err; ?></span>
+                                <span class="error" id="fname_err"><?php echo $first_name_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <label for="mname">Middle Name:</label>
-                                <input type="text" class="form-control" id="mname"
+                                <input type="text" class="form-control only-char" id="mname"
                                     name="middle_name" placeholder="Middle Name"
                                     <?php  echo "value='$middle_name'"; ?>>
                                 <br>
-                                <span class="error"><?php echo $middle_name_err; ?></span>
+                                <span class="error" id="mname_err"><?php echo $middle_name_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -347,9 +347,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="lname">
                                     <span class="error">*</span>Last Name:
                                 </label>
-                                <input type="text" class="form-control" id="lname" name="last_name"
+                                <input type="text" class="form-control empty only-char" id="lname" name="last_name"
                                     placeholder="Last Name" <?php  echo "value='$last_name'"; ?>>
-                                <br><span class="error"><?php echo $last_name_err; ?></span>
+                                <br><span class="error" id="lname_err"><?php echo $last_name_err; ?></span>
                             </div>
                         </div>
                     </div>
@@ -379,7 +379,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                     <span class="error">*</span>Date of Birth:
                                 </label>
                                 <div class="date">
-                                    <input type="date" name="date_of_birth" class="form-control"
+                                    <input type="date" name="date_of_birth" class="form-control empty"
                                         id="dob" <?php  echo "value='$date_of_birth'"; ?>>
                                     <br><span class="error"><?php echo $dob_err; ?></span>
                                 </div>
@@ -455,20 +455,20 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <div class="well"><h3>Residence Address:</h3>
                                 <label for="r_street"><span class="error">*</span>Street Name:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_street_err ?></span>
-                                <input type="text" class="form-control" id="r_street"
+                                <span class="error" id="r_street_err"><?php echo $r_street_err ?></span>
+                                <input type="text" class="form-control empty" id="r_street"
                                     name="r_street" placeholder="Street name..."
                                     <?php echo "value='$r_street'"; ?>>
                                 <label for="r_city"><span class="error">*</span>City:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_city_err?></span>
-                                <input type="text" class="form-control" id="r_city"
+                                <span class="error" id="r_city_err"><?php echo $r_city_err?></span>
+                                <input type="text" class="form-control empty" id="r_city"
                                     name="r_city" placeholder="City..."
                                     <?php  echo "value='$r_city'"; ?>>
                                 <label for="r_state"><span class="error">*</span>State:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_state_err ?></span>
-                                <select  id="r_state" class="form-control" name="r_state">
+                                <span class="error" id="r_state_err"><?php echo $r_state_err ?></span>
+                                <select  id="r_state" class="form-control empty" name="r_state">
                                     <option value="">Select State</option>
                                     <?php
                                         // Fetch state list.
@@ -477,20 +477,20 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </select>
                                 <label for="r_pin"><span class="error">*</span>Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_pin_err ?></span>
-                                <input type="text" class="form-control" id="r_pin"
+                                <span class="error" id="r_pin_err"><?php echo $r_pin_err ?></span>
+                                <input type="text" class="form-control only-num empty" id="r_pin"
                                     placeholder="Pin No" name="r_pin"
                                     <?php  echo "value='$r_pin'"; ?>>
                                 <label for="r_phone"><span class="error">*</span>Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_phone_err ?></span>
-                                <input type="text" class="form-control" id="r_phone"
+                                <span class="error" id="r_phone_err"><?php echo $r_phone_err ?></span>
+                                <input type="text" class="form-control only-num empty" id="r_phone"
                                     placeholder="eg:9990001234" name="r_phone"
                                     <?php  echo "value='$r_phone'"; ?>>
                                 <label for="r_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $r_fax_err ?></span>
-                                <input type="text" class="form-control" id="r_fax"
+                                <span class="error" id="r_fax_err"><?php echo $r_fax_err ?></span>
+                                <input type="text" class="form-control only-num" id="r_fax"
                                     placeholder="eg:00001234567" name="r_fax"
                                     <?php  echo "value='$r_fax'"; ?>>
                             </div>
@@ -517,20 +517,20 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </select>
                                 <label for="o_pin">Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $o_pin_err ?></span>
-                                <input type="text" class="form-control" id="o_pin"
+                                <span class="error" id="o_pin_err"><?php echo $o_pin_err ?></span>
+                                <input type="text" class="form-control only-num" id="o_pin"
                                     name="o_pin" placeholder="Pin No"
                                     <?php  echo "value='$o_pin'"; ?>>
                                 <label for="o_phone">Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $o_phone_err ?></span>
-                                <input type="text" class="form-control" id="o_phone"
+                                <span class="error" id="o_phone_err"><?php echo $o_phone_err ?></span>
+                                <input type="text" class="form-control only-num" id="o_phone"
                                     name="o_phone" placeholder="eg:9990001234"
                                     <?php  echo "value='$o_phone'"; ?> >
                                 <label for="o_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error"><?php echo $o_fax_err ?></span>
-                                <input type="text" class="form-control" id="o_fax"
+                                <span class="error" id="o_fax_err"><?php echo $o_fax_err ?></span>
+                                <input type="text" class="form-control only-num" id="o_fax"
                                     name="o_fax" placeholder="eg:00001234567"
                                     <?php  echo "value='$o_fax'"; ?>>
                             </div>
@@ -542,11 +542,11 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="employment">Employment:</label>
-                                <input type="text" class="form-control" id="employment"
+                                <input type="text" class="form-control only-char" id="employment"
                                     name="employment" placeholder="Employment"
                                     <?php echo "value='$employment'"; ?>>
                             </div>
-                            <span class="error"><?php echo $employment_err; ?></span>
+                            <span class="error" id="employment_err"><?php echo $employment_err; ?></span>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
@@ -639,8 +639,10 @@ if (isset($_POST['submit']) || isset($_POST['update']))
             </form>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+            crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/validation.js?version=1.0"></script>
     </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/validation.js?version=1.0"></script>
 </html>

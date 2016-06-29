@@ -105,6 +105,8 @@ if (isset($_POST['login']))
                                             <input type="email" class="form-control"
                                                 id="email" name="email" placeholder="Email">
                                         </div>
+                                        <div class="alert-danger" id="email_err">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
@@ -131,5 +133,10 @@ if (isset($_POST['login']))
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+            crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/validation.js?version=1.0"></script>
     </body>
 </html>
