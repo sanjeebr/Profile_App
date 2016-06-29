@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2016 at 09:47 AM
+-- Generation Time: Jun 29, 2016 at 11:12 AM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.17
 
@@ -30,17 +30,17 @@ CREATE TABLE IF NOT EXISTS `address` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) unsigned NOT NULL,
   `type` enum('residence','office') COLLATE utf8_bin NOT NULL,
-  `phone` int(11) DEFAULT NULL,
-  `fax` bigint(12) DEFAULT NULL,
+  `phone` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `fax` varchar(11) COLLATE utf8_bin DEFAULT NULL,
   `street` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `pin_no` int(7) DEFAULT NULL,
+  `pin` varchar(6) COLLATE utf8_bin DEFAULT NULL,
   `city` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `state` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `employee_id` (`employee_id`),
   KEY `state_id` (`state`),
   KEY `type` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -72,22 +72,29 @@ INSERT INTO `communication` (`id`, `type`) VALUES
 
 CREATE TABLE IF NOT EXISTS `employee` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(30) COLLATE utf8_bin NOT NULL,
-  `middle_name` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `last_name` varchar(20) COLLATE utf8_bin NOT NULL,
-  `date_of_birth` date NOT NULL,
-  `prefix` varchar(3) COLLATE utf8_bin NOT NULL,
+  `email` varchar(254) COLLATE utf8_bin NOT NULL,
+  `password` varchar(64) COLLATE utf8_bin NOT NULL,
+  `is_completed` int(1) NOT NULL,
+  `first_name` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `middle_name` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `last_name` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `prefix` varchar(3) COLLATE utf8_bin DEFAULT NULL,
   `photo` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `note` text COLLATE utf8_bin,
-  `gender` enum('Male','Female') COLLATE utf8_bin NOT NULL,
-  `marital_status` varchar(10) COLLATE utf8_bin NOT NULL,
+  `gender` enum('Male','Female') COLLATE utf8_bin DEFAULT NULL,
+  `marital` varchar(10) COLLATE utf8_bin DEFAULT NULL,
   `communication` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `employment` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `employer` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email_2` (`email`),
   KEY `employment_id` (`employment`),
-  KEY `employer_id` (`employer`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  KEY `employer_id` (`employer`),
+  KEY `email` (`email`,`password`),
+  KEY `flag` (`is_completed`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +158,7 @@ INSERT INTO `states` (`id`, `name`) VALUES
 -- Constraints for table `address`
 --
 ALTER TABLE `address`
-  ADD CONSTRAINT `employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON UPDATE NO ACTION;
+  ADD CONSTRAINT `employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
