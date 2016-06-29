@@ -1,17 +1,13 @@
-
 $(document).ready(function() {
     var iserror = true;
     $( 'form' ).on( 'submit', function() {
-
         $('.empty').each(function() {
-
             var error = '#'.concat($(this).attr('id'), '_err');
 
             if (null === $(this).val() || '' === $(this).val()) {
                 $(error).text('This field is required.');
                 iserror = false;
             }
-
         });
 
         return iserror;
@@ -29,7 +25,6 @@ $(document).ready(function() {
             $(error).text('');
             iserror = true;
         }
-
     });
 
     $('.only-num').on('keyup blur paste', function() {
@@ -40,38 +35,32 @@ $(document).ready(function() {
             $(error).text('Invalid data.');
             iserror = false;
         } else {
-
             $(error).text('');
             iserror = true;
         }
-
     });
 
     $('#cpwd').on('keyup blur paste', function(){
         var str_length = $(this).val().length;
 
         if (str_length !== 0) {
-
             if ($(this).val() !== $('#pwd').val().substr(0, str_length)) {
                 $('.cpwd_err').text('Password field does not match Confirm Password field');
                 iserror = false;
             } else {
-
                 $('.cpwd_err').text('');
                 iserror = true;
             }
-
         }
-
     });
 
     $('.pin').on('blur', function(){
         var str_length = $(this).val().length;
         var error = '#'.concat($(this).attr('id'), '_err');
+
         if (str_length !== 0 && str_length !== 6) {
             $(error).text('Length must be 6.');
         } else {
-
             $(error).text('');;
             iserror = true;
         }
@@ -80,10 +69,10 @@ $(document).ready(function() {
     $('.phone').on('blur', function(){
         var str_length = $(this).val().length;
         var error = '#'.concat($(this).attr('id'), '_err');
+
         if (str_length !== 0 && str_length !== 10) {
             $(error).text('Length must be 10.');
         } else {
-
             $(error).text('');;
             iserror = true;
         }
@@ -95,7 +84,6 @@ $(document).ready(function() {
         if (str_length !== 0 && str_length !== 11) {
             $(error).text('Length must be 11.');
         } else {
-
             $(error).text('');;
             iserror = true;
         }
@@ -132,7 +120,6 @@ $(document).ready(function() {
             $(error).text('Invalid Email.');
             iserror = false;
         } else {
-
             $(error).text('');
             iserror = true;
         }
