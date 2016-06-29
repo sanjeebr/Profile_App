@@ -478,19 +478,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="r_pin"><span class="error">*</span>Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="r_pin_err"><?php echo $r_pin_err ?></span>
-                                <input type="text" class="form-control only-num empty" id="r_pin"
+                                <input type="text" class="form-control only-num empty pin" id="r_pin"
                                     placeholder="Pin No" name="r_pin"
                                     <?php  echo "value='$r_pin'"; ?>>
                                 <label for="r_phone"><span class="error">*</span>Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="r_phone_err"><?php echo $r_phone_err ?></span>
-                                <input type="text" class="form-control only-num empty" id="r_phone"
+                                <input type="text" class="form-control only-num empty phone" id="r_phone"
                                     placeholder="eg:9990001234" name="r_phone"
                                     <?php  echo "value='$r_phone'"; ?>>
                                 <label for="r_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="r_fax_err"><?php echo $r_fax_err ?></span>
-                                <input type="text" class="form-control only-num" id="r_fax"
+                                <input type="text" class="form-control only-num fax" id="r_fax"
                                     placeholder="eg:00001234567" name="r_fax"
                                     <?php  echo "value='$r_fax'"; ?>>
                             </div>
@@ -518,19 +518,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="o_pin">Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="o_pin_err"><?php echo $o_pin_err ?></span>
-                                <input type="text" class="form-control only-num" id="o_pin"
+                                <input type="text" class="form-control only-num pin" id="o_pin"
                                     name="o_pin" placeholder="Pin No"
                                     <?php  echo "value='$o_pin'"; ?>>
                                 <label for="o_phone">Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="o_phone_err"><?php echo $o_phone_err ?></span>
-                                <input type="text" class="form-control only-num" id="o_phone"
+                                <input type="text" class="form-control only-num phone" id="o_phone"
                                     name="o_phone" placeholder="eg:9990001234"
                                     <?php  echo "value='$o_phone'"; ?> >
                                 <label for="o_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="error" id="o_fax_err"><?php echo $o_fax_err ?></span>
-                                <input type="text" class="form-control only-num" id="o_fax"
+                                <input type="text" class="form-control only-num fax" id="o_fax"
                                     name="o_fax" placeholder="eg:00001234567"
                                     <?php  echo "value='$o_fax'"; ?>>
                             </div>

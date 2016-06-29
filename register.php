@@ -113,7 +113,7 @@ if (isset($_POST['signup']))
                                                 <span class="glyphicon glyphicon-user"
                                                     aria-hidden="true"></span>
                                             </span>
-                                            <input type="email" class="form-control"
+                                            <input type="email" class="form-control empty"
                                                 id="email" name="email" placeholder="Email"
                                                     value="<?php echo $email;?>">
                                         </div>
@@ -126,10 +126,10 @@ if (isset($_POST['signup']))
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control"
+                                            <input type="password" class="form-control empty"
                                                 id="pwd" name="password" placeholder="Password">
                                         </div>
-                                        <div class="alert-danger pwd_err">
+                                        <div class="alert-danger pwd_err" id="pwd_err">
                                             <?php echo $pwd_err;?>
                                         </div>
                                     </div>
@@ -138,10 +138,10 @@ if (isset($_POST['signup']))
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control"
+                                            <input type="password" class="form-control empty"
                                                 id="cpwd" name="cpassword" placeholder="Confirm Password">
                                         </div>
-                                        <div class="alert-danger cpwd_err">
+                                        <div class="alert-danger cpwd_err" id="cpwd_err">
                                             <?php echo $cpwd_err;?>
                                         </div>
                                     </div>

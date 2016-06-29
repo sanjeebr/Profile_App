@@ -19,8 +19,8 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
             break;
     }
 }
-
-$err = '';
+$email_err = '';
+$pwd_err = '';
 $emp_id = TRUE;
 $email = '';
 
@@ -38,11 +38,11 @@ if (isset($_POST['login']))
 
     if ( ! $valid->is_empty($email))
     {
-        $err = '<strong>Error!</strong> Email field cannot be left blank';
+        $email_err = '<strong>Error!</strong> Email field cannot be left blank';
     }
     else if ( 0 === $valid->is_valid_employee($email, hash('sha256', $password)))
     {
-        $err = '<strong>Error!</strong> Incorrect Email or Password';
+        $pwd_err = '<strong>Error!</strong> Incorrect Email or Password';
     }
     else if ( FALSE === $valid->is_valid_employee($email, hash('sha256', $password)))
     {
@@ -102,7 +102,7 @@ if (isset($_POST['login']))
                                                 <span class="glyphicon glyphicon-user"
                                                     aria-hidden="true"></span>
                                             </span>
-                                            <input type="email" class="form-control"
+                                            <input type="email" class="form-control empty"
                                                 id="email" name="email" placeholder="Email">
                                         </div>
                                         <div class="alert-danger" id="email_err">
@@ -113,16 +113,16 @@ if (isset($_POST['login']))
                                             <span class="input-group-addon" id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control"
+                                            <input type="password" class="form-control empty"
                                                 id="pwd" name="password" placeholder="Password">
+                                        </div>
+                                        <div class="alert-danger" id="pwd_err">
+                                        <?php echo $pwd_err;?>
                                         </div>
                                     </div>
                                     <div class="checkbox">
                                         <label><input type="checkbox" name="checkbox"
                                             value="checkbox"> Remember me</label>
-                                    </div>
-                                    <div class="alert-danger">
-                                        <?php echo $err;?>
                                     </div>
                                     <button type="submit" class="btn btn-lg btn-success btn-block" name="login">
                                         Login</button>
