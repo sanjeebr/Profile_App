@@ -108,6 +108,12 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         $middle_name_err = 'Only letters and white space allowed.';
     }
 
+    // To check error in employment.
+    if ( ! $valid->is_valid_name($_POST['employment']))
+    {
+        $employment_err = 'Only letters and white space allowed in Employment.';
+    }
+
     // To check error in last name.
     if ( ! $valid->is_empty($_POST['last_name']))
     {
@@ -540,6 +546,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                     name="employment" placeholder="Employment"
                                     <?php echo "value='$employment'"; ?>>
                             </div>
+                            <span class="error"><?php echo $employment_err; ?></span>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
