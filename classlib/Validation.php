@@ -31,7 +31,7 @@ class Validation {
      * @access public  is_valid_employee
      * @param  string email
      * @param  string password
-     * @return mix
+     * @return mixed
      */
     public function is_valid_employee($email, $password = '')
     {
@@ -42,7 +42,7 @@ class Validation {
             $condition .= "AND password = '$password'";
         }
 
-        $result = $this->db_obj->select('employee', ' id,is_completed ', $condition);
+        $result = $this->db_obj->select('employee', ' id, is_completed ', $condition);
 
         if (FALSE === $result)
         {
@@ -51,10 +51,12 @@ class Validation {
         }
 
         $num_rows = mysqli_num_rows($result);
+
         if (0 === $num_rows)
         {
             return 0;
         }
+
         $id = mysqli_fetch_assoc($result);
         $this->error = TRUE;
         return $id;
@@ -70,7 +72,7 @@ class Validation {
      */
     function sanitize_input($input)
     {
-        return htmlspecialchars( stripslashes( trim($input)));
+        return htmlspecialchars(stripslashes(trim($input)));
     }
 
 
@@ -225,6 +227,7 @@ class Validation {
             $this->error = TRUE;
             return FALSE;
         }
+
         return TRUE;
     }
 }

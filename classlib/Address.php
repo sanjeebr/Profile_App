@@ -20,6 +20,7 @@ class Address {
         'fax' => '',
         'type' => ''
     );
+
     private $db_obj = NULL;
     private $table_name = 'address';
 
@@ -43,7 +44,7 @@ class Address {
      * @param  array   address
      * @param  string  type
      * @param  string  time
-     * @return mix
+     * @return mixed
      */
     public function update_address($emp_id, $address, $type, $time = '')
     {
@@ -61,6 +62,7 @@ class Address {
                 {
                     $this->fields[$key] = $value;
                 }
+
             }
 
         }

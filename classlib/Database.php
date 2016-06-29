@@ -35,6 +35,7 @@ class Database {
         {
             header('Location: error.php');
         }
+
     }
 
     /**
@@ -85,7 +86,7 @@ class Database {
      *
      * @access public execute_sql_query
      * @param  string
-     * @return mix
+     * @return mixed
      */
     public function execute_sql_query($sql_query)
     {
@@ -97,7 +98,7 @@ class Database {
      *
      * @access public get_last_insert_id
      * @param  void
-     * @return mix
+     * @return mixed
      */
     public function get_last_insert_id()
     {
@@ -125,7 +126,7 @@ class Database {
         }
 
         $col_name = trim($col_name, ", ") . ' )';
-        $col_value = ' '.trim($col_value, ", ") .' )';
+        $col_value = ' ' . trim($col_value, ", ") . ' )';
         $sql_query .= $col_name . $col_value;
 
         if(FALSE === $this->execute_sql_query($sql_query))
@@ -143,7 +144,7 @@ class Database {
      * @param  string table_name
      * @param  mix    data
      * @param  string condition
-     * @return mix
+     * @return mixed
      */
     public function update($table_name, $data, $condition = '')
     {
@@ -180,11 +181,12 @@ class Database {
      * @param  string table_name
      * @param  mix    data
      * @param  string condition
-     * @return mix
+     * @return mixed
      */
     public function select($table_name, $data, $condition = '')
     {
         $sql_query = "SELECT ";
+
         if (is_array ($data))
         {
 

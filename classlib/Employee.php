@@ -52,17 +52,19 @@ class Employee {
      * @access public create_account
      * @param  string email
      * @param  string password
-     * @return mix
+     * @return mixed
      */
     public function create_account($email, $password)
     {
         $this->signup_fields['email'] = $email;
         $this->signup_fields['password'] = $password;
         $this->signup_fields['is_completed'] = '0';
+
         if ($this->db_obj->insert($this->table_name, $this->signup_fields) === TRUE)
         {
             return $this->db_obj->get_last_insert_id();
         }
+
         return FALSE;
     }
 
@@ -71,7 +73,7 @@ class Employee {
      *
      * @access public  get_employee
      * @param  integer employee_id
-     * @return mix
+     * @return mixed
      */
     public function get_employee($employee_id = 0)
     {
@@ -124,7 +126,7 @@ class Employee {
      * @param  integer emp_id
      * @param  array   employee_data
      * @param  string  time
-     * @return mix
+     * @return mixed
      */
     public function update_employee($emp_id, $employee_data, $time='')
     {
@@ -132,6 +134,7 @@ class Employee {
 
         foreach ($employee_data as $key => $value)
         {
+
             if(isset($this->form_fields[$key]))
             {
                 $this->form_fields[$key] = $value;
@@ -139,9 +142,10 @@ class Employee {
 
         }
         $this->db_obj->transaction();
+
         if($this->db_obj->update($this->table_name, $this->form_fields, "WHERE id = $emp_id")
-            && $address->update_address($emp_id,$employee_data,'residence', $time)
-            && $address->update_address($emp_id,$employee_data,'office', $time))
+            && $address->update_address($emp_id, $employee_data, 'residence', $time)
+            && $address->update_address($emp_id, $employee_data, 'office', $time))
         {
             $this->db_obj->commit();
             return TRUE;
@@ -150,5 +154,6 @@ class Employee {
         {
             return FALSE;
         }
+
     }
 }
