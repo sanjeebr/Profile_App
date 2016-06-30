@@ -40,6 +40,19 @@ $(document).ready(function() {
         }
     });
 
+    $('.street').on('keyup blur paste', function() {
+        var street = /^[a-zA-Z\s\d-,]*$/;
+        var error = '#'.concat($(this).attr('id'), '_err');
+
+        if ( ! $(this).val().match(street)) {
+            $(error).text('Invalid data.');
+            iserror = false;
+        } else {
+            $(error).text('');
+            iserror = true;
+        }
+    });
+
     $('#cpwd').on('keyup blur paste', function(){
         var str_length = $(this).val().length;
 
