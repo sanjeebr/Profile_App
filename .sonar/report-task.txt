@@ -1,5 +1,5 @@
 projectKey=Profile_App
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/Profile_App
-ceTaskId=AVVyVP53RjfTae2FnSdM
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AVVyVP53RjfTae2FnSdM
+ceTaskId=AVWhci35Tzf_A2cCPtPp
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVWhci35Tzf_A2cCPtPp

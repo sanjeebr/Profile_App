@@ -21,7 +21,6 @@ class Validation {
     public function __construct($db_object)
     {
         $this->db_obj = $db_object;
-
     }
 
 
@@ -99,7 +98,6 @@ class Validation {
      */
     public function is_equal($first, $second)
     {
-
         if ($first !== $second)
         {
             $this->error = TRUE;
@@ -119,7 +117,6 @@ class Validation {
      */
     public function is_valid_email($email)
     {
-
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE)
         {
             $this->error = TRUE;
@@ -139,7 +136,6 @@ class Validation {
      */
     public function is_valid_pass($password)
     {
-
         if ( strlen($password) < 8 || strlen($password) > 16)
         {
             $this->error = TRUE;
@@ -160,8 +156,7 @@ class Validation {
      */
     public function is_valid_number($number, $length = 10)
     {
-
-        if ( ! preg_match('/^[0-9]{' . $length . '}$/', $number))
+       if ( ! preg_match('/^[0-9]{' . $length . '}$/', $number))
         {
             $this->error = TRUE;
             return FALSE;
@@ -180,7 +175,6 @@ class Validation {
      */
     public function is_valid_name($name)
     {
-
         if ( ! preg_match('/^[a-zA-Z ]*$/', $name))
         {
             $this->error = TRUE;
@@ -190,6 +184,124 @@ class Validation {
         return TRUE;
     }
 
+    /**
+     * To check valid Street or not.
+     *
+     * @access public  is_valid_street
+     * @param  string  street
+     * @return bollean
+     */
+    public function is_valid_street($street)
+    {
+        if ( ! preg_match('/^[a-zA-Z\s\d-,]*$/', $street))
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * To check valid length or not.
+     *
+     * @access public  valid_max_length
+     * @param  string  data
+     * @param  integer maxlength
+     * @return bollean
+     */
+    public function valid_max_length($data, $maxlength='200')
+    {
+        if (strlen ($data) > $maxlength)
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * To check valid Gender or not.
+     *
+     * @access public  is_valid_gender
+     * @param  string  gender
+     * @return bollean
+     */
+    public function is_valid_gender($gender)
+    {
+        if ( 'Male' !== $gender && 'Female' !== $gender)
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * To check valid Marital Status or not.
+     *
+     * @access public  is_valid_marital
+     * @param  string  marital
+     * @return bollean
+     */
+    public function is_valid_marital($marital)
+    {
+        if ( 'Single' !== $marital && 'Married' !== $marital)
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * To check valid state or not.
+     *
+     * @access public  is_valid_state
+     * @param  string  state
+     * @return bollean
+     */
+    public function is_valid_state($state)
+    {
+        $result = $this->db_obj->select(' states ', ' name ');
+
+        while ($row = mysqli_fetch_assoc($result))
+        {
+            if ($state === $row['name'])
+            {
+                return TRUE;
+            }
+        }
+
+        if ( ! empty($state) )
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * To check valid prefix or not.
+     *
+     * @access public  is_valid_prefix
+     * @param  string  perfix
+     * @return bollean
+     */
+    public function is_valid_prefix($prefix)
+    {
+        if ( 'Mr' !== $prefix && 'Mrs' !== $prefix && 'Ms' !== $prefix)
+        {
+            $this->error = TRUE;
+            return FALSE;
+        }
+
+        return TRUE;
+    }
 
     /**
      * To Check valid date or not.
@@ -221,7 +333,6 @@ class Validation {
      */
     public function is_empty($data)
     {
-
         if (empty($data))
         {
             $this->error = TRUE;

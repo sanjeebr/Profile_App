@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($result))
         <title>HOME</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/output.css"/>
-        <link rel="stylesheet" href="css/cv.css"/>
+        <link rel="stylesheet" href="css/home.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
@@ -84,34 +84,31 @@ while ($row = mysqli_fetch_assoc($result))
                     </div>
                 </div>
             </nav>
-            <div class="container">
-                <div id="head" class="row row-eq-height">
-                    <div id="head_img" class="col-md-4">
-                        <img alt="PHOTO" class="img-rounded" src="<?php $pic = ! empty($photo) ?
-                            PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
-                            echo $pic; ?>" >
-                    </div>
-                    <div id="head_text" class="col-md-8">
-                        <p id="head_name" class="head_1">
-                            <?php echo  $prefix
+            <div class="container-fluid bg-1 bg text-center">
+                <img alt="PHOTO" class="img-circle" src="<?php $pic = ! empty($photo) ?
+                    PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
+                    echo $pic; ?>" >
+                <h3><?php echo  $prefix
                             . ' ' . $first_name . ' ' . $middle_name
-                            . ' ' . $last_name?></p>
-                    </div>
-                 </div>
+                            . ' ' . $last_name?></h3>
+            </div>
+            <div class="container-fluid bg-2 bg">
                 <div class="row">
-                    <div id="right_section" class="col-md-8 col-md-push-4">
-                        <p class="right_head">Personal Info:</p>
-                        <ul>
+                    <div class="col-lg-3 col-md-3">
+                        <h3>Personal Info</h3>
+                        <ul >
                             <li class="right_char"><?php echo '<strong>Gender:</strong>'
                                 . ( ! empty($gender) ? $gender : ' N/A');?></li>
                             <li class="right_char"><?php echo '<strong>DOB:</strong>'
                                 . ( ! empty($date_of_birth) ? $date_of_birth : ' N/A');?></li>
                             <li class="right_char"><?php echo '<strong>Marital Status:</strong>'
                                 . ( ! empty($marital) ? $marital : ' N/A');?></li>
-                         </ul>
-                        <p class="right_head">Residence Address:</p>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <h3>Residence Address</h3>
                         <ul>
-                            <li class="right_char"><?php echo '<strong>Street::</strong>'
+                            <li class="right_char"><?php echo '<strong>Street:</strong>'
                                 . ( ! empty($r_street) ? $r_street : ' N/A');?></li>
                             <li class="right_char"><?php echo '<strong>City:</strong>'
                                 . ( ! empty($r_city) ? $r_city : ' N/A');?> </li>
@@ -125,10 +122,10 @@ while ($row = mysqli_fetch_assoc($result))
                                 . ( ! empty($r_fax) ? $r_fax : ' N/A');?></li>
                         </ul>
                     </div>
-                    <div id="left_section" class="col-md-4 col-md-pull-8">
-                        <p id="soft_pro" class="left_head">Office Address:</p>
+                    <div class="col-lg-3 col-md-3">
+                        <h3>Office Address</h3>
                         <ul>
-                            <li class="right_char"><?php echo '<strong>Street::</strong>'
+                            <li class="right_char"><?php echo '<strong>Street:</strong>'
                                 . ( ! empty($o_street) ? $o_street : ' N/A');?></li>
                             <li class="right_char"><?php echo '<strong>City:</strong>'
                                 . ( ! empty($o_city) ? $o_city : ' N/A');?></li>
@@ -141,7 +138,9 @@ while ($row = mysqli_fetch_assoc($result))
                             <li class="right_char"><?php echo '<strong>Fax no:</strong>'
                                 . ( ! empty($o_fax) ? $o_fax : ' N/A');?></li>
                         </ul>
-                        <p class="left_head">Other Info:</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <h3>Other Info</h3>
                         <ul>
                             <li class="left_char"><?php echo '<strong>Employment:</strong>'
                                 . ( ! empty($employment) ? $employment : ' N/A');?></li>
@@ -156,5 +155,10 @@ while ($row = mysqli_fetch_assoc($result))
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+            crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/home.js?version=1.0"></script>
     </body>
 </html>

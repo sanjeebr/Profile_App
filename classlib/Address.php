@@ -62,9 +62,7 @@ class Address {
                 {
                     $this->fields[$key] = $value;
                 }
-
             }
-
         }
 
         if ('first' === $time)

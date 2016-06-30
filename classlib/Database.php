@@ -46,7 +46,6 @@ class Database {
         {
             header('Location: error.php');
         }
-
     }
 
     /**
@@ -68,7 +67,6 @@ class Database {
      */
     public static function get_instance()
     {
-
         if(self::$instance === NULL)
         {
 
