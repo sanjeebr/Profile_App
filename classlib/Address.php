@@ -33,7 +33,6 @@ class Address {
     public function __construct($db_object)
     {
         $this->db_obj = $db_object;
-
     }
 
     /**
@@ -53,10 +52,9 @@ class Address {
 
         foreach ($address as $key => $value)
         {
-
             if(('office' === $type && 'o' === $key[0] ) || ('residence' === $type && 'r' === $key[0]))
             {
-            $key = substr($key, 2);
+                $key = substr($key, 2);
 
                 if(isset($this->fields[$key]))
                 {

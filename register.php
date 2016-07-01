@@ -3,13 +3,16 @@ session_start();
 
 if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
 {
-    if ( 0 == $_SESSION['is_completed'])
+    switch ($_SESSION['is_completed'])
     {
-        header('Location: form.php');
-    }
-    else if ( 1 == $_SESSION['is_completed'])
-    {
-        header('Location: index.php');
+        case '0':
+            header('Location: form.php');
+            break;
+        case '1':
+            header('Location: home.php');
+            break;
+        default :
+            header('Location: error.php');
     }
 }
 
@@ -32,6 +35,7 @@ if (isset($_POST['signup']))
     $password = isset($_POST['password']) ? $valid->sanitize_input($_POST['password']) : '';
     $cpassword = isset($_POST['cpassword']) ? $valid->sanitize_input($_POST['cpassword']) : '';
 
+    // To check valid Email or not.
     if ( ! $valid->is_empty($email))
     {
         $email_err = 'Email field cannot be left blank';
@@ -45,6 +49,7 @@ if (isset($_POST['signup']))
         $email_err = 'Email already present';
     }
 
+    // To check valid Password or not.
     if ( ! $valid->is_empty($password))
     {
         $pwd_err = 'Password cannot be left blank';
@@ -54,6 +59,7 @@ if (isset($_POST['signup']))
         $pwd_err = 'Password length must be between 8-16';
     }
 
+    // To check valid Comfirm Password or not.
     if (! $valid->is_empty($cpassword))
     {
         $cpwd_err = 'Password cannot be left blank';
@@ -145,7 +151,8 @@ if (isset($_POST['signup']))
                                             <?php echo $cpwd_err;?>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-lg btn-success btn-block" name="signup">
+                                    <button type="submit" name="signup"
+                                        class="btn btn-lg btn-success btn-block" >
                                         Sign up</button>
                                 </form>
                             </div>

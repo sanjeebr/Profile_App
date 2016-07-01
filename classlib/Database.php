@@ -38,8 +38,11 @@ class Database {
      */
     private function __construct()
     {
-        $this->connection = new mysqli($this->db['master']['host'], $this->db['master']['username'],
-            $this->db['master']['password'], $this->db['master']['db_name']);
+        $this->connection = new mysqli(
+            $this->db['master']['host'],
+            $this->db['master']['username'],
+            $this->db['master']['password'],
+            $this->db['master']['db_name']);
 
         // Error handling
         if(mysqli_connect_error())
@@ -166,6 +169,7 @@ class Database {
             {
                 $set .= "$key = '$value', ";
             }
+
             $set = trim($set, ", ");
         }
         else
@@ -198,12 +202,10 @@ class Database {
 
         if (is_array ($data))
         {
-
             foreach ($data as $value)
             {
                 $sql_query .= " $value, ";
             }
-
         }
         else
         {

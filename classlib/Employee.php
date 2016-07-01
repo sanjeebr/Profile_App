@@ -43,7 +43,6 @@ class Employee {
     public function __construct($db_object)
     {
         $this->db_obj = $db_object;
-
     }
 
     /**
@@ -134,13 +133,12 @@ class Employee {
 
         foreach ($employee_data as $key => $value)
         {
-
             if(isset($this->form_fields[$key]))
             {
                 $this->form_fields[$key] = $value;
             }
-
         }
+
         $this->db_obj->transaction();
 
         if($this->db_obj->update($this->table_name, $this->form_fields, "WHERE id = $emp_id")
@@ -154,6 +152,5 @@ class Employee {
         {
             return FALSE;
         }
-
     }
 }

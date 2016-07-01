@@ -9,33 +9,33 @@ $db_obj = Database::get_instance();
 $employee = new Employee($db_obj);
 $result = $employee->get_employee($_SESSION['emp_id']);
 
-while ($row = mysqli_fetch_assoc($result))
-{
-    $prefix = $row['prefix'];
-    $first_name = $row['first_name'];
-    $middle_name = $row['middle_name'];
-    $last_name = $row['last_name'];
-    $gender = $row['gender'];
-    $date_of_birth = $row['date_of_birth'];
-    $marital = $row['marital'];
-    $r_street = $row['r_street'];
-    $r_city = $row['r_city'];
-    $r_state = $row['r_state'];
-    $r_pin = $row['r_pin'];
-    $r_phone = $row['r_phone'];
-    $r_fax = $row['r_fax'];
-    $o_street = $row['o_street'];
-    $o_city = $row['o_city'];
-    $o_state = $row['o_state'];
-    $o_pin = $row['o_pin'];
-    $o_phone = $row['o_phone'];
-    $o_fax = $row['o_fax'];
-    $employment = $row['employment'];
-    $employer = $row['employer'];
-    $note = $row['note'];
-    $communication = $row['communication'];
-    $photo = $row['photo'];
-}
+$row = mysqli_fetch_assoc($result);
+
+$prefix = $row['prefix'];
+$first_name = $row['first_name'];
+$middle_name = $row['middle_name'];
+$last_name = $row['last_name'];
+$gender = $row['gender'];
+$date_of_birth = $row['date_of_birth'];
+$marital = $row['marital'];
+$r_street = $row['r_street'];
+$r_city = $row['r_city'];
+$r_state = $row['r_state'];
+$r_pin = $row['r_pin'];
+$r_phone = $row['r_phone'];
+$r_fax = $row['r_fax'];
+$o_street = $row['o_street'];
+$o_city = $row['o_city'];
+$o_state = $row['o_state'];
+$o_pin = $row['o_pin'];
+$o_phone = $row['o_phone'];
+$o_fax = $row['o_fax'];
+$employment = $row['employment'];
+$employer = $row['employer'];
+$note = $row['note'];
+$communication = $row['communication'];
+$photo = $row['photo'];
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -87,7 +87,7 @@ while ($row = mysqli_fetch_assoc($result))
             <div class="container-fluid bg-1 bg text-center">
                 <img alt="PHOTO" class="img-circle" src="<?php $pic = ! empty($photo) ?
                     PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
-                    echo $pic; ?>" >
+                    echo $pic; ?>" width="400" height="400">
                 <h3><?php echo  $prefix
                             . ' ' . $first_name . ' ' . $middle_name
                             . ' ' . $last_name?></h3>

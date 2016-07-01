@@ -17,6 +17,8 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
         case '1':
             header('Location: home.php');
             break;
+        default :
+            header('Location: error.php');
     }
 }
 $email_err = '';
