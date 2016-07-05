@@ -74,7 +74,7 @@ class Employee {
      * @param  integer employee_id
      * @return mixed
      */
-    public function get_employee($employee_id = 0)
+    public function get_employee($employee_id = 0, $input_condition = '')
     {
         $value = 'employee.is_completed AS is_completed, employee.id AS emp_id,
             employee.first_name AS first_name, employee.middle_name AS middle_name,
@@ -94,11 +94,15 @@ class Employee {
 
         if ( 0 !== $employee_id)
         {
-            $condition .= " HAVING emp_id = '$employee_id'";
+            $condition .= " WHERE emp_id = '$employee_id'";
+        }
+        else if ( '' !== $input_condition)
+        {
+            $condition .= $input_condition;
         }
         else
         {
-            $condition .= " HAVING  is_completed = '1'";
+            $condition .= " WHERE  is_completed = '1'";
         }
 
         $result = $this->db_obj->select($this->table_name, $value, $condition);

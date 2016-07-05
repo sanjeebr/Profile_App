@@ -269,4 +269,3 @@ class Database {
         $this->connection->commit();
     }
 }
-?>

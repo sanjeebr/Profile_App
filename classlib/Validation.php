@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Validation Class
  *
@@ -136,7 +137,7 @@ class Validation {
      */
     public function is_valid_pass($password)
     {
-        if ( strlen($password) < 8 || strlen($password) > 16)
+        if (8 > strlen($password) || 16 < strlen($password))
         {
             $this->error = TRUE;
             return FALSE;
@@ -156,7 +157,7 @@ class Validation {
      */
     public function is_valid_number($number, $length = 10)
     {
-       if ( ! preg_match('/^[0-9]{' . $length . '}$/', $number))
+        if ( ! preg_match('/^[0-9]{' . $length . '}$/', $number))
         {
             $this->error = TRUE;
             return FALSE;
@@ -248,7 +249,7 @@ class Validation {
      */
     public function is_valid_marital($marital)
     {
-        if ( 'Single' !== $marital && 'Married' !== $marital)
+        if ('Single' !== $marital && 'Married' !== $marital)
         {
             $this->error = TRUE;
             return FALSE;
@@ -294,7 +295,7 @@ class Validation {
      */
     public function is_valid_prefix($prefix)
     {
-        if ( 'Mr' !== $prefix && 'Mrs' !== $prefix && 'Ms' !== $prefix)
+        if ('Mr' !== $prefix && 'Mrs' !== $prefix && 'Ms' !== $prefix)
         {
             $this->error = TRUE;
             return FALSE;

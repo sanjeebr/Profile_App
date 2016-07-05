@@ -47,8 +47,6 @@ $photo = $row['photo'];
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/output.css"/>
         <link rel="stylesheet" href="css/home.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="container-fluid" id="container_body">
@@ -155,8 +153,8 @@ $photo = $row['photo'];
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
-            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+        <script   src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/home.js?version=1.0"></script>

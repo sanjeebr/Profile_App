@@ -11,7 +11,7 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
         case '1':
             header('Location: home.php');
             break;
-        default :
+        default:
             header('Location: error.php');
     }
 }
@@ -82,7 +82,7 @@ if (isset($_POST['signup']))
         else
         {
             $_SESSION['emp_id'] = $emp_id;
-            $_SESSION['is_completed'] = 0;
+            $_SESSION['is_completed'] = '0';
             header('Location: form.php');
         }
     }
@@ -161,8 +161,8 @@ if (isset($_POST['signup']))
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
-            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+        <script   src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/validation.js?version=1.0"></script>

@@ -21,6 +21,9 @@ $(document).ready(function() {
         if ( ! $(this).val().match(letters)) {
             $(error).text('Only letters and white space allowed.');
             iserror = false;
+        } else if ($(this).val().length > 200 ) {
+            $(error).text('Length must be less than 200 character.');
+            iserror = false;
         } else {
             $(error).text('');
             iserror = true;
@@ -46,6 +49,9 @@ $(document).ready(function() {
 
         if ( ! $(this).val().match(street)) {
             $(error).text('Invalid data.');
+            iserror = false;
+        } else if ($(this).val().length > 200 ) {
+            $(error).text('Length must be less than 200 character.');
             iserror = false;
         } else {
             $(error).text('');
@@ -106,7 +112,6 @@ $(document).ready(function() {
         var str_length = $(this).val().length;
 
         if ($(this).val() !== '') {
-
             if (str_length < 8) {
                 $('.pwd_err').text('Password length must be greater than 8');
                 iserror = false;
@@ -117,12 +122,10 @@ $(document).ready(function() {
                 $('.pwd_err').text('');
                 iserror = true;
             }
-
         } else {
             $('.pwd_err').text('');
             iserror = true;
         }
-
     });
 
     $('#email').on('blur', function() {
@@ -136,9 +139,7 @@ $(document).ready(function() {
             $(error).text('');
             iserror = true;
         }
-
     });
-
 });
 
 

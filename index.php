@@ -62,7 +62,7 @@ if (isset($_POST['login']))
             setcookie('is_completed', $value['is_completed'], time() + (86400 * 14), '/');
         }
 
-        if (0 == $value['is_completed'])
+        if ('0' === $value['is_completed'])
         {
              header('Location: form.php');
         }
@@ -70,6 +70,7 @@ if (isset($_POST['login']))
         header('Location: home.php');
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -86,7 +87,7 @@ if (isset($_POST['login']))
     <body class="container_body">
         <div class="container-fluid">
             <div class="jumbotron transbox">
-                <h1>Employee </h1>
+                <h1>Employee</h1>
             </div>
             <div class="container">
                 <div class="row">
@@ -135,8 +136,8 @@ if (isset($_POST['login']))
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
-            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+       <script   src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/validation.js?version=1.0"></script>

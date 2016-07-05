@@ -1,10 +1,11 @@
 <?php
 session_start();
 
-if ( ! isset($_SESSION['emp_id']) && ! isset($_SESSION['is_completed']))
+if ( ! isset($_SESSION['emp_id'],$_SESSION['is_completed']))
 {
     header('Location: index.php');
 }
+
 require_once('classlib/Database.php');
 require_once('config/initialization_config.php');
 require_once('display_error.php');
@@ -23,33 +24,31 @@ extract($employee_data, EXTR_SKIP);
 extract($error_list, EXTR_SKIP);
 $result = $employee->get_employee($_SESSION['emp_id']);
 
-while ($row = mysqli_fetch_assoc($result))
-{
-    $prefix = $row['prefix'];
-    $first_name = $row['first_name'];
-    $middle_name = $row['middle_name'];
-    $last_name = $row['last_name'];
-    $gender = $row['gender'];
-    $date_of_birth = $row['date_of_birth'];
-    $marital = $row['marital'];
-    $r_street = $row['r_street'];
-    $r_city = $row['r_city'];
-    $r_state = $row['r_state'];
-    $r_pin = $row['r_pin'];
-    $r_phone = $row['r_phone'];
-    $r_fax = $row['r_fax'];
-    $o_street = $row['o_street'];
-    $o_city = $row['o_city'];
-    $o_state = $row['o_state'];
-    $o_pin = $row['o_pin'];
-    $o_phone = $row['o_phone'];
-    $o_fax = $row['o_fax'];
-    $employment = $row['employment'];
-    $employer = $row['employer'];
-    $note = $row['note'];
-    $communication = $row['communication'];
-    $photo = $row['photo'];
-}
+$row = mysqli_fetch_assoc($result);
+$prefix = $row['prefix'];
+$first_name = $row['first_name'];
+$middle_name = $row['middle_name'];
+$last_name = $row['last_name'];
+$gender = $row['gender'];
+$date_of_birth = $row['date_of_birth'];
+$marital = $row['marital'];
+$r_street = $row['r_street'];
+$r_city = $row['r_city'];
+$r_state = $row['r_state'];
+$r_pin = $row['r_pin'];
+$r_phone = $row['r_phone'];
+$r_fax = $row['r_fax'];
+$o_street = $row['o_street'];
+$o_city = $row['o_city'];
+$o_state = $row['o_state'];
+$o_pin = $row['o_pin'];
+$o_phone = $row['o_phone'];
+$o_fax = $row['o_fax'];
+$employment = $row['employment'];
+$employer = $row['employer'];
+$note = $row['note'];
+$communication = $row['communication'];
+$photo = $row['photo'];
 
 if (isset($_POST['submit']) || isset($_POST['update']))
 {
@@ -58,9 +57,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     $_POST['communication'] = (isset($_POST['communication']) && ! empty($_POST['communication']) )
         ? implode(',', $_POST['communication']) : '';
 
-    foreach ($_POST as $value)
+    foreach ($_POST as $key => $value)
     {
-        $value = $valid->sanitize_input($value);
+        $_POST[$key] = $valid->sanitize_input($value);
     }
 
     $prefix = $_POST['prefix'];
@@ -89,7 +88,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
 
 
     // To check error in prefix.
-    if (! $valid->is_valid_prefix($_POST['prefix']))
+    if ( ! $valid->is_valid_prefix($_POST['prefix']))
     {
         $prefix_err = 'Invalid Prefix.';
     }
@@ -147,7 +146,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     {
         $dob_err = 'Date of Birth is required.';
     }
-    else if (! $valid->is_valid_date($_POST['date_of_birth']) )
+    else if ( ! $valid->is_valid_date($_POST['date_of_birth']) )
     {
         $dob_err = 'Date of Birth is invalid.';
     }
@@ -169,7 +168,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
 
     // To check error in mobile no.
-    if (! $valid->is_empty($_POST['r_phone']))
+    if ( ! $valid->is_empty($_POST['r_phone']))
     {
         $r_phone_err = 'This field is required.';
     }
@@ -198,23 +197,23 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
 
     // To check error in gender.
-    if (! $valid->is_empty($_POST['gender']))
+    if ( ! $valid->is_empty($_POST['gender']))
     {
         $gender_err = 'This field is required.';
     }
-    else if (! $valid->is_valid_gender($_POST['gender']) )
+    else if ( ! $valid->is_valid_gender($_POST['gender']) )
     {
         $gender_err = 'Invalid Gender.';
     }
 
     // To check error in marital status.
-    if (! $valid->is_valid_marital($_POST['marital']))
+    if ( ! $valid->is_valid_marital($_POST['marital']))
     {
         $marital_err = 'Invalid Marital Status.';
     }
 
     // To check residence street is empty or not.
-    if (! $valid->is_empty($_POST['r_street']))
+    if ( ! $valid->is_empty($_POST['r_street']))
     {
         $r_street_err = 'This field is required.';
     }
@@ -222,9 +221,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     {
         $r_street_err = 'Invalid  Street.';
     }
-    else if ( ! $valid->valid_max_length($_POST['r_street'], 100))
+    else if ( ! $valid->valid_max_length($_POST['r_street']))
     {
-        $r_street_err = 'Length must be less than 100';
+        $r_street_err = 'Length must be less than 200';
     }
 
     // To check street is valid or not
@@ -232,13 +231,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     {
         $o_street_err = 'Invalid  Street.';
     }
-    else if ( ! $valid->valid_max_length($_POST['o_street'], 100))
+    else if ( ! $valid->valid_max_length($_POST['o_street']))
     {
         $o_street_err = 'Length must be less than 200';
     }
 
     // To check residence city is empty or not.
-    if (! $valid->is_empty($_POST['r_city']))
+    if ( ! $valid->is_empty($_POST['r_city']))
     {
         $r_city_err = 'This field is required.';
     }
@@ -246,9 +245,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     {
         $r_city_err = 'Invalid City';
     }
-    else if ( ! $valid->valid_max_length($_POST['r_city'], 100))
+    else if ( ! $valid->valid_max_length($_POST['r_city']))
     {
-        $r_city_err = 'Length must be less than 100';
+        $r_city_err = 'Length must be less than 200';
     }
 
 
@@ -256,13 +255,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     {
         $o_city_err = 'Invalid City';
     }
-    else if ( ! $valid->valid_max_length($_POST['o_city'], 100))
+    else if ( ! $valid->valid_max_length($_POST['o_city']))
     {
-        $o_city_err = 'Length must be less than 100';
+        $o_city_err = 'Length must be less than 200';
     }
 
     // To check residence state is empty or not.
-    if (! $valid->is_empty($_POST['r_state']))
+    if ( ! $valid->is_empty($_POST['r_state']))
     {
         $r_state_err = 'This field is required.';
     }
@@ -291,29 +290,27 @@ if (isset($_POST['submit']) || isset($_POST['update']))
             $extensions = array('jpeg', 'jpg', 'png');
 
             // Check if extension is valid or not then check the size must not greater then 2MB.
-            if ( FALSE === in_array($file_ext,$extensions))
+            if (FALSE === in_array($file_ext, $extensions))
             {
                 $photo_err = 'Please choose a JPEG or PNG file.';
                 $error++;
             }
-            else if ($file_size > 2097152)
+            else if (2097152 < $file_size)
             {
-                $photo_err = 'File size must be excately 2 MB';
+                $photo_err = 'File size must be less than 2 MB';
                 $error++;
             }
-            else if (0 === $error &&  (FALSE === $valid->is_error()))
+            else if (0 === $error && FALSE === $valid->is_error())
             {
                 unlink(PROFILE_PIC . $photo);
                 $photo = 'Emp_' . $_SESSION['emp_id'] . '.' . $file_ext;
                 move_uploaded_file($file_tmp, PROFILE_PIC . $photo);
             }
-
         }
-
     }
 
    // If there is any error or not.
-   if ((0 === $error) &&  (FALSE === $valid->is_error()))
+   if (0 === $error && FALSE === $valid->is_error())
    {
         $times = '';
 
@@ -325,14 +322,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         if($employee->update_employee($_SESSION['emp_id'], $_POST,$times) &&
             $db_obj->update('employee', "photo = '$photo'", 'where id = ' . $_SESSION['emp_id']))
         {
-            $_SESSION['is_completed'] = 1;
+            $_SESSION['is_completed'] = '1';
             header('Location: home.php');
         }
         else
         {
             header('Location: error.php');
         }
-
     }
 }
 ?>
@@ -342,22 +338,22 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,
             user-scalable=no">
-        <?php if (1 == $_SESSION['is_completed']): ?>
+        <?php if ('1' === $_SESSION['is_completed']): ?>
         <title>Update</title>
         <?php else: ?>
         <title>Registration</title>
-        <?php endif ?>
+        <?php endif; ?>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/form.css"/>
     </head>
     <body>
         <div class="container-fluid" id="container_body">
             <div class="container">
-            <?php if (1 == $_SESSION['is_completed']): ?>
+            <?php if ('1' === $_SESSION['is_completed']): ?>
                 <h1>Update Form</h1>
             <?php else: ?>
                 <h1>Registration Form</h1>
-            <?php endif ?>
+            <?php endif; ?>
             <br>
             <form role="form" id="empform" method="post" action=""
                 enctype="multipart/form-data">
@@ -370,7 +366,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </label>
                                 <select name="prefix" id="prefix" class="form-control">
                                     <option value="Mr">Mr</option>
-                                    <option value="Ms" <?php if ('Ms' === $prefix)
+                                    <option value="Ms"<?php if ('Ms' === $prefix)
                                         {
                                         echo "selected";
                                         } ?>>Ms</option>
@@ -475,7 +471,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <label for="photo">Upload Photo:
-                                    <?php if (1 == $_SESSION['is_completed'])
+                                    <?php if ('1' === $_SESSION['is_completed'])
                                     { ?>
                                     <a  data-toggle="modal" data-target="#profile_pic" >
                                     View Current Pic</a>
@@ -494,8 +490,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                                 <h4 class="modal-title">Profile Pic</h4>
                                             </div>
                                             <div class="modal-body">
-
-                                            <?php if (1 == $_SESSION['is_completed']): ?>
+                                            <?php if ('1' === $_SESSION['is_completed']): ?>
                                                 <img src="<?php echo !empty($photo)
                                                     ? PROFILE_PIC . $photo :
                                                     DEFAULT_PROFILE_PIC . $gender .'.jpg' ; ?>"
@@ -522,19 +517,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <div class="well"><h3>Residence Address:</h3>
                                 <label for="r_street"><span class="error">*</span>Street Name:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_street_err"><?php echo $r_street_err ?></span>
+                                <span class="error" id="r_street_err"><?php echo $r_street_err; ?></span>
                                 <input type="text" class="form-control empty street" id="r_street"
                                     name="r_street" placeholder="Street name..."
                                     <?php echo "value='$r_street'"; ?>>
                                 <label for="r_city"><span class="error">*</span>City:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_city_err"><?php echo $r_city_err?></span>
+                                <span class="error" id="r_city_err"><?php echo $r_city_err; ?></span>
                                 <input type="text" class="form-control empty only-char" id="r_city"
                                     name="r_city" placeholder="City..."
                                     <?php  echo "value='$r_city'"; ?>>
                                 <label for="r_state"><span class="error">*</span>State:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_state_err"><?php echo $r_state_err ?></span>
+                                <span class="error" id="r_state_err"><?php echo $r_state_err; ?></span>
                                 <select  id="r_state" class="form-control empty" name="r_state">
                                     <option value="">Select State</option>
                                     <?php
@@ -544,19 +539,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </select>
                                 <label for="r_pin"><span class="error">*</span>Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_pin_err"><?php echo $r_pin_err ?></span>
+                                <span class="error" id="r_pin_err"><?php echo $r_pin_err; ?></span>
                                 <input type="text" class="form-control only-num empty pin" id="r_pin"
                                     placeholder="Pin No" name="r_pin"
                                     <?php  echo "value='$r_pin'"; ?>>
                                 <label for="r_phone"><span class="error">*</span>Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_phone_err"><?php echo $r_phone_err ?></span>
+                                <span class="error" id="r_phone_err"><?php echo $r_phone_err; ?></span>
                                 <input type="text" class="form-control only-num empty phone" id="r_phone"
                                     placeholder="eg:9990001234" name="r_phone"
                                     <?php  echo "value='$r_phone'"; ?>>
                                 <label for="r_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_fax_err"><?php echo $r_fax_err ?></span>
+                                <span class="error" id="r_fax_err"><?php echo $r_fax_err; ?></span>
                                 <input type="text" class="form-control only-num fax" id="r_fax"
                                     placeholder="eg:00001234567" name="r_fax"
                                     <?php  echo "value='$r_fax'"; ?>>
@@ -568,19 +563,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <div class="well"><h3>Office Address:</h3>
                                 <label for="o_street">Street Name:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_street_err"><?php echo $o_street_err ?></span>
+                                <span class="error" id="o_street_err"><?php echo $o_street_err; ?></span>
                                 <input type="text" class="form-control street" id="o_street"
                                     name="o_street" placeholder="Street name..."
                                     <?php  echo "value='$o_street'"; ?>>
                                 <label for="o_city">City:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_city_err"><?php echo $o_city_err ?></span>
+                                <span class="error" id="o_city_err"><?php echo $o_city_err; ?></span>
                                 <input type="text" class="form-control only-char" id="o_city"
                                     name="o_city" placeholder="City.."
                                     <?php  echo "value='$o_city'"; ?>>
                                 <label for="o_state">State:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_state_err"><?php echo $o_state_err ?></span>
+                                <span class="error" id="o_state_err"><?php echo $o_state_err; ?></span>
                                 <select  id="o_state" class="form-control" name="o_state">
                                     <option value="">Select State</option>
                                     <?php
@@ -590,19 +585,19 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </select>
                                 <label for="o_pin">Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_pin_err"><?php echo $o_pin_err ?></span>
+                                <span class="error" id="o_pin_err"><?php echo $o_pin_err; ?></span>
                                 <input type="text" class="form-control only-num pin" id="o_pin"
                                     name="o_pin" placeholder="Pin No"
                                     <?php  echo "value='$o_pin'"; ?>>
                                 <label for="o_phone">Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_phone_err"><?php echo $o_phone_err ?></span>
+                                <span class="error" id="o_phone_err"><?php echo $o_phone_err; ?></span>
                                 <input type="text" class="form-control only-num phone" id="o_phone"
                                     name="o_phone" placeholder="eg:9990001234"
                                     <?php  echo "value='$o_phone'"; ?> >
                                 <label for="o_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_fax_err"><?php echo $o_fax_err ?></span>
+                                <span class="error" id="o_fax_err"><?php echo $o_fax_err; ?></span>
                                 <input type="text" class="form-control only-num fax" id="o_fax"
                                     name="o_fax" placeholder="eg:00001234567"
                                     <?php  echo "value='$o_fax'"; ?>>
@@ -699,7 +694,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                     </div>
                 </div>
                 <div class="row form-group text-center">
-                    <?php if(1 == $_SESSION['is_completed']): ?>
+                    <?php if('1' === $_SESSION['is_completed']): ?>
                     <a class="btn btn-danger btn-lg" href="home.php" >Cancel</a>
                     &nbsp;&nbsp;&nbsp;
                     <button type="submit" class="btn btn-warning btn-lg" name="update">Update</button>
@@ -709,13 +704,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                     <button class="btn btn-danger btn-lg" type="reset" >Reset</button>
                     &nbsp;&nbsp;&nbsp;
                     <button type="submit" class="btn btn-warning btn-lg" name="submit">Submit</button>
-                    <?php endif ?>
+                    <?php endif; ?>
                 </div>
             </form>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"
-            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/validation.js?version=1.0"></script>

@@ -23,8 +23,6 @@ $serial_no = 0;
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/form.css"  />
         <link rel="stylesheet" href="css/output.css"  />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="container-fluid" id="container_1">
@@ -51,7 +49,8 @@ $serial_no = 0;
                                 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="form.php">Edit Account</a></li>
-                                    <li><a onclick="return confirm('Are you sure you want to delete your Account?')"
+                                    <li><a onclick="return
+                                        confirm('Are you sure you want to delete your Account?')"
                                         href="delete.php">Delete Account</a></li>
                                 </ul>
                             </li>
@@ -61,8 +60,17 @@ $serial_no = 0;
                     </div>
                 </div>
             </nav>
+            <form role="form" class="form-inline text-center" method="post">
+                <div class="form-group well well-lg">
+                    <span>
+                        <input type="text" class="form-control" id="name">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            Search</button>
+                    </span>
+                </div>
+            </form>
             <?php
-
             // To check if employee table is empty or not.
             if (0 !== $result):
             ?>
@@ -81,7 +89,6 @@ $serial_no = 0;
                     </thead>
                     <tbody>
                     <?php
-
                     while ($row = mysqli_fetch_assoc($result))
                     {
                     ?>
@@ -170,7 +177,12 @@ $serial_no = 0;
                     <h2>No employee records.</h2>
                 </div>
             </div>
-            <?php endif ?>
+            <?php endif; ?>
         </div>
+        <script   src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/employee.js?version=1.0"></script>
     </body>
 </html>
