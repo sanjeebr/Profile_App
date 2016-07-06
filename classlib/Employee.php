@@ -94,7 +94,7 @@ class Employee {
 
         if ( 0 !== $employee_id)
         {
-            $condition .= " WHERE emp_id = '$employee_id'";
+            $condition .= " HAVING emp_id = '$employee_id'";
         }
         else if ( '' !== $input_condition)
         {
@@ -102,7 +102,7 @@ class Employee {
         }
         else
         {
-            $condition .= " WHERE  is_completed = '1'";
+            $condition .= " HAVING is_completed = '1'";
         }
 
         $result = $this->db_obj->select($this->table_name, $value, $condition);

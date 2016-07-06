@@ -21,7 +21,6 @@ $serial_no = 0;
             name="viewport">
         <title>Employee Details</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <link rel="stylesheet" href="css/form.css"  />
         <link rel="stylesheet" href="css/output.css"  />
     </head>
     <body>
@@ -62,12 +61,19 @@ $serial_no = 0;
             </nav>
             <form role="form" class="form-inline text-center" method="post">
                 <div class="form-group well well-lg">
-                    <span>
-                        <input type="text" class="form-control" id="name">
-                        <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="name" placeholder="NAME">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">
+                                <span class="glyphicon glyphicon-search"></span>
                             Search</button>
-                    </span>
+                        </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default sorting" id="sorting" name="DESC">
+                                <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                            </button>
+                        </span>
+                    </div>
                 </div>
             </form>
             <?php
@@ -87,10 +93,9 @@ $serial_no = 0;
                             <th><h4><strong>Other Info</strong></h4></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-body">
                     <?php
-                    while ($row = mysqli_fetch_assoc($result))
-                    {
+                    while ($row = mysqli_fetch_assoc($result)):
                     ?>
                         <tr>
                             <td>
@@ -167,12 +172,17 @@ $serial_no = 0;
                                 ?>
                             </td>
                          </tr>
-                    <?php   } ?>
+                    <?php endwhile; ?>
                     </tbody>
                 </table>
+                <div class="btn-group">
+                    <input type="hidden" name="field_name" value="0" id="page-no">
+                    <button type="button" class="btn btn-primary pagination" id="previous">« Previous</button>
+                    <button type="button" class="btn btn-primary pagination" id="next">Next »</button>
+                </div>
             </div>
             <?php  else : ?>
-            <div class="container">
+            <div class="container text-center">
                 <div class="alert alert-danger">
                     <h2>No employee records.</h2>
                 </div>
