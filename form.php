@@ -20,35 +20,12 @@ $valid = new validation($db_obj);
 $employee = new Employee($db_obj);
 $address = new Address($db_obj);
 
-extract($employee_data, EXTR_SKIP);
-extract($error_list, EXTR_SKIP);
-$result = $employee->get_employee($_SESSION['emp_id']);
 
+extract($error_list, EXTR_SKIP);
+
+$result = $employee->get_employee($_SESSION['emp_id']);
 $row = mysqli_fetch_assoc($result);
-$prefix = $row['prefix'];
-$first_name = $row['first_name'];
-$middle_name = $row['middle_name'];
-$last_name = $row['last_name'];
-$gender = $row['gender'];
-$date_of_birth = $row['date_of_birth'];
-$marital = $row['marital'];
-$r_street = $row['r_street'];
-$r_city = $row['r_city'];
-$r_state = $row['r_state'];
-$r_pin = $row['r_pin'];
-$r_phone = $row['r_phone'];
-$r_fax = $row['r_fax'];
-$o_street = $row['o_street'];
-$o_city = $row['o_city'];
-$o_state = $row['o_state'];
-$o_pin = $row['o_pin'];
-$o_phone = $row['o_phone'];
-$o_fax = $row['o_fax'];
-$employment = $row['employment'];
-$employer = $row['employer'];
-$note = $row['note'];
-$communication = $row['communication'];
-$photo = $row['photo'];
+extract($row, EXTR_SKIP);
 
 if (isset($_POST['submit']) || isset($_POST['update']))
 {
@@ -88,189 +65,189 @@ if (isset($_POST['submit']) || isset($_POST['update']))
 
 
     // To check error in prefix.
-    if ( ! $valid->is_valid_prefix($_POST['prefix']))
+    if ( ! $valid->is_valid_prefix($prefix))
     {
         $prefix_err = 'Invalid Prefix.';
     }
 
     // To check error in first name.
-    if ( ! $valid->is_empty($_POST['first_name']))
+    if ( ! $valid->is_empty($first_name))
     {
         $first_name_err = 'First Name is required.';
     }
-    else if ( ! $valid->is_valid_name($_POST['first_name']))
+    else if ( ! $valid->is_valid_name($first_name))
     {
         $first_name_err = 'Only letters and white space allowed.';
     }
-    else if ( ! $valid->valid_max_length($_POST['first_name']))
+    else if ( ! $valid->valid_max_length($first_name))
     {
         $first_name_err = 'Length must be less than 200';
     }
 
     // To check error in middle name.
-    if ( ! $valid->is_valid_name($_POST['middle_name']))
+    if ( ! $valid->is_valid_name($middle_name))
     {
         $middle_name_err = 'Only letters and white space allowed.';
     }
-    else if ( ! $valid->valid_max_length($_POST['middle_name']))
+    else if ( ! $valid->valid_max_length($middle_name))
     {
         $middle_name_err = 'Length must be less than 200';
     }
 
     // To check error in employment.
-    if ( ! $valid->is_valid_name($_POST['employment']))
+    if ( ! $valid->is_valid_name($employment))
     {
         $employment_err = 'Only letters and white space allowed in Employment.';
     }
-    else if ( ! $valid->valid_max_length($_POST['employment'], 30))
+    else if ( ! $valid->valid_max_length($employment, 30))
     {
         $employment_err = 'Length must be less than 30';
     }
 
     // To check error in last name.
-    if ( ! $valid->is_empty($_POST['last_name']))
+    if ( ! $valid->is_empty($last_name))
     {
         $last_name_err = 'Last Name is required.';
     }
-    else if ( ! $valid->is_valid_name($_POST['last_name']))
+    else if ( ! $valid->is_valid_name($last_name))
     {
         $last_name_err = 'Only letters and white space allowed.';
     }
-    else if ( ! $valid->valid_max_length($_POST['last_name']))
+    else if ( ! $valid->valid_max_length($last_name))
     {
         $last_name_err = 'Length must be less than 200';
     }
 
     // To check error in date of birth.
-    if ( ! $valid->is_empty($_POST['date_of_birth']))
+    if ( ! $valid->is_empty($date_of_birth))
     {
         $dob_err = 'Date of Birth is required.';
     }
-    else if ( ! $valid->is_valid_date($_POST['date_of_birth']) )
+    else if ( ! $valid->is_valid_date($date_of_birth))
     {
         $dob_err = 'Date of Birth is invalid.';
     }
 
     // To check error in pin.
-    if ( ! $valid->is_empty($_POST['r_pin']))
+    if ( ! $valid->is_empty($r_pin))
     {
         $r_pin_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_number($_POST['r_pin'],6))
+    else if ( ! $valid->is_valid_number($r_pin,6))
     {
         $r_pin_err = 'Invalid Pin Code.';
     }
 
-    if ( ! preg_match('/^[0-9]{6}$/', $_POST['o_pin']) && ! empty($_POST['o_pin']))
+    if ( ! preg_match('/^[0-9]{6}$/', $o_pin) && ! empty($o_pin))
     {
         $o_pin_err = 'Invalid Pin Code.';
         $error++;
     }
 
     // To check error in mobile no.
-    if ( ! $valid->is_empty($_POST['r_phone']))
+    if ( ! $valid->is_empty($r_phone))
     {
         $r_phone_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_number($_POST['r_phone'], 10))
+    else if ( ! $valid->is_valid_number($r_phone, 10))
     {
         $r_phone_err = 'Invalid Phone Number.';
     }
 
-    if ( ! preg_match('/^[0-9]{10}$/', $_POST['o_phone']) && ! empty($_POST['o_phone']))
+    if ( ! preg_match('/^[0-9]{10}$/', $o_phone) && ! empty($o_phone))
     {
         $o_phone_err = 'Invalid Phone Number.';
         $error++;
     }
 
     // To check error in fax number.
-    if ( ! preg_match('/^[0-9]{11}$/', $_POST['r_fax']) && ! empty($_POST['r_fax']))
+    if ( ! preg_match('/^[0-9]{11}$/', $r_fax) && ! empty($r_fax))
     {
         $r_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
-    if ( ! preg_match('/^[0-9]{11}$/', $_POST['o_fax']) && ! empty($_POST['o_fax']))
+    if ( ! preg_match('/^[0-9]{11}$/', $o_fax) && ! empty($o_fax))
     {
         $o_fax_err = 'Invalid Fax Number.';
         $error++;
     }
 
     // To check error in gender.
-    if ( ! $valid->is_empty($_POST['gender']))
+    if ( ! $valid->is_empty($gender))
     {
         $gender_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_gender($_POST['gender']) )
+    else if ( ! $valid->is_valid_gender($gender) )
     {
         $gender_err = 'Invalid Gender.';
     }
 
     // To check error in marital status.
-    if ( ! $valid->is_valid_marital($_POST['marital']))
+    if ( ! $valid->is_valid_marital($marital))
     {
         $marital_err = 'Invalid Marital Status.';
     }
 
     // To check residence street is empty or not.
-    if ( ! $valid->is_empty($_POST['r_street']))
+    if ( ! $valid->is_empty($r_street))
     {
         $r_street_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_street($_POST['r_street']))
+    else if ( ! $valid->is_valid_street($r_street))
     {
         $r_street_err = 'Invalid  Street.';
     }
-    else if ( ! $valid->valid_max_length($_POST['r_street']))
+    else if ( ! $valid->valid_max_length($r_street))
     {
         $r_street_err = 'Length must be less than 200';
     }
 
     // To check street is valid or not
-    if ( ! $valid->is_valid_street($_POST['o_street']))
+    if ( ! $valid->is_valid_street($o_street))
     {
         $o_street_err = 'Invalid  Street.';
     }
-    else if ( ! $valid->valid_max_length($_POST['o_street']))
+    else if ( ! $valid->valid_max_length($o_street))
     {
         $o_street_err = 'Length must be less than 200';
     }
 
     // To check residence city is empty or not.
-    if ( ! $valid->is_empty($_POST['r_city']))
+    if ( ! $valid->is_empty($r_city))
     {
         $r_city_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_name($_POST['r_city']))
+    else if ( ! $valid->is_valid_name($r_city))
     {
         $r_city_err = 'Invalid City';
     }
-    else if ( ! $valid->valid_max_length($_POST['r_city']))
+    else if ( ! $valid->valid_max_length($r_city))
     {
         $r_city_err = 'Length must be less than 200';
     }
 
 
-    if ( ! $valid->is_valid_name($_POST['o_city']))
+    if ( ! $valid->is_valid_name($o_city))
     {
         $o_city_err = 'Invalid City';
     }
-    else if ( ! $valid->valid_max_length($_POST['o_city']))
+    else if ( ! $valid->valid_max_length($o_city))
     {
         $o_city_err = 'Length must be less than 200';
     }
 
     // To check residence state is empty or not.
-    if ( ! $valid->is_empty($_POST['r_state']))
+    if ( ! $valid->is_empty($r_state))
     {
         $r_state_err = 'This field is required.';
     }
-    else if ( ! $valid->is_valid_state($_POST['r_state']))
+    else if ( ! $valid->is_valid_state($r_state))
     {
         $r_state_err = 'Invalid State.';
     }
 
-    if ( ! $valid->is_valid_state($_POST['o_state']))
+    if ( ! $valid->is_valid_state($o_state))
     {
         $o_state_err = 'Invalid State.';
     }

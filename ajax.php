@@ -5,19 +5,31 @@ require_once('display_error.php');
 require_once('config/constants.php');
 require_once('classlib/Employee.php');
 
-if ( ! isset($_POST['name'])) {
+if ( ! isset($_POST['name']))
+{
     header('Location: index.php');
 }
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
+
+foreach ($_POST as $key => $value)
+{
+    $_POST[$key] = $db_obj->mysql_sanitize($value);
+}
+
 $signup = new Employee($db_obj);
-$page = (int)$_POST['page']*1;
+
+$page = $_POST['page']*2;
+
+if(0 > $page)
+{
+    $page = 0;
+}
+
 $condition = "HAVING CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE '%{$_POST['name']}%'
-    ORDER BY first_name " . "{$_POST['order']}" . " LIMIT 1 OFFSET " . "$page";
+    ORDER BY first_name " . "{$_POST['order']}" . " LIMIT 2 OFFSET " . "$page";
 $result = $signup->get_employee(0,$condition);
-
-
 
 // To check if employee table is empty or not.
 if (0 !== $result)

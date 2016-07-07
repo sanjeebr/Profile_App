@@ -268,4 +268,29 @@ class Database {
     {
         $this->connection->commit();
     }
+
+    /**
+     * Close the connection
+     *
+     * @access public close
+     * @param  void
+     * @return void
+     */
+    public function close()
+    {
+        mysql_close($this->connection);
+        self::$instance = NULL;
+    }
+
+    /**
+     * Close the connection
+     *
+     * @access public close
+     * @param  void
+     * @return void
+     */
+    public function mysql_sanitize($data)
+    {
+        return $this->connection->real_escape_string($data);
+    }
 }

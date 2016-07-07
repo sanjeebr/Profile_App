@@ -4,37 +4,14 @@ require_once('classlib/Database.php');
 require_once('display_error.php');
 require_once('config/constants.php');
 require_once('classlib/Employee.php');
+require_once('page_header.php');
 
 $db_obj = Database::get_instance();
 $employee = new Employee($db_obj);
 $result = $employee->get_employee($_SESSION['emp_id']);
 
 $row = mysqli_fetch_assoc($result);
-
-$prefix = $row['prefix'];
-$first_name = $row['first_name'];
-$middle_name = $row['middle_name'];
-$last_name = $row['last_name'];
-$gender = $row['gender'];
-$date_of_birth = $row['date_of_birth'];
-$marital = $row['marital'];
-$r_street = $row['r_street'];
-$r_city = $row['r_city'];
-$r_state = $row['r_state'];
-$r_pin = $row['r_pin'];
-$r_phone = $row['r_phone'];
-$r_fax = $row['r_fax'];
-$o_street = $row['o_street'];
-$o_city = $row['o_city'];
-$o_state = $row['o_state'];
-$o_pin = $row['o_pin'];
-$o_phone = $row['o_phone'];
-$o_fax = $row['o_fax'];
-$employment = $row['employment'];
-$employer = $row['employer'];
-$note = $row['note'];
-$communication = $row['communication'];
-$photo = $row['photo'];
+extract($row, EXTR_SKIP);
 
 ?>
 <!DOCTYPE html>
@@ -50,38 +27,7 @@ $photo = $row['photo'];
     </head>
     <body>
         <div class="container-fluid" id="container_body">
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target="#myNavbar">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Sanjeeb</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="myNavbar">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="home.php">Home</a></li>
-                            <li ><a href="employee.php">Employee Details</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown"><a class="dropdown-toggle"
-                                data-toggle="dropdown" href="#">Account Settings
-                                <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="form.php">Edit Account</a></li>
-                                    <li><a href="delete.php"
-                                        onclick="return confirm('Are you sure you want to delete your Account?')">
-                                        Delete Account</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <?php page_header('home'); ?>
             <div class="container-fluid bg-1 bg text-center">
                 <img alt="PHOTO" class="img-circle" src="<?php $pic = ! empty($photo) ?
                     PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;

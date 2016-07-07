@@ -76,7 +76,7 @@ class Employee {
      */
     public function get_employee($employee_id = 0, $input_condition = '')
     {
-        $value = 'employee.is_completed AS is_completed, employee.id AS emp_id,
+        $value = 'SQL_CALC_FOUND_ROWS employee.is_completed AS is_completed, employee.id AS emp_id,
             employee.first_name AS first_name, employee.middle_name AS middle_name,
             employee.last_name AS last_name, employee.date_of_birth AS date_of_birth,
             employee.prefix AS prefix, employee.photo AS photo, employee.note AS note,

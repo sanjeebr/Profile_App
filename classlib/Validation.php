@@ -72,7 +72,7 @@ class Validation {
      */
     function sanitize_input($input)
     {
-        return htmlspecialchars(stripslashes(trim($input)));
+        return htmlspecialchars($this->db_obj->mysql_sanitize(trim($input)));
     }
 
 

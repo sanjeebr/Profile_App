@@ -37,22 +37,23 @@ if (isset($_POST['login']))
     $valid = new validation($db_obj);
     $email = isset($_POST['email']) ? $valid->sanitize_input($_POST['email']) : '';
     $password = isset($_POST['password']) ? $valid->sanitize_input($_POST['password']) : '';
+    $password = hash('sha256', $password);
 
     if ( ! $valid->is_empty($email))
     {
         $email_err = '<strong>Error!</strong> Email field cannot be left blank';
     }
-    else if ( 0 === $valid->is_valid_employee($email, hash('sha256', $password)))
+    else if ( 0 === $valid->is_valid_employee($email, $password))
     {
         $pwd_err = '<strong>Error!</strong> Incorrect Email or Password';
     }
-    else if ( FALSE === $valid->is_valid_employee($email, hash('sha256', $password)))
+    else if ( FALSE === $valid->is_valid_employee($email, $password))
     {
         header('Location: error.php');
     }
     else
     {
-        $value = $valid->is_valid_employee($email, hash('sha256', $password));
+        $value = $valid->is_valid_employee($email, $password);
         $_SESSION['emp_id'] = $value['id'];
         $_SESSION['is_completed'] = $value['is_completed'];
 
