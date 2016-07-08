@@ -1,38 +1,40 @@
+var page = 0;
+var order = 'ASC';
+
 $(document).ready(function() {
     create_display_table();
     get_employee();
 
-    $( 'form' ).on( 'submit', function() {
-        $('#page-no').val('0');
+    $('form').on('submit', function() {
+        page = 0;
         get_employee();
-
         return false;
     });
 
-    $( '.sorting' ).on( 'click', function() {
-        if ('ASC' === $(this).attr('name')) {
-            $('.sorting').attr('name',"DESC");
+    $('.sorting').on('click', function() {
+        if ('ASC' === order) {
+            order = 'DESC';
             $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>');
         } else {
-            $('.sorting').attr('name',"ASC");
+            order = 'ASC';
             $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet"></span>');
         }
-        get_employee();
 
+        page = 0;
+        get_employee();
         return false;
     });
 
     $( '.pagination' ).on( 'click', function() {
-        var curr = parseInt($('#page-no').val());
         if ('previous' === $(this).attr('id')) {
-            if ('0' < $('#page-no').val()) {
-                $('#page-no').val(curr - 1);
+            if ('0' < page) {
+                page = page - 1;
             } else {
                 $('#previous').addClass('disabled');
             }
         } else if ('next' === $(this).attr('id')) {
             $('#previous').removeClass('disabled');
-            $('#page-no').val(curr + 1);
+            page = page + 1;
         }
         get_employee();
 
@@ -41,19 +43,28 @@ $(document).ready(function() {
 });
 
 function display(data) {
-    if ('no data' === data) {
+    if ('no data' === data && '0' === page_no) {
         $(".display").html('<div class="container text-center">'+
             '<div class="alert alert-danger">'+
             '<h2>No employee records.</h2>'+
             '</div></div>'
         );
+
+        $('#next').addClass('disabled');
+
+    } else if ('total' === data.substring(0, 5)) {
+        var curr = Math.ceil(parseInt(data.substr(5)));
+        page = curr;
+        $('#next').addClass('disabled');
     } else {
         create_display_table();
         var obj = JSON.parse(data);
+        $('#next').removeClass('disabled');
 
         for (var i = 1; i <= obj.length; i++) {
             var element_index = i-1;
-            var serial_no = $('#page-no').val()*2  + i;
+            var serial_no = page*2  + i;
+
             $(".table-body").append('<tr><td>' + serial_no + '</td><td>'
                 + '<img src="' + obj[element_index].photo
                 + '" class="img-rounded" alt="profile_pic" width="160"'
@@ -138,8 +149,8 @@ function get_employee() {
         url: 'ajax.php',
         data: {
             name : $('#name').val(),
-            order : $('.sorting').attr('name'),
-            page : $('#page-no').val()
+            order : order,
+            page : page
         },
         type: 'POST',
         success: display

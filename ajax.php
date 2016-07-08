@@ -1,17 +1,12 @@
 <?php
+require_once('error_log.php');
 require_once('session_header.php');
-require_once('classlib/Database.php');
+require_once('libraries/Database.php');
 require_once('display_error.php');
 require_once('config/constants.php');
-require_once('classlib/Employee.php');
-
-if ( ! isset($_POST['name']))
-{
-    header('Location: index.php');
-}
+require_once('libraries/Employee.php');
 
 $db_obj = Database::get_instance();
-$conn = $db_obj->get_connection();
 
 foreach ($_POST as $key => $value)
 {
@@ -20,16 +15,23 @@ foreach ($_POST as $key => $value)
 
 $signup = new Employee($db_obj);
 
-$page = $_POST['page']*2;
+$page = isset($_POST['page']) ? ceil ($_POST['page']*2) : 0;
+$name = isset($_POST['name']) ? preg_replace ( '/\s+/', '', $_POST['name']) : '';
+$order = isset($_POST['order']) ? $_POST['order'] : 'DESC';
 
-if(0 > $page)
+if ('DESC' !== $order && 'ASC' !== $order)
+{
+    $order = 'DESC';
+}
+
+if (0 > $page)
 {
     $page = 0;
 }
 
-$condition = "HAVING CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE '%{$_POST['name']}%'
-    ORDER BY first_name " . "{$_POST['order']}" . " LIMIT 2 OFFSET " . "$page";
-$result = $signup->get_employee(0,$condition);
+$condition = "WHERE CONCAT(employee.first_name, employee.middle_name, employee.last_name) LIKE '%$name%'
+    ORDER BY employee.first_name " . "$order" . " LIMIT 2 OFFSET " . "$page";
+$result = $signup->get_employee(0, $condition);
 
 // To check if employee table is empty or not.
 if (0 !== $result)
@@ -51,11 +53,16 @@ if (0 !== $result)
 
         $json_data[] = $row;
     }
-
     echo json_encode($json_data);
+}
+else if (0 === $result && 0 === $page )
+{
+    echo 'no data';
 }
 else
 {
-    echo 'no data';
+    $condition = "WHERE CONCAT(employee.first_name, ' ', employee.middle_name, ' ', employee.last_name) LIKE '%{$_POST['name']}%'";
+    $last_page = ceil (($signup->total_employee($condition) / 2) - 1);
+    echo 'total' . $last_page;
 }
 

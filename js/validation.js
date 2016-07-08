@@ -18,7 +18,7 @@ $(document).ready(function() {
         var letters = /^[a-zA-Z ]*$/;
         var error = '#'.concat($(this).attr('id'), '_err');
 
-        if ( ! $(this).val().match(letters)) {
+        if ( ! is_match($(this).val(),letters)) {
             $(error).text('Only letters and white space allowed.');
             iserror = false;
         } else if ($(this).val().length > 200 ) {
@@ -34,7 +34,7 @@ $(document).ready(function() {
         var number = /^[0-9 ]*$/;
         var error = '#'.concat($(this).attr('id'), '_err');
 
-        if ( ! $(this).val().match(number)) {
+        if ( ! is_match($(this).val(),number)) {
             $(error).text('Invalid data.');
             iserror = false;
         } else {
@@ -47,7 +47,7 @@ $(document).ready(function() {
         var street = /^[a-zA-Z\s\d-,]*$/;
         var error = '#'.concat($(this).attr('id'), '_err');
 
-        if ( ! $(this).val().match(street)) {
+        if ( ! is_match($(this).val(),street)) {
             $(error).text('Invalid data.');
             iserror = false;
         } else if ($(this).val().length > 200 ) {
@@ -132,7 +132,7 @@ $(document).ready(function() {
         var email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         var error = '#'.concat($(this).attr('id'), '_err');
 
-        if ( ! $(this).val().match(email)) {
+        if ( ! is_match($(this).val(),email)) {
             $(error).text('Invalid Email.');
             iserror = false;
         } else {
@@ -142,4 +142,10 @@ $(document).ready(function() {
     });
 });
 
-
+function is_match(data, type) {
+    if ( ! data.match(type)) {
+        return false;
+    } else {
+        return true;
+    }
+}

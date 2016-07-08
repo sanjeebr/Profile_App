@@ -1,4 +1,6 @@
 <?php
+require_once('error_log.php');
+
 session_start();
 
 if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
@@ -22,9 +24,9 @@ $cpwd_err = '';
 $emp_id = TRUE;
 $email = '';
 
-require_once('classlib/Database.php');
-require_once('classlib/Validation.php');
-require_once('classlib/Employee.php');
+require_once('libraries/Database.php');
+require_once('libraries/Validation.php');
+require_once('libraries/Employee.php');
 
 $db_obj = Database::get_instance();
 

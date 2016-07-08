@@ -1,18 +1,20 @@
 <?php
 session_start();
 
+
 if ( ! isset($_SESSION['emp_id'],$_SESSION['is_completed']))
 {
     header('Location: index.php');
 }
-
-require_once('classlib/Database.php');
+require_once('error_log.php');
+require_once('libraries/Database.php');
 require_once('config/initialization_config.php');
 require_once('display_error.php');
 require_once('config/constants.php');
-require_once('classlib/Validation.php');
-require_once('classlib/Employee.php');
-require_once('classlib/Address.php');
+require_once('libraries/Validation.php');
+require_once('libraries/Employee.php');
+require_once('libraries/Address.php');
+
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
@@ -39,29 +41,29 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         $_POST[$key] = $valid->sanitize_input($value);
     }
 
-    $prefix = $_POST['prefix'];
-    $first_name = $_POST['first_name'];
-    $middle_name = $_POST['middle_name'];
-    $last_name = $_POST['last_name'];
-    $gender = $_POST['gender'];
-    $date_of_birth = $_POST['date_of_birth'];
-    $marital = $_POST['marital'];
-    $r_street = $_POST['r_street'];
-    $r_city = $_POST['r_city'];
-    $r_state = $_POST['r_state'];
-    $r_pin = $_POST['r_pin'];
-    $r_phone = $_POST['r_phone'];
-    $r_fax = $_POST['r_fax'];
-    $o_street = $_POST['o_street'];
-    $o_city = $_POST['o_city'];
-    $o_state = $_POST['o_state'];
-    $o_pin = $_POST['o_pin'];
-    $o_phone = $_POST['o_phone'];
-    $o_fax = $_POST['o_fax'];
-    $employment = $_POST['employment'];
-    $employer = $_POST['employer'];
-    $note = $_POST['note'];
-    $communication = $_POST['communication'];
+    $prefix = isset($_POST['prefix']) ? $_POST['prefix'] : '';
+    $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+    $middle_name = isset($_POST['middle_name']) ? $_POST['middle_name'] : '';
+    $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+    $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+    $date_of_birth = isset($_POST['date_of_birth']) ? $_POST['date_of_birth'] : '';
+    $marital = isset($_POST['marital']) ? $_POST['marital'] : '';
+    $r_street = isset($_POST['r_street']) ? $_POST['r_street'] : '';
+    $r_city = isset($_POST['r_city']) ? $_POST['r_city'] : '';
+    $r_state = isset($_POST['r_state']) ? $_POST['r_state'] : '';
+    $r_pin = isset($_POST['r_pin']) ? $_POST['r_pin'] : '';
+    $r_phone = isset($_POST['r_phone']) ? $_POST['r_phone'] : '';
+    $r_fax = isset($_POST['r_fax']) ? $_POST['r_fax'] : '';
+    $o_street = isset($_POST['o_street']) ? $_POST['o_street'] : '';
+    $o_city = isset($_POST['o_city']) ? $_POST['o_city'] : '';
+    $o_state = isset($_POST['o_state']) ? $_POST['o_state'] : '';
+    $o_pin = isset($_POST['o_pin']) ? $_POST['o_pin'] : '';
+    $o_phone = isset($_POST['o_phone']) ? $_POST['o_phone'] : '';
+    $o_fax = isset($_POST['o_fax']) ? $_POST['o_fax'] : '';
+    $employment = isset($_POST['employment']) ? $_POST['employment'] : '';
+    $employer = isset($_POST['employer']) ? $_POST['employer'] : '';
+    $note = isset($_POST['note']) ? $_POST['note'] : '';
+    $communication = isset($_POST['communication']) ? $_POST['communication'] : '';
 
 
     // To check error in prefix.

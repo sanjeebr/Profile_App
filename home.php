@@ -1,9 +1,10 @@
 <?php
+require_once('error_log.php');
 require_once('session_header.php');
-require_once('classlib/Database.php');
+require_once('libraries/Database.php');
 require_once('display_error.php');
 require_once('config/constants.php');
-require_once('classlib/Employee.php');
+require_once('libraries/Employee.php');
 require_once('page_header.php');
 
 $db_obj = Database::get_instance();

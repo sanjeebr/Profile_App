@@ -1,6 +1,7 @@
 <?php
+require_once('error_log.php');
 require_once('session_header.php');
-require_once('classlib/Database.php');
+require_once('libraries/Database.php');
 require_once('config/constants.php');
 
 $db_obj = Database::get_instance();
@@ -19,5 +20,4 @@ if (FALSE === $db_obj->delete($table, $condition))
 
 // Delete profile pic
 unlink($photo);
-
 header('Location: logout.php');

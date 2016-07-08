@@ -86,7 +86,7 @@ class Employee {
             residence.state AS r_state,residence.pin AS r_pin,residence.phone AS r_phone,
             residence.fax AS r_fax,office.street AS o_street,office.city AS o_city,
             office.state AS o_state,office.pin AS o_pin,office.phone AS o_phone,
-            office.fax AS o_fax';
+            office.fax AS o_fax , FOUND_ROWS() AS ROWS';
         $condition = "LEFT JOIN address AS residence ON employee.id = residence.employee_id AND
             residence.type = 'residence'
             LEFT JOIN address AS office ON employee.id = office.employee_id AND
@@ -120,6 +120,28 @@ class Employee {
         }
 
         return $result;
+    }
+
+    /**
+     * Get total number of employee.
+     *
+     * @access public  total_employee
+     * @param  string condition
+     * @return mixed
+     */
+    public function total_employee($condition = '')
+    {
+        $value = 'COUNT(id) AS total';
+
+        $result = $this->db_obj->select($this->table_name, $value, $condition);
+
+        if (FALSE === $result)
+        {
+            return FALSE;
+        }
+
+        $row = mysqli_fetch_assoc($result);
+        return $row['total'];
     }
 
     /**
