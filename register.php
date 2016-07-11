@@ -117,13 +117,16 @@ if (isset($_POST['signup']))
                                 <form role="form" id="signup" method="post" action="">
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <span class="input-group-addon"
+                                                id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-user"
                                                     aria-hidden="true"></span>
                                             </span>
-                                            <input type="email" class="form-control empty"
-                                                id="email" name="email" placeholder="Email"
-                                                    value="<?php echo $email;?>">
+                                            <input type="email"
+                                                class="form-control empty"
+                                                id="email" name="email"
+                                                placeholder="Email"
+                                                value="<?php echo $email;?>">
                                         </div>
                                         <div class="alert-danger " id="email_err">
                                             <?php echo $email_err;?>
@@ -131,11 +134,14 @@ if (isset($_POST['signup']))
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <span class="input-group-addon"
+                                                id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control empty"
-                                                id="pwd" name="password" placeholder="Password">
+                                            <input type="password"
+                                                class="form-control empty"
+                                                id="pwd" name="password"
+                                                placeholder="Password">
                                         </div>
                                         <div class="alert-danger pwd_err" id="pwd_err">
                                             <?php echo $pwd_err;?>
@@ -143,11 +149,14 @@ if (isset($_POST['signup']))
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <span class="input-group-addon"
+                                                id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="password" class="form-control empty"
-                                                id="cpwd" name="cpassword" placeholder="Confirm Password">
+                                            <input type="password"
+                                                class="form-control empty"
+                                                id="cpwd" name="cpassword"
+                                                placeholder="Confirm Password">
                                         </div>
                                         <div class="alert-danger cpwd_err" id="cpwd_err">
                                             <?php echo $cpwd_err;?>

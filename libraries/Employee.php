@@ -179,4 +179,61 @@ class Employee {
             return FALSE;
         }
     }
+
+    /**
+     * Get JSON data of employee if the input is valid.
+     *
+     * @access public  total_employee
+     * @param  string page
+     * @param  string search_name
+     * @param  string order
+     * @return string
+     */
+    public function get_employee_json($page, $search_name = '', $order = 'DESC')
+    {
+        $condition = "WHERE CONCAT(employee.first_name, employee.middle_name, employee.last_name)
+            LIKE '%$search_name%'
+            ORDER BY employee.first_name " . "$order" . " LIMIT 2 OFFSET " . "$page";
+
+        $result = $this->get_employee(0, $condition);
+
+        // To check if employee table is empty or not.
+        if (0 !== $result)
+        {
+            $json_data = array();
+
+            while ($row = mysqli_fetch_assoc($result))
+            {
+                $row['photo'] = ! empty($row['photo']) ?
+                    PROFILE_PIC . $row['photo'] : DEFAULT_PROFILE_PIC . $row['gender'] . '.jpg';
+
+                foreach ($row as $key => $value)
+                {
+                    if ('middle_name' !== $key)
+                    {
+                        $row[$key] = ! empty($row[$key]) ? $row[$key] : ' N/A';
+                    }
+                }
+
+                $json_data[] = $row;
+            }
+            return json_encode($json_data);
+        }
+        else if (0 === $result && 0 === $page )
+        {
+            return 'no data';
+        }
+        else
+        {
+            $condition = "WHERE CONCAT(employee.first_name, ' ', employee.middle_name,
+                ' ', employee.last_name) LIKE '%{$_POST['name']}%'";
+            $last_page = ceil (($this->total_employee($condition) / 2) - 1);
+            if(0 > $last_page)
+            {
+               return 'no data';
+            }
+            return 'total' . $last_page;
+        }
+    }
+
 }

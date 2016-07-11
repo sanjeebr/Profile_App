@@ -1,6 +1,6 @@
 <?php
-require_once('error_log.php');
 require_once('session_header.php');
+require_once('error_log.php');
 require_once('display_error.php');
 require_once('config/constants.php');
 require_once('page_header.php');
@@ -41,10 +41,13 @@ require_once('page_header.php');
                 <div class="col-lg-4 col-md-4 col-sm-2">
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-                    <button type="button" class="btn btn-primary btn-block pagination disabled" id="previous">« Previous</button>
+                    <button type="button" id="previous"
+                        class="btn btn-primary btn-block pagination disabled">
+                        « Previous</button>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-                    <button type="button" class="btn btn-primary btn-block pagination" id="next">Next »</button>
+                    <button type="button" class="btn btn-primary btn-block pagination"
+                        id="next">Next »</button>
                 </div>
             </div>
         <script   src="https://code.jquery.com/jquery-2.2.4.min.js"

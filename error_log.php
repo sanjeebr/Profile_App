@@ -1,11 +1,9 @@
 <?php
-
-
-function on_error($errno, $errstr)
+function on_error($error_no, $error_msg, $error_file, $error_line)
 {
     date_default_timezone_set('UTC');
     $time = date("H:i:s");
-    $error_msg = "[Time: $time] | [Error: $errno] | [Error Message: $errstr] [Filename: {$_SERVER['PHP_SELF']}]\n";
+    $error_msg = "[Time: $time] | [Error: $error_no] | [Error Message: $error_msg] [Filename: $error_file on Line no: $error_line]\n";
     $filename = 'error_helper/' . date("m.d.y") . '.txt';
 
     if ( ! file_exists($filename))

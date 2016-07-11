@@ -1,6 +1,6 @@
 <?php
-require_once('error_log.php');
 require_once('session_header.php');
+require_once('error_log.php');
 require_once('libraries/Database.php');
 require_once('display_error.php');
 require_once('config/constants.php');

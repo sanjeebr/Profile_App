@@ -27,7 +27,7 @@ $(document).ready(function() {
 
     $( '.pagination' ).on( 'click', function() {
         if ('previous' === $(this).attr('id')) {
-            if ('0' < page) {
+            if (0 < page) {
                 page = page - 1;
             } else {
                 $('#previous').addClass('disabled');
@@ -43,13 +43,13 @@ $(document).ready(function() {
 });
 
 function display(data) {
-    if ('no data' === data && '0' === page_no) {
+    if ('no data' === data) {
         $(".display").html('<div class="container text-center">'+
             '<div class="alert alert-danger">'+
             '<h2>No employee records.</h2>'+
             '</div></div>'
         );
-
+        page = 0;
         $('#next').addClass('disabled');
 
     } else if ('total' === data.substring(0, 5)) {

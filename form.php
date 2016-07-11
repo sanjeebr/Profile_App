@@ -1,11 +1,12 @@
 <?php
 session_start();
 
-
-if ( ! isset($_SESSION['emp_id'],$_SESSION['is_completed']))
+if ( ! isset($_SESSION['emp_id'], $_SESSION['is_completed']))
 {
     header('Location: index.php');
+    exit;
 }
+
 require_once('error_log.php');
 require_once('libraries/Database.php');
 require_once('config/initialization_config.php');
@@ -15,13 +16,11 @@ require_once('libraries/Validation.php');
 require_once('libraries/Employee.php');
 require_once('libraries/Address.php');
 
-
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
 $valid = new validation($db_obj);
 $employee = new Employee($db_obj);
 $address = new Address($db_obj);
-
 
 extract($error_list, EXTR_SKIP);
 
@@ -65,6 +64,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     $note = isset($_POST['note']) ? $_POST['note'] : '';
     $communication = isset($_POST['communication']) ? $_POST['communication'] : '';
 
+    $err_msg_for_char_only = 'Only letters and white space allowed.';
+    $err_msg_for_required = 'This field is required.';
+    $err_msg_for_length = 'Length must be less than 200';
 
     // To check error in prefix.
     if ( ! $valid->is_valid_prefix($prefix))
@@ -79,21 +81,21 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->is_valid_name($first_name))
     {
-        $first_name_err = 'Only letters and white space allowed.';
+        $first_name_err = $err_msg_for_char_only;
     }
     else if ( ! $valid->valid_max_length($first_name))
     {
-        $first_name_err = 'Length must be less than 200';
+        $first_name_err = $err_msg_for_length;
     }
 
     // To check error in middle name.
     if ( ! $valid->is_valid_name($middle_name))
     {
-        $middle_name_err = 'Only letters and white space allowed.';
+        $middle_name_err = $err_msg_for_char_only;
     }
     else if ( ! $valid->valid_max_length($middle_name))
     {
-        $middle_name_err = 'Length must be less than 200';
+        $middle_name_err = $err_msg_for_length;
     }
 
     // To check error in employment.
@@ -106,6 +108,16 @@ if (isset($_POST['submit']) || isset($_POST['update']))
         $employment_err = 'Length must be less than 30';
     }
 
+    // To check error in employer.
+    if ( ! $valid->is_valid_name($employer))
+    {
+        $employer_err = 'Only letters and white space allowed in Employer.';
+    }
+    else if ( ! $valid->valid_max_length($employer, 30))
+    {
+        $employer_err = 'Length must be less than 30';
+    }
+
     // To check error in last name.
     if ( ! $valid->is_empty($last_name))
     {
@@ -113,11 +125,11 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->is_valid_name($last_name))
     {
-        $last_name_err = 'Only letters and white space allowed.';
+        $last_name_err = $err_msg_for_char_only;
     }
     else if ( ! $valid->valid_max_length($last_name))
     {
-        $last_name_err = 'Length must be less than 200';
+        $last_name_err = $err_msg_for_length;
     }
 
     // To check error in date of birth.
@@ -133,7 +145,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     // To check error in pin.
     if ( ! $valid->is_empty($r_pin))
     {
-        $r_pin_err = 'This field is required.';
+        $r_pin_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_number($r_pin,6))
     {
@@ -149,7 +161,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     // To check error in mobile no.
     if ( ! $valid->is_empty($r_phone))
     {
-        $r_phone_err = 'This field is required.';
+        $r_phone_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_number($r_phone, 10))
     {
@@ -178,7 +190,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     // To check error in gender.
     if ( ! $valid->is_empty($gender))
     {
-        $gender_err = 'This field is required.';
+        $gender_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_gender($gender) )
     {
@@ -194,7 +206,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     // To check residence street is empty or not.
     if ( ! $valid->is_empty($r_street))
     {
-        $r_street_err = 'This field is required.';
+        $r_street_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_street($r_street))
     {
@@ -202,7 +214,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->valid_max_length($r_street))
     {
-        $r_street_err = 'Length must be less than 200';
+        $r_street_err = $err_msg_for_length;
     }
 
     // To check street is valid or not
@@ -212,13 +224,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->valid_max_length($o_street))
     {
-        $o_street_err = 'Length must be less than 200';
+        $o_street_err = $err_msg_for_length;
     }
 
     // To check residence city is empty or not.
     if ( ! $valid->is_empty($r_city))
     {
-        $r_city_err = 'This field is required.';
+        $r_city_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_name($r_city))
     {
@@ -226,7 +238,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->valid_max_length($r_city))
     {
-        $r_city_err = 'Length must be less than 200';
+        $r_city_err = $err_msg_for_length;
     }
 
 
@@ -236,13 +248,13 @@ if (isset($_POST['submit']) || isset($_POST['update']))
     }
     else if ( ! $valid->valid_max_length($o_city))
     {
-        $o_city_err = 'Length must be less than 200';
+        $o_city_err = $err_msg_for_length;
     }
 
     // To check residence state is empty or not.
     if ( ! $valid->is_empty($r_state))
     {
-        $r_state_err = 'This field is required.';
+        $r_state_err = $err_msg_for_required;
     }
     else if ( ! $valid->is_valid_state($r_state))
     {
@@ -355,7 +367,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                         } ?>>Mrs</option>
                                 </select>
                                 <br>
-                                <span class="error" id="prefix_err"><?php echo $prefix_err; ?></span>
+                                <span class="error" id="prefix_err">
+                                    <?php echo $prefix_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -363,21 +376,23 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="fname">
                                     <span class="error">*</span>First Name:
                                 </label>
-                                <input type="text" class="form-control empty only-char" id="fname"
-                                    name="first_name" placeholder="First Name"
+                                <input type="text" class="form-control empty only-char"
+                                    id="fname" name="first_name" placeholder="First Name"
                                     <?php  echo "value='$first_name'"; ?>>
                                 <br>
-                                <span class="error" id="fname_err"><?php echo $first_name_err; ?></span>
+                                <span class="error" id="fname_err">
+                                    <?php echo $first_name_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <label for="mname">Middle Name:</label>
-                                <input type="text" class="form-control only-char" id="mname"
-                                    name="middle_name" placeholder="Middle Name"
+                                <input type="text" class="form-control only-char"
+                                    id="mname" name="middle_name" placeholder="Middle Name"
                                     <?php  echo "value='$middle_name'"; ?>>
                                 <br>
-                                <span class="error" id="mname_err"><?php echo $middle_name_err; ?></span>
+                                <span class="error" id="mname_err">
+                                <?php echo $middle_name_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -385,9 +400,11 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 <label for="lname">
                                     <span class="error">*</span>Last Name:
                                 </label>
-                                <input type="text" class="form-control empty only-char" id="lname" name="last_name"
-                                    placeholder="Last Name" <?php  echo "value='$last_name'"; ?>>
-                                <br><span class="error" id="lname_err"><?php echo $last_name_err; ?></span>
+                                <input type="text" class="form-control empty only-char"
+                                    id="lname" name="last_name" placeholder="Last Name"
+                                    <?php  echo "value='$last_name'"; ?>>
+                                <br><span class="error" id="lname_err">
+                                    <?php echo $last_name_err; ?></span>
                             </div>
                         </div>
                     </div>
@@ -410,7 +427,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                    </label>
                                 </div>
                                 <br>
-                                <span class="error" id="gender_err"><?php echo $gender_err; ?></span>
+                                <span class="error" id="gender_err">
+                                    <?php echo $gender_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -419,8 +437,9 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                     <span class="error">*</span>Date of Birth:
                                 </label>
                                 <div class="date">
-                                    <input type="date" name="date_of_birth" class="form-control empty"
-                                        id="dob" <?php  echo "value='$date_of_birth'"; ?>>
+                                    <input type="date" name="date_of_birth"
+                                        class="form-control empty" id="dob"
+                                        <?php  echo "value='$date_of_birth'"; ?>>
                                     <br><span class="error"><?php echo $dob_err; ?></span>
                                 </div>
                             </div>
@@ -432,8 +451,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </label>
                                 <div class="radio">
                                     <label class="radio-inline">
-                                        <input type="radio" id="single" name="marital" value="Single"
-                                            checked>Single
+                                        <input type="radio" id="single" name="marital"
+                                            value="Single" checked>Single
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" id="married" name="marital"
@@ -444,7 +463,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                     </label>
                                 </div>
                                 <br>
-                                <span class="error" id="marital_err"><?php echo $marital_err; ?></span>
+                                <span class="error" id="marital_err">
+                                    <?php echo $marital_err; ?></span>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -494,45 +514,57 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <!-- TODO: Make address function and use it for
                             Residence Address and Office Address  -->
                             <div class="well"><h3>Residence Address:</h3>
-                                <label for="r_street"><span class="error">*</span>Street Name:</label>
+                                <label for="r_street">
+                                    <span class="error">*</span>Street Name:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_street_err"><?php echo $r_street_err; ?></span>
-                                <input type="text" class="form-control empty street" id="r_street"
-                                    name="r_street" placeholder="Street name..."
+                                <span class="error" id="r_street_err">
+                                    <?php echo $r_street_err; ?></span>
+                                <input type="text" class="form-control empty street"
+                                    id="r_street" name="r_street" placeholder="Street name..."
                                     <?php echo "value='$r_street'"; ?>>
-                                <label for="r_city"><span class="error">*</span>City:</label>
+                                <label for="r_city">
+                                    <span class="error">*</span>City:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_city_err"><?php echo $r_city_err; ?></span>
-                                <input type="text" class="form-control empty only-char" id="r_city"
-                                    name="r_city" placeholder="City..."
+                                <span class="error" id="r_city_err">
+                                    <?php echo $r_city_err; ?></span>
+                                <input type="text" class="form-control empty only-char"
+                                    id="r_city" name="r_city" placeholder="City..."
                                     <?php  echo "value='$r_city'"; ?>>
-                                <label for="r_state"><span class="error">*</span>State:</label>
+                                <label for="r_state"><span class="error">
+                                    *</span>State:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_state_err"><?php echo $r_state_err; ?></span>
-                                <select  id="r_state" class="form-control empty" name="r_state">
+                                <span class="error" id="r_state_err">
+                                    <?php echo $r_state_err; ?></span>
+                                <select  id="r_state" class="form-control empty"
+                                    name="r_state">
                                     <option value="">Select State</option>
                                     <?php
                                         // Fetch state list.
                                         echo $address->state_list($r_state);
                                     ?>
                                 </select>
-                                <label for="r_pin"><span class="error">*</span>Pin no:</label>
+                                <label for="r_pin">
+                                    <span class="error">*</span>Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_pin_err"><?php echo $r_pin_err; ?></span>
-                                <input type="text" class="form-control only-num empty pin" id="r_pin"
-                                    placeholder="Pin No" name="r_pin"
+                                <span class="error" id="r_pin_err">
+                                    <?php echo $r_pin_err; ?></span>
+                                <input type="text" class="form-control only-num empty pin"
+                                    id="r_pin" placeholder="Pin No" name="r_pin"
                                     <?php  echo "value='$r_pin'"; ?>>
-                                <label for="r_phone"><span class="error">*</span>Mobile No:</label>
+                                <label for="r_phone">
+                                    <span class="error">*</span>Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_phone_err"><?php echo $r_phone_err; ?></span>
-                                <input type="text" class="form-control only-num empty phone" id="r_phone"
-                                    placeholder="eg:9990001234" name="r_phone"
-                                    <?php  echo "value='$r_phone'"; ?>>
+                                <span class="error" id="r_phone_err">
+                                    <?php echo $r_phone_err; ?></span>
+                                <input type="text" class="form-control only-num empty phone"
+                                    id="r_phone" placeholder="eg:9990001234"
+                                    name="r_phone" <?php  echo "value='$r_phone'"; ?>>
                                 <label for="r_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="r_fax_err"><?php echo $r_fax_err; ?></span>
-                                <input type="text" class="form-control only-num fax" id="r_fax"
-                                    placeholder="eg:00001234567" name="r_fax"
+                                <span class="error" id="r_fax_err">
+                                    <?php echo $r_fax_err; ?></span>
+                                <input type="text" class="form-control only-num fax"
+                                    id="r_fax" placeholder="eg:00001234567" name="r_fax"
                                     <?php  echo "value='$r_fax'"; ?>>
                             </div>
                         </div>
@@ -542,20 +574,24 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <div class="well"><h3>Office Address:</h3>
                                 <label for="o_street">Street Name:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_street_err"><?php echo $o_street_err; ?></span>
-                                <input type="text" class="form-control street" id="o_street"
-                                    name="o_street" placeholder="Street name..."
+                                <span class="error" id="o_street_err">
+                                    <?php echo $o_street_err; ?></span>
+                                <input type="text" class="form-control street"
+                                    id="o_street" name="o_street" placeholder="Street name..."
                                     <?php  echo "value='$o_street'"; ?>>
                                 <label for="o_city">City:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_city_err"><?php echo $o_city_err; ?></span>
-                                <input type="text" class="form-control only-char" id="o_city"
-                                    name="o_city" placeholder="City.."
+                                <span class="error" id="o_city_err">
+                                    <?php echo $o_city_err; ?></span>
+                                <input type="text" class="form-control only-char"
+                                    id="o_city" name="o_city" placeholder="City.."
                                     <?php  echo "value='$o_city'"; ?>>
                                 <label for="o_state">State:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_state_err"><?php echo $o_state_err; ?></span>
-                                <select  id="o_state" class="form-control" name="o_state">
+                                <span class="error" id="o_state_err">
+                                    <?php echo $o_state_err; ?></span>
+                                <select  id="o_state" class="form-control"
+                                     name="o_state">
                                     <option value="">Select State</option>
                                     <?php
                                         // Fetch state list.
@@ -564,21 +600,24 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </select>
                                 <label for="o_pin">Pin no:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_pin_err"><?php echo $o_pin_err; ?></span>
-                                <input type="text" class="form-control only-num pin" id="o_pin"
-                                    name="o_pin" placeholder="Pin No"
+                                <span class="error" id="o_pin_err">
+                                    <?php echo $o_pin_err; ?></span>
+                                <input type="text" class="form-control only-num pin"
+                                    id="o_pin" name="o_pin" placeholder="Pin No"
                                     <?php  echo "value='$o_pin'"; ?>>
                                 <label for="o_phone">Mobile No:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_phone_err"><?php echo $o_phone_err; ?></span>
-                                <input type="text" class="form-control only-num phone" id="o_phone"
-                                    name="o_phone" placeholder="eg:9990001234"
+                                <span class="error" id="o_phone_err">
+                                    <?php echo $o_phone_err; ?></span>
+                                <input type="text" class="form-control only-num phone"
+                                    id="o_phone" name="o_phone" placeholder="eg:9990001234"
                                     <?php  echo "value='$o_phone'"; ?> >
                                 <label for="o_fax">Fax:</label>
                                 &nbsp;&nbsp;&nbsp;
-                                <span class="error" id="o_fax_err"><?php echo $o_fax_err; ?></span>
-                                <input type="text" class="form-control only-num fax" id="o_fax"
-                                    name="o_fax" placeholder="eg:00001234567"
+                                <span class="error" id="o_fax_err">
+                                    <?php echo $o_fax_err; ?></span>
+                                <input type="text" class="form-control only-num fax"
+                                    id="o_fax" name="o_fax" placeholder="eg:00001234567"
                                     <?php  echo "value='$o_fax'"; ?>>
                             </div>
                         </div>
@@ -589,11 +628,12 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="employment">Employment:</label>
-                                <input type="text" class="form-control only-char" id="employment"
-                                    name="employment" placeholder="Employment"
+                                <input type="text" class="form-control only-char"
+                                    id="employment" name="employment" placeholder="Employment"
                                     <?php echo "value='$employment'"; ?>>
                             </div>
-                            <span class="error" id="employment_err"><?php echo $employment_err; ?></span>
+                            <span class="error" id="employment_err">
+                                <?php echo $employment_err; ?></span>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
@@ -602,7 +642,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                     name="employer" placeholder="Employer"
                                     <?php  echo "value='$employer'"; ?>>
                             </div>
-                            <span class="error" id="employer_err"><?php echo $employer_err; ?></span>
+                            <span class="error" id="employer_err">
+                                <?php echo $employer_err; ?></span>
                         </div>
                     </div>
                     <div class="row">
@@ -610,7 +651,8 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                             <div class="form-group">
                                 <label for="extra">Extra Note:</label>
                                 <textarea class="form-control" id="extra" name="note"
-                                    placeholder="Extra Note.."><?php  echo "$note"; ?></textarea>
+                                    placeholder="Extra Note.."><?php  echo "$note"; ?>
+                                </textarea>
                             </div>
                         </div>
                     </div>
@@ -669,20 +711,25 @@ if (isset($_POST['submit']) || isset($_POST['update']))
                                 </div>
                             </div>
                         </div>
-                        <span class="error" id="communication_err"><?php echo $communication_err; ?></span>
+                        <span class="error" id="communication_err">
+                            <?php echo $communication_err; ?></span>
                     </div>
                 </div>
                 <div class="row form-group text-center">
                     <?php if('1' === $_SESSION['is_completed']): ?>
                     <a class="btn btn-danger btn-lg" href="home.php" >Cancel</a>
                     &nbsp;&nbsp;&nbsp;
-                    <button type="submit" class="btn btn-warning btn-lg" name="update">Update</button>
+                    <button type="submit" class="btn btn-warning btn-lg"
+                        name="update">Update</button>
                     <?php else: ?>
-                    <a class="btn btn-info btn-lg" href="logout.php" >Cancel</a>
+                    <a class="btn btn-info btn-lg"
+                        href="logout.php">Cancel</a>
                     &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-danger btn-lg" type="reset" >Reset</button>
+                    <button class="btn btn-danger btn-lg"
+                        type="reset">Reset</button>
                     &nbsp;&nbsp;&nbsp;
-                    <button type="submit" class="btn btn-warning btn-lg" name="submit">Submit</button>
+                    <button type="submit" class="btn btn-warning btn-lg"
+                        name="submit">Submit</button>
                     <?php endif; ?>
                 </div>
             </form>

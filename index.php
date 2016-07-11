@@ -23,9 +23,8 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
             header('Location: error.php');
     }
 }
-$email_err = '';
+
 $pwd_err = '';
-$emp_id = TRUE;
 $email = '';
 
 require_once('libraries/Database.php');
@@ -39,6 +38,7 @@ if (isset($_POST['login']))
     $valid = new validation($db_obj);
     $email = isset($_POST['email']) ? $valid->sanitize_input($_POST['email']) : '';
     $password = isset($_POST['password']) ? $valid->sanitize_input($_POST['password']) : '';
+    $checkbox = isset($_POST['checkbox']) ? $valid->sanitize_input($_POST['checkbox']) : '';
     $password = hash('sha256', $password);
 
     if ( ! $valid->is_empty($email))
@@ -59,7 +59,7 @@ if (isset($_POST['login']))
         $_SESSION['emp_id'] = $value['id'];
         $_SESSION['is_completed'] = $value['is_completed'];
 
-        if ('checkbox' === $_POST['checkbox'])
+        if ('checkbox' === $checkbox)
         {
             setcookie('emp_id', $value['id'], time() + (86400 * 14), '/');
             setcookie('is_completed', $value['is_completed'], time() + (86400 * 14), '/');
