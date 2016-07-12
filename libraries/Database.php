@@ -45,7 +45,7 @@ class Database {
             $this->db['master']['db_name']);
 
         // Error handling
-        if(mysqli_connect_error())
+        if (mysqli_connect_error())
         {
             header('Location: error.php');
         }
@@ -70,7 +70,7 @@ class Database {
      */
     public static function get_instance()
     {
-        if(self::$instance === NULL)
+        if (self::$instance === NULL)
         {
 
             // If no instance then make one
@@ -141,7 +141,7 @@ class Database {
         $col_value = ' ' . trim($col_value, ", ") . ' )';
         $sql_query .= $col_name . $col_value;
 
-        if(FALSE === $this->execute_sql_query($sql_query))
+        if (FALSE === $this->execute_sql_query($sql_query))
         {
             return FALSE;
         }
@@ -179,7 +179,7 @@ class Database {
 
         $sql_query .= $set . ' ' . $condition;
 
-        if(FALSE === $this->execute_sql_query($sql_query))
+        if (FALSE === $this->execute_sql_query($sql_query))
         {
             return FALSE;
         }
@@ -215,7 +215,7 @@ class Database {
         $sql_query .= ' FROM ' . $table_name . ' ' . $condition;
         $result = $this->execute_sql_query($sql_query);
 
-        if(FALSE === $result)
+        if (FALSE === $result)
         {
             return FALSE;
         }

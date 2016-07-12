@@ -21,14 +21,16 @@ require_once('page_header.php');
             <form role="form" class="form-inline text-center" method="post">
                 <div class="form-group well well-lg">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="name" placeholder="NAME">
+                        <input type="text" class="form-control" id="name"
+                            placeholder="NAME">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                                 <span class="glyphicon glyphicon-search"></span>
                             Search</button>
                         </span>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default sorting" id="sorting">
+                            <button type="button" class="btn btn-default sorting"
+                                id="sorting">
                                 <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
                             </button>
                         </span>
@@ -38,9 +40,7 @@ require_once('page_header.php');
             <div  class="display">
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-2">
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-4 col-xs-6">
                     <button type="button" id="previous"
                         class="btn btn-primary btn-block pagination disabled">
                         « Previous</button>

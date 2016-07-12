@@ -52,11 +52,12 @@ class Address {
 
         foreach ($address as $key => $value)
         {
-            if(('office' === $type && 'o' === $key[0] ) || ('residence' === $type && 'r' === $key[0]))
+            if (('office' === $type && 'o' === $key[0] ) ||
+                ('residence' === $type && 'r' === $key[0]))
             {
                 $key = substr($key, 2);
 
-                if(isset($this->fields[$key]))
+                if (isset($this->fields[$key]))
                 {
                     $this->fields[$key] = $value;
                 }

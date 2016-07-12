@@ -24,7 +24,6 @@ class Validation {
         $this->db_obj = $db_object;
     }
 
-
     /**
      * To check user is valid or not.
      *
@@ -42,7 +41,8 @@ class Validation {
             $condition .= "AND password = '$password'";
         }
 
-        $result = $this->db_obj->select('employee', ' id, is_completed ', $condition);
+        $result = $this->db_obj->select('employee', ' id, is_completed, role_id',
+            $condition);
 
         if (FALSE === $result)
         {
@@ -62,7 +62,6 @@ class Validation {
         return $id;
     }
 
-
     /**
      * To sanitize value.
      *
@@ -75,7 +74,6 @@ class Validation {
         return htmlspecialchars($this->db_obj->mysql_sanitize(trim($input)));
     }
 
-
     /**
      * To check is present or not.
      *
@@ -87,7 +85,6 @@ class Validation {
     {
         return $this->error;
     }
-
 
     /**
      * To check first string is equal to second.
@@ -108,7 +105,6 @@ class Validation {
         return TRUE;
     }
 
-
     /**
      * To check valid email.
      *
@@ -126,7 +122,6 @@ class Validation {
 
         return TRUE;
     }
-
 
     /**
      * To check valid password.
@@ -146,7 +141,6 @@ class Validation {
         return TRUE;
     }
 
-
     /**
      * To check valid number or not.
      *
@@ -165,7 +159,6 @@ class Validation {
 
         return TRUE;
     }
-
 
     /**
      * To check valid name or not.
@@ -315,7 +308,8 @@ class Validation {
     {
         $date_arr = explode('-', $date);
 
-        if ( 3 !== count($date_arr) || ! checkdate($date_arr[1], $date_arr[2], $date_arr[0]))
+        if ( 3 !== count($date_arr) ||
+            ! checkdate($date_arr[1], $date_arr[2], $date_arr[0]))
         {
             $this->error = TRUE;
             return FALSE;

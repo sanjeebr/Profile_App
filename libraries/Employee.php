@@ -76,20 +76,22 @@ class Employee {
      */
     public function get_employee($employee_id = 0, $input_condition = '')
     {
-        $value = 'SQL_CALC_FOUND_ROWS employee.is_completed AS is_completed, employee.id AS emp_id,
-            employee.first_name AS first_name, employee.middle_name AS middle_name,
-            employee.last_name AS last_name, employee.date_of_birth AS date_of_birth,
-            employee.prefix AS prefix, employee.photo AS photo, employee.note AS note,
-            employee.gender AS gender, employee.marital AS marital,employee.communication AS communication,
+        $value = 'employee.is_completed AS is_completed,
+            employee.id AS emp_id,employee.first_name AS first_name,
+            employee.middle_name AS middle_name, employee.last_name AS last_name,
+            employee.date_of_birth AS date_of_birth, employee.prefix AS prefix,
+            employee.photo AS photo, employee.note AS note, employee.gender AS gender,
+            employee.marital AS marital,employee.communication AS communication,
             employee.employment AS employment,employee.employer AS employer,
             residence.street AS r_street,residence.city AS r_city,
             residence.state AS r_state,residence.pin AS r_pin,residence.phone AS r_phone,
             residence.fax AS r_fax,office.street AS o_street,office.city AS o_city,
             office.state AS o_state,office.pin AS o_pin,office.phone AS o_phone,
-            office.fax AS o_fax , FOUND_ROWS() AS ROWS';
-        $condition = "LEFT JOIN address AS residence ON employee.id = residence.employee_id AND
-            residence.type = 'residence'
-            LEFT JOIN address AS office ON employee.id = office.employee_id AND
+            office.fax AS o_fax';
+        $condition = "LEFT JOIN address AS residence
+            ON employee.id = residence.employee_id AND residence.type = 'residence'
+            LEFT JOIN address AS office
+            ON employee.id = office.employee_id AND
             office.type = 'office'";
 
         if ( 0 !== $employee_id)
@@ -159,7 +161,7 @@ class Employee {
 
         foreach ($employee_data as $key => $value)
         {
-            if(isset($this->form_fields[$key]))
+            if (isset($this->form_fields[$key]))
             {
                 $this->form_fields[$key] = $value;
             }
@@ -167,7 +169,7 @@ class Employee {
 
         $this->db_obj->transaction();
 
-        if($this->db_obj->update($this->table_name, $this->form_fields, "WHERE id = $emp_id")
+        if ($this->db_obj->update($this->table_name, $this->form_fields, "WHERE id = $emp_id")
             && $address->update_address($emp_id, $employee_data, 'residence', $time)
             && $address->update_address($emp_id, $employee_data, 'office', $time))
         {
@@ -217,23 +219,24 @@ class Employee {
 
                 $json_data[] = $row;
             }
-            return json_encode($json_data);
+            $output = json_encode($json_data);
         }
         else if (0 === $result && 0 === $page )
         {
-            return 'no data';
+            $output = 'no data';
         }
         else
         {
             $condition = "WHERE CONCAT(employee.first_name, ' ', employee.middle_name,
                 ' ', employee.last_name) LIKE '%{$_POST['name']}%'";
             $last_page = ceil (($this->total_employee($condition) / 2) - 1);
-            if(0 > $last_page)
+            if (0 > $last_page)
             {
                return 'no data';
             }
-            return 'total' . $last_page;
+            $output = 'total' . $last_page;
         }
+        return $output;
     }
 
 }

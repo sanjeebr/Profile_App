@@ -310,7 +310,7 @@ if (isset($_POST['submit']) || isset($_POST['update']))
             $times = 'first';
         }
 
-        if($employee->update_employee($_SESSION['emp_id'], $_POST,$times) &&
+        if ($employee->update_employee($_SESSION['emp_id'], $_POST,$times) &&
             $db_obj->update('employee', "photo = '$photo'", 'where id = ' . $_SESSION['emp_id']))
         {
             $_SESSION['is_completed'] = '1';

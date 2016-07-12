@@ -1,6 +1,7 @@
 <?php
 require_once('libraries/Database.php');
 require_once('error_log.php');
+
 /**
  * Close the connection when the page is shutdown
  *

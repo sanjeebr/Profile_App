@@ -9,12 +9,15 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
     {
         case '0':
             header('Location: form.php');
+            exit;
             break;
         case '1':
             header('Location: home.php');
+            exit;
             break;
         default:
             header('Location: error.php');
+            exit;
     }
 }
 
@@ -77,14 +80,16 @@ if (isset($_POST['signup']))
         $signup = new Employee($db_obj);
         $emp_id = $signup->create_account($email, $password);
 
-        if(FALSE === $emp_id)
+        if (FALSE === $emp_id)
         {
             header('Location: error.php');
+            exit;
         }
         else
         {
             $_SESSION['emp_id'] = $emp_id;
             $_SESSION['is_completed'] = '0';
+            $_SESSION['role_id'] = '2';
             header('Location: form.php');
         }
     }
@@ -143,7 +148,8 @@ if (isset($_POST['signup']))
                                                 id="pwd" name="password"
                                                 placeholder="Password">
                                         </div>
-                                        <div class="alert-danger pwd_err" id="pwd_err">
+                                        <div class="alert-danger pwd_err"
+                                            id="pwd_err">
                                             <?php echo $pwd_err;?>
                                         </div>
                                     </div>

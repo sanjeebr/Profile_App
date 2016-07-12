@@ -15,12 +15,15 @@ if (isset($_SESSION['emp_id']) && isset($_SESSION['is_completed']))
     {
         case '0':
             header('Location: form.php');
+            exit;
             break;
         case '1':
             header('Location: home.php');
+            exit;
             break;
         default :
             header('Location: error.php');
+            exit;
     }
 }
 
@@ -30,8 +33,11 @@ $email = '';
 require_once('libraries/Database.php');
 require_once('libraries/Validation.php');
 require_once('libraries/Employee.php');
+require_once('libraries/ACL.php');
+
 
 $db_obj = Database::get_instance();
+$acl = new ACL($db_obj);
 
 if (isset($_POST['login']))
 {
@@ -52,12 +58,14 @@ if (isset($_POST['login']))
     else if ( FALSE === $valid->is_valid_employee($email, $password))
     {
         header('Location: error.php');
+        exit;
     }
     else
     {
         $value = $valid->is_valid_employee($email, $password);
         $_SESSION['emp_id'] = $value['id'];
         $_SESSION['is_completed'] = $value['is_completed'];
+        $_SESSION['acl'] = $acl->get_privilege($value['role_id']);
 
         if ('checkbox' === $checkbox)
         {
@@ -68,9 +76,11 @@ if (isset($_POST['login']))
         if ('0' === $value['is_completed'])
         {
              header('Location: form.php');
+             exit;
         }
 
-        header('Location: home.php');
+        header('Location: acl.php');
+        exit;
     }
 }
 
@@ -104,23 +114,27 @@ if (isset($_POST['login']))
                                 <form role="form" id="login" method="post" action="">
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <span class="input-group-addon"
+                                                id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-user"
                                                     aria-hidden="true"></span>
                                             </span>
                                             <input type="email" class="form-control empty"
-                                                id="email" name="email" placeholder="Email">
+                                                id="email" name="email" placeholder="Email"
+                                                value="<?php echo $email;?>">
                                         </div>
                                         <div class="alert-danger" id="email_err">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group input-group-lg">
-                                            <span class="input-group-addon" id="sizing-addon1">
+                                            <span class="input-group-addon"
+                                                id="sizing-addon1">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
                                             <input type="password" class="form-control empty"
-                                                id="pwd" name="password" placeholder="Password">
+                                                id="pwd" name="password"
+                                                placeholder="Password">
                                         </div>
                                         <div class="alert-danger" id="pwd_err">
                                         <?php echo $pwd_err;?>
@@ -130,7 +144,8 @@ if (isset($_POST['login']))
                                         <label><input type="checkbox" name="checkbox"
                                             value="checkbox"> Remember me</label>
                                     </div>
-                                    <button type="submit" class="btn btn-lg btn-success btn-block" name="login">
+                                    <button type="submit" name="login"
+                                        class="btn btn-lg btn-success btn-block">
                                         Login</button>
                                 </form>
                             </div>
