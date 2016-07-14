@@ -13,7 +13,7 @@ $db_obj = Database::get_instance();
 $acl = new ACL($db_obj);
 if( ! $acl->is_allowed('acl', 'view'))
 {
-    header('Location: logout.php');
+    header('Location: home.php');
     exit;
 }
 

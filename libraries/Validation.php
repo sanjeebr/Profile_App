@@ -75,6 +75,23 @@ class Validation {
     }
 
     /**
+     * htmlentities for all value in a array.
+     *
+     * @access public  htmlentities_for_array
+     * @param  array $array
+     * @return array
+     */
+    function htmlentities_for_array($array)
+    {
+        foreach($array as $key => $value)
+        {
+            $array[$key] = htmlentities($value);
+        }
+
+        return $array;
+    }
+
+    /**
      * To check is present or not.
      *
      * @access public  is_error

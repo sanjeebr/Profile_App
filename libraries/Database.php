@@ -234,7 +234,6 @@ class Database {
     public function delete($table_name, $condition = '')
     {
         $sql_query = "DELETE FROM $table_name $condition";
-        echo $sql_query;
         $result = $this->execute_sql_query($sql_query);
 
         if(FALSE === $result)

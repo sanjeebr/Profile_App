@@ -15,10 +15,20 @@ require_once('config/constants.php');
 require_once('libraries/Validation.php');
 require_once('libraries/Employee.php');
 require_once('libraries/Address.php');
+require_once('libraries/ACL.php');
 
 $db_obj = Database::get_instance();
 $conn = $db_obj->get_connection();
-$valid = new validation($db_obj);
+
+$acl = new ACL($db_obj);
+
+if( ! $acl->is_allowed('employee_details', 'edit') && '1' === $_SESSION['is_completed'])
+{
+    header('Location: home.php');
+    exit;
+}
+
+$valid = new Validation($db_obj);
 $employee = new Employee($db_obj);
 $address = new Address($db_obj);
 

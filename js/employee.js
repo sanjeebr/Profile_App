@@ -1,45 +1,43 @@
 var page = 0;
 var order = 'ASC';
 
-$(document).ready(function() {
-    create_display_table();
+create_display_table();
+get_employee();
+
+$('form').on('submit', function() {
+    page = 0;
+    get_employee();
+    return false;
+});
+
+$('.sorting').on('click', function() {
+    if ('ASC' === order) {
+        order = 'DESC';
+        $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>');
+    } else {
+        order = 'ASC';
+        $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet"></span>');
+    }
+
+    page = 0;
+    get_employee();
+    return false;
+});
+
+$( '.pagination' ).on( 'click', function() {
+    if ('previous' === $(this).attr('id')) {
+        if (0 < page) {
+            page = page - 1;
+        } else {
+            $('#previous').addClass('disabled');
+        }
+    } else if ('next' === $(this).attr('id')) {
+        $('#previous').removeClass('disabled');
+        page = page + 1;
+    }
     get_employee();
 
-    $('form').on('submit', function() {
-        page = 0;
-        get_employee();
-        return false;
-    });
-
-    $('.sorting').on('click', function() {
-        if ('ASC' === order) {
-            order = 'DESC';
-            $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>');
-        } else {
-            order = 'ASC';
-            $(this).html('<span class="glyphicon glyphicon-sort-by-alphabet"></span>');
-        }
-
-        page = 0;
-        get_employee();
-        return false;
-    });
-
-    $( '.pagination' ).on( 'click', function() {
-        if ('previous' === $(this).attr('id')) {
-            if (0 < page) {
-                page = page - 1;
-            } else {
-                $('#previous').addClass('disabled');
-            }
-        } else if ('next' === $(this).attr('id')) {
-            $('#previous').removeClass('disabled');
-            page = page + 1;
-        }
-        get_employee();
-
-        return false;
-    });
+    return false;
 });
 
 function display(data) {
@@ -119,7 +117,6 @@ function display(data) {
             );
         }
     }
-
 };
 
 function create_display_table() {
