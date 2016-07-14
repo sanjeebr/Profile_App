@@ -48,7 +48,7 @@ $(document).on('click', '#add-role', function() {
             type : 'add_role',
         },
         type: 'POST',
-        success: function(data) {
+        success: function() {
             $('.msg').append('<h3>' + $('#name').val() + ' Role was created</h3>');
             $('#name').val('');
         }

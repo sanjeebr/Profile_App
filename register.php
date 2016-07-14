@@ -30,8 +30,10 @@ $email = '';
 require_once('libraries/Database.php');
 require_once('libraries/Validation.php');
 require_once('libraries/Employee.php');
+require_once('libraries/ACL.php');
 
 $db_obj = Database::get_instance();
+$acl = new ACL($db_obj);
 
 if (isset($_POST['signup']))
 {
@@ -89,7 +91,7 @@ if (isset($_POST['signup']))
         {
             $_SESSION['emp_id'] = $emp_id;
             $_SESSION['is_completed'] = '0';
-            $_SESSION['role_id'] = '2';
+            $_SESSION['acl'] = $acl->get_privilege('2');
             header('Location: form.php');
         }
     }

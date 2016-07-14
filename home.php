@@ -8,9 +8,9 @@ require_once('config/constants.php');
 require_once('libraries/Employee.php');
 require_once('page_header.php');
 
-
 $db_obj = Database::get_instance();
 $acl = new ACL($db_obj);
+
 if( ! $acl->is_allowed('home', 'view'))
 {
     header('Location: employee.php');
@@ -42,9 +42,8 @@ extract($row, EXTR_SKIP);
                 <img alt="PHOTO" class="img-circle" src="<?php $pic = ! empty($photo) ?
                     PROFILE_PIC . $photo : DEFAULT_PROFILE_PIC . $gender . '.jpg' ;
                     echo $pic; ?>" width="400" height="400">
-                <h3><?php echo  $prefix
-                            . ' ' . $first_name . ' ' . $middle_name
-                            . ' ' . $last_name?></h3>
+                <h3><?php echo  $prefix . ' ' . $first_name . ' ' . $middle_name
+                    . ' ' . $last_name?></h3>
             </div>
             <div class="container-fluid bg-2 bg">
                 <div class="row">

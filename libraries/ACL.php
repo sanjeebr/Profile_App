@@ -50,7 +50,8 @@ class ACL {
 
     public function is_allowed($resource, $privilege)
     {
-        if( isset($_SESSION['acl'][$resource]) && in_array($privilege, $_SESSION['acl'][$resource]))
+        if( isset($_SESSION['acl'][$resource])
+            && in_array($privilege, $_SESSION['acl'][$resource]))
         {
             return TRUE;
         }
