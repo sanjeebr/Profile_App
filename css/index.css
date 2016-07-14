@@ -1,0 +1,18 @@
+.container_body {
+    background-size: cover;
+    background-image: url("../img/index.jpg");
+    background-color: #ffffcc;
+    background-repeat: no-repeat;
+    word-wrap: break-word;
+}
+div.transbox {
+    margin: 30px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+.error {
+    color: #ff0000;
+}

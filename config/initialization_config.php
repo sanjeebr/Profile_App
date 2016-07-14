@@ -54,5 +54,7 @@ $error_list = array(
     'o_phone_err' => '',
     'o_fax_err' => '',
     'communication_err' => '',
+    'employment_err' => '',
+    'employer_err' => '',
     'photo_err' => ''
 );
